@@ -1,0 +1,36 @@
+@startuml
+
+!theme plain
+
+component "1602 LCD Screen" as LCD
+component "IR Proximity Sensor" as IR
+
+package "MKL25Z Board A (Sensor Reader)" {
+    component BoardA_UART
+    component BoardA_ADC
+
+    interface BoardA_Code
+}
+
+package "MKL25Z Board B (LCD Display)" {
+    component BoardB_UART
+    component BoardB_GPIO
+
+    interface BoardB_Code
+}
+
+' Inter Board connections
+BoardA_UART <-r-> BoardB_UART : 1 to 1 relationship
+
+' Board A layout
+BoardA_ADC <-l-> IR
+BoardA_ADC <--> BoardA_Code
+BoardA_UART <--> BoardA_Code
+
+' Board B layout
+BoardB_GPIO <-r-> LCD
+BoardB_GPIO <--> BoardB_Code
+BoardB_UART <--> BoardB_Code
+BoardB_GPIO -[hidden]l- BoardB_UART
+
+@enduml

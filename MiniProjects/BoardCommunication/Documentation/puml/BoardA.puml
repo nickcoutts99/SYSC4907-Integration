@@ -1,0 +1,30 @@
+@startuml
+
+!theme plain
+
+participant Code
+participant ADC
+participant UART
+participant UART_IRQ
+
+group Setup
+    Code -> ADC : IR Setup
+
+    Code -> UART : UART + interrupt Setup
+end
+
+group Data Send
+    UART --> Code : UARTx_TDRE
+
+    UART -> UART_IRQ : Trigger Interrupt
+
+    UART_IRQ --> UART_IRQ : Write
+end
+
+group Main Loop
+
+Code --> ADC : Read From Sensor
+
+end
+
+@enduml

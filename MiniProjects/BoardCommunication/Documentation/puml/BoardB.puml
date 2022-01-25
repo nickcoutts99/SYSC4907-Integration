@@ -1,0 +1,36 @@
+@startuml
+
+!theme plain
+
+participant Code
+participant GPIO
+participant UART
+participant UART_IRQ
+
+group Setup
+    Code -> GPIO : LCD Setup
+
+    Code -> UART : UART + interrupt Setup
+end
+
+group Data Received
+    UART --> Code : UARTx_RDRF
+
+    UART -> UART_IRQ : Trigger Interrupt
+
+    UART_IRQ --> UART_IRQ : Read
+
+    UART_IRQ --> Code : LCD_update_flag + uart_data
+end
+
+group Main Loop
+
+Code --> Code : Check for LCD_update_flag
+Code -> GPIO : Display uart_data
+note left: Only update lcd when new\ndata has been received
+
+Code --> Code : Clear LCD_update_flag
+
+end
+
+@enduml
