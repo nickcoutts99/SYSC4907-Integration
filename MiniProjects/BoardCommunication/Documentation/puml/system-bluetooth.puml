@@ -1,0 +1,45 @@
+@startuml
+
+left to right direction
+
+skinparam component {
+        BackgroundColor<<peripheral>> #DDEEDD
+        BackgroundColor<<onboard>> #DDDDFF
+}
+skinparam interface {
+        BackgroundColor #FFDDDD
+}
+
+component "1602 LCD" as lcd <<peripheral>>
+component "IR Proximity Sensor" as irSensor <<peripheral>>
+component "Bluetooth Antenna" as bluetooth <<peripheral>>
+
+node "KL25Z" as board {
+        interface "Code" as boardCode
+
+        component "UART" as boardUART <<onboard>>
+        component "GPIO" as boardGPIO <<onboard>>
+        component "ADC" as boardADC <<onboard>>
+
+        boardGPIO <..> boardCode
+        boardADC <..> boardCode
+        boardCode <..> boardUART
+}
+
+node "Wireless Receiver" as receiver {
+        interface "Code" as receiverCode
+
+        component "Bluetooth Device" as receiverBluetooth <<onboard>>
+
+        receiverBluetooth <..> receiverCode
+}
+
+' Interconnection
+bluetooth <|...|> receiverBluetooth :Wireless
+
+boardUART <--> bluetooth
+lcd <--> boardGPIO
+irSensor  <--  boardGPIO
+irSensor   --> boardADC
+
+@enduml

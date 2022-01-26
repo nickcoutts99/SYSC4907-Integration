@@ -1,0 +1,54 @@
+@startuml
+
+left to right direction
+
+skinparam component {
+        BackgroundColor<<peripheral>> #DDEEDD
+        BackgroundColor<<onboard>> #DDDDFF
+}
+skinparam interface {
+        BackgroundColor #FFDDDD
+}
+
+component "1602 LCD" as boardALCD <<peripheral>>
+component "1602 LCD" as boardBLCD <<peripheral>>
+
+component "IR Proximity Sensor" as irSensor <<peripheral>>
+
+component "Push Buttons" as buttons <<peripheral>>
+
+node "KL25Z Board A" as boardA {
+        interface "Code" as boardACode
+
+        component "UART" as boardAUART <<onboard>>
+        component "GPIO" as boardAGPIO <<onboard>>
+        component "ADC" as boardAADC <<onboard>>
+
+        boardAGPIO <..> boardACode
+        boardAADC <..> boardACode
+        boardACode <..> boardAUART
+}
+
+node "KL25Z Board B" as boardB {
+        interface "Code" as boardBCode
+
+        component "UART" as boardBUART <<onboard>>
+        component "GPIO" as boardBGPIO <<onboard>>
+
+        boardBCode <..> boardBGPIO
+        boardBUART <..> boardBCode 
+}
+
+' Interconnections
+boardAUART <---> boardBUART : Wired
+
+' Board A Connections
+boardALCD <--> boardAGPIO
+irSensor  <--  boardAGPIO
+irSensor   --> boardAADC
+
+' Board B Connections
+boardBGPIO <--> boardBLCD
+boardBGPIO <--> buttons
+
+@enduml

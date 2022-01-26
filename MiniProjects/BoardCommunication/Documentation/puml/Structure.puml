@@ -1,0 +1,33 @@
+@startmindmap
+
+*[#lightgreen] MiniProj/
+**[#white] IR_Sender/
+***[#orange] BoardA.uvprojx
+***[#white] Source/
+****_ Source Files
+***[#white] Include/
+****_ Include Files
+
+**[#white] LCD_Receive/
+***[#orange] BoardB.uvprojx
+***[#white] Source/
+****_ Source Files
+***[#white] Include/
+****_ Include Files
+
+**[#white] Documentaion/
+***[#white] UML/
+****_ UML Diagrams
+***[#white] images/
+****_ Images for Readme
+
+**[#lightblue] MiniProject.uvmpw
+
+legend right
+    Green : Root of Repo
+    White : Directories
+    Orange: Project Files
+    Blue  : Workspace File
+endlegend
+
+@endmindmap

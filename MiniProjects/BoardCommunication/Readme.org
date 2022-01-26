@@ -1,0 +1,62 @@
+#+TITLE: Serial Communication Library
+#+AUTHOR: Zach Porter, Erdem Yanikomerolgu
+
+* What is libserial
+Libserial was formerly Team 1's mini project that has now been adapted into a serial communication libray for use in your programs. Libserial provides drivers for the 3 communication protocols availables on the KL25Z. Namely UART, I2C, and SPI. Libserial should allow for easy implementation of these protocols without the need to reinventi the wheel again.
+
+Libserial is a Keil project that is set to produce a static library instead of an executable. This should allow for easier implementation into your different programs without having to copy files around.
+
+** Currently Implemented Drivers
++ [X] UART
++ [ ] I2C
++ [ ] SPI
+
+* Setup Instructions
+These setup instructions only apply if you are wanting to link libserial to other existing Keil Project. This Repo is already setup to develop and test libserial.
+
+** Libserial install and build
+
+1. Clone this repository to your computer. (~git clone https://github.com/zachporter1999/SYSC-4907-mini-proj.git~)
+2. Open the library project and build it.
+
+The Library setup is finished. Now lets setup your existing Keil to link this library in at compile time.
+
+** Setting up the include path to libserial's headers
+
+1. In your existing project, under "~Options for Target 1 >> C/C++ (AC6) >> Include Paths~" add the ralative path to the "~libserial//inc~" diretory
+
+#+CAPTION: Where to set the "/Include Paths/" setting.
+#+NAME: fig:include-setup
+[[./Documentation/out/setup/inc2.png]]
+
+** Linking the libserial to project
+
+1. In the project window at the left side of the Keil IDE, right click on the "~Target 1~" folder and add a new group.
+2. Rename this new group/folder to lib.
+3. Right-click on the "~lib~" folder, add existing item, and add the "~libserial//Objects//libserial.lib~"
+4. RIght-click on "~lib~" file in the projects lib folder and select the options for that file. Then click select modules and the modules you want.
+
+#+CAPTION: Where to select modules.
+#+NAME: fig:library-setup
+[[./Documentation/out/setup/lib.png]]
+
+#+CAPTION: Where to create the "/lib/" folder to add the "/.lib/" file to.
+#+NAME: fig:library-setup
+[[./Documentation/out/setup/select-lib.png]]
+
+In order to use this library in your code you will need to include the appropriate header files.
+
+#+begin_src c
+#include <MKL25Z.h>
+
+// Include libserial headers
+#include "drivers/uart.h"
+#include "drivers/i2c.h"
+#include "drivers/spi.h"
+
+int main() {
+
+  // Main code here
+
+}
+#+end_src

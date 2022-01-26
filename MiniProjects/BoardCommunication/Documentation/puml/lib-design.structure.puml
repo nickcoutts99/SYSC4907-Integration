@@ -1,0 +1,39 @@
+@startmindmap
+
+*[#00FF00] REPO
+**[#00FFFF] libserial/
+***[#AAAACC] inc/
+****[#DDDDFF] drivers/
+*****_ uart.h
+*****_ i2c.h
+*****_ spi.h
+***[#AAAACC] src/
+****_ uart.c
+****_ i2c.c
+****_ spi.c
+***[#orange] Object/
+****_ libserial.lib
+
+**[#FFEEEE] libserial_master_test/
+***[#EEEEEE] src/
+****_ main.c
+
+**[#FFEEEE] libserial_slave_test/
+***[#EEEEEE] src/
+****_ main.c
+
+**[#CCCCCC] MiniProject.uvmpw
+
+legend right
+    Green : Root of Repo
+    
+    Light Blue : Serial Library
+    
+    Orange : Generated lib file we need
+
+    Pink : Projects to test library with
+    
+    Grey  : Workspace File
+endlegend
+
+@endmindmap
