@@ -72,16 +72,16 @@ extern uart_cfg_t uart2_cfg;
 #define UART1_INIT(baud_rate, nvic_priority) __uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, baud_rate, nvic_priority)
 #define UART1_START()                        __uart_start(&uart1_cfg)
 #define UART1_STOP()                         __uart_start(&uart1_cfg)
-#define UART1_SEND(msg)                      __uart_send (&uart1_txQ, msg)
+#define UART1_SEND(msg)                      __uart_send(&uart1_txQ, msg)
 // NOTE the msg in the read macro is a char array and is passed by referance.
-#define UART1_READ(msg)                      __uart_recv (&uart1_rxQ, msg)
+#define UART1_READ(msg)                      __uart_read(&uart1_rxQ, msg)
 
 #define UART2_INIT(baud_rate, nvic_priority) __uart_init(&uart2_cfg, &uart2_txQ, &uart2_rxQ, baud_rate, nvic_priority)
 #define UART2_START()                        __uart_start(&uart1_cfg)
 #define UART2_STOP()                         __uart_start(&uart2_cfg)
-#define UART2_SEND(msg)                      __uart_send (&uart2_txQ, msg)
+#define UART2_SEND(msg)                      __uart_send(&uart2_txQ, msg)
 // NOTE the msg in the read macro is a char array and is passed by referance.
-#define UART2_READ(msg)                      __uart_recv (&uart2_rxQ, msg)
+#define UART2_READ(msg)                      __uart_read(&uart2_rxQ, msg)
 
 /* Gerneral functions for interacting with the UART ports.
  * 
@@ -92,5 +92,6 @@ void __uart_start(uart_cfg_t* p_cfg);
 void __uart_stop(uart_cfg_t* p_cfg);
 void __uart_send(Q_T* p_tx_q, char* send_msg);
 void __uart_read(Q_T* p_rx_q, char* received_msg);
+uint32_t Get_Num_Rx_Chars_Available(void);
 
 #endif

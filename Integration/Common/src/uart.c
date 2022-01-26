@@ -4,6 +4,7 @@
 // definitions for use in this header. 
 #define UART_OVERSAMPLE (16)
 #define BUS_CLOCK 		(24e6)
+#define MAX_CHARS_READ (4)
 
 Q_T uart1_txQ;
 Q_T uart1_rxQ;
@@ -136,7 +137,7 @@ void __uart_send(Q_T* p_tx_q, char* send_msg)
 void __uart_read(Q_T* p_rx_q, char* received_msg)
 {
 	for (char new_char = (char)Q_Dequeue(p_rx_q);
-		new_char != NULL;
+		(new_char != NULL) && (Q_Size(p_rx_q) <= MAX_CHARS_READ);
 		new_char = (char)Q_Dequeue(p_rx_q))
 	{
 		// Wait while Queue is empty.
@@ -183,6 +184,9 @@ void UART1_IRQHandler(void) {
 				UART_S1_FE_MASK | UART_S1_PF_MASK;
 		 */
 		}
+}
+uint32_t Get_Num_Rx_Chars_Available(void) {
+	return Q_Size(&uart1_rxQ);
 }
 
 void UART2_IRQHandler(void) {

@@ -2,9 +2,11 @@
  *----------------------------------------------------------------------------*/
 #include <MKL25Z4.H>
 #include <stdio.h>
+#include <stdlib.h>
 #include "timers.h"
 #include "delay.h"
 #include "uart.h"
+#include "lcd_4bit.h"
 
 #define TESTING_MOTOR 0
 #define TESTING_LCD 1
@@ -31,54 +33,51 @@ void set_Stop(){
 	Set_PWM_Value_Ch0(0);
 }
 int main (void) {
+	
+	#if TESTING_MOTOR
+	Init_PIT(BUS_CLOCK_FREQUENCY/TICK_FREQUENCY);
+  Init_PWM();
 
-	//Init_PIT(BUS_CLOCK_FREQUENCY/TICK_FREQUENCY);
-  //Init_PWM();
-
+	__enable_irq();
+	Start_PIT();
 	UART1_INIT(UART_BAUDRATE_300, 128);
-
-	//__enable_irq();
-	//Start_PIT();
-  
-	while (1) {
-		#if TESTING_MOTOR
-		Delay(1000);
-		Set_PWM_Servo(0);
-		set_Forward(100);
+	char transmittedMessage[4];
+	char displayMessage[17];
+  int objectClose = 0;
+	Set_PWM_Servo(0);
+	set_Forward(50);
+	int distance = 0;
+	
+	while (!objectClose) {
 		
-		Delay(1000);
-		Set_PWM_Servo(30);
-		set_Stop();
-		
-		Delay(1000);
-		Set_PWM_Servo(60);
-		set_Forward(50);
-		
-		Delay(1000);
-		set_Stop();
-		Set_PWM_Servo(90);
-		
-		Delay(1000);
-		Set_PWM_Servo(120);
-		set_Reverse(100);
-		
-		Delay(1000);
-		Set_PWM_Servo(0);
-		set_Stop();
-		
-		Delay(1000);
-		Set_PWM_Servo(30);
-		set_Reverse(50);
-		
-		Delay(1000);
-		Set_PWM_Servo(60);
-		set_Stop();
-		#endif
-		#if TESTING_LCD
-		
-		
-		#endif
+		if (Get_Num_Rx_Chars_Available() >= 3) {
+			UART1_READ(transmittedMessage);
+			distance = atoi(transmittedMessage);
+			
+			if(distance < 50){
+				objectClose = 1;
+			}
+		}
 	}
+	set_Stop();
+	#endif
+		
+	#if TESTING_LCD
+	Init_LCD();
+	UART1_INIT(UART_BAUDRATE_300, 128);
+	char transmittedMessage[4];
+	char displayMessage[17];
+	while(1){ 
+		if (Get_Num_Rx_Chars_Available() >= 3) {
+			UART1_READ(transmittedMessage);
+			sprintf(displayMessage, "Object: %s cm", transmittedMessage);
+			Clear_LCD();
+			Set_Cursor(0,0);
+			Print_LCD(displayMessage);
+			Delay(150);
+		}		
+	}
+	#endif
 }
 
 

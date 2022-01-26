@@ -10,6 +10,7 @@
 #include "ultrasonic.h"
 #include "uart.h"
 
+#define BUFFER_SIZE (4)
 volatile uint8_t hour=0, minute=0, second=0;
 volatile uint16_t millisecond=0;
 
@@ -63,26 +64,27 @@ int main (void) {
 	}
 #else
 	float measurement = 0;
-	char measurementStr[17];
+	char measurementStr[BUFFER_SIZE];
 	Init_RGB_LEDs();
 	Init_PIT(240); //gives us a period of 10 microseconds
 	Init_Ultrasonic();
-	//Init_LCD();
 	UART1_INIT(UART_BAUDRATE_300, 128);
 	__enable_irq();
-	//Clear_LCD();
-	Set_Cursor(0,0);
+	
+	int minimumDist = 200;
 	Init_TPM();
 	while(1) {
 		Generate_Trigger();
 		Measure_Reading(&measurement);
-		sprintf(measurementStr, "%f", measurement);
-		UART1_SEND(measurementStr);
-		//Set_Cursor(0,1);
-		//Print_LCD(measurementStr);
-		toggle_RGB_LEDs(1,0,0);
-		Delay(1000);
-		//Clear_LCD();
+		snprintf(measurementStr,BUFFER_SIZE, "%3d", (int) measurement);
+		if(measurement < minimumDist){ 
+			UART1_SEND(measurementStr);
+			//Set_Cursor(0,1);
+			//Print_LCD(measurementStr);
+			toggle_RGB_LEDs(1,0,0);
+			Delay(1000);
+			//Clear_LCD();
+		}
 	}
 
 #endif
