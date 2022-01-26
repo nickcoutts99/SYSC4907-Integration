@@ -1,10 +1,8 @@
-.\objects\leds.o: src\LEDs.c
-.\objects\leds.o: C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H
-.\objects\leds.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\leds.o: C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h
-.\objects\leds.o: C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h
-.\objects\leds.o: C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h
-.\objects\leds.o: C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h
-.\objects\leds.o: .\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h
-.\objects\leds.o: .\inc\LEDs.h
-.\objects\leds.o: .\inc\gpio_defs.h
+./objects/leds.o: src\LEDs.c \
+  C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H \
+  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
+  C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h \
+  C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h \
+  C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h \
+  C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armclang.h \
+  RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h inc\LEDs.h inc\gpio_defs.h

@@ -9,12 +9,12 @@ License Information: Nick Coutts, Carleton university, LIC=----
  
 Tool Versions:
 Toolchain:       MDK-Lite  Version: 5.36.0.0
-Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 7 (build 960)
-Assembler:       Armasm.exe V5.06 update 7 (build 960)
-Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
-Library Manager: ArmAr.exe V5.06 update 7 (build 960)
-Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
+C Compiler:      ArmClang.exe V6.16
+Assembler:       Armasm.exe V6.16
+Linker/Locator:  ArmLink.exe V6.16
+Library Manager: ArmAr.exe V6.16
+Hex Converter:   FromElf.exe V6.16
 CPU DLL:         SARMCM3.DLL V5.36.0.0
 Dialog DLL:      DARMCM1.DLL V1.19.4.0
 Target DLL:      UL2CM3.DLL V1.164.0.0
@@ -25,79 +25,21 @@ F:\Capstone proj\Integration\SYSC4907-Integration\Integration\Ultrasonic\Ultraso
 Project File Date:  01/25/2022
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
-compiling queue.c...
-compiling delay.c...
-compiling LEDs.c...
-compiling uart.c...
-src\uart.c(17): error:  #29: expected an expression
-  	.uartSCGCMask = SIM_SCGC4_UART1_MASK,
-src\uart.c(18): error:  #29: expected an expression
-  	.uartPort = UART1,
-src\uart.c(19): error:  #29: expected an expression
-  	.pinSCGCMask = SIM_SCGC5_PORTE_MASK,
-src\uart.c(20): error:  #29: expected an expression
-  	.gpioPort = PORTE,
-src\uart.c(21): error:  #29: expected an expression
-  	.pcrMux = 3,
-src\uart.c(22): error:  #29: expected an expression
-  	.txPin = 0,
-src\uart.c(23): error:  #29: expected an expression
-  	.rxPin = 1,
-src\uart.c(24): error:  #29: expected an expression
-  	.nvic_irq = UART1_IRQn
-src\uart.c(31): error:  #29: expected an expression
-  	.uartSCGCMask = SIM_SCGC4_UART2_MASK,
-src\uart.c(32): error:  #29: expected an expression
-  	.uartPort = UART2,
-src\uart.c(33): error:  #29: expected an expression
-  	.pinSCGCMask = SIM_SCGC5_PORTE_MASK,
-src\uart.c(34): error:  #29: expected an expression
-  	.gpioPort = PORTE,
-src\uart.c(35): error:  #29: expected an expression
-  	.pcrMux = 4,
-src\uart.c(36): error:  #29: expected an expression
-  	.txPin = 22,
-src\uart.c(37): error:  #29: expected an expression
-  	.rxPin = 23,
-src\uart.c(38): error:  #29: expected an expression
-  	.nvic_irq = UART2_IRQn
-src\uart.c(86): warning:  #188-D: enumerated type mixed with another type
-  	NVIC_SetPriority(p_cfg->nvic_irq, priority); // 0, 64, 128 or 192
-src\uart.c(87): warning:  #188-D: enumerated type mixed with another type
-  	NVIC_ClearPendingIRQ(p_cfg->nvic_irq); 
-src\uart.c(88): warning:  #188-D: enumerated type mixed with another type
-  	NVIC_EnableIRQ(p_cfg->nvic_irq);
-src\uart.c(112): error:  #29: expected an expression
-  	for (char* curr_char = send_msg;
-src\uart.c(113): error:  #20: identifier "curr_char" is undefined
-  		 *curr_char != NULL;
-src\uart.c(138): error:  #29: expected an expression
-  	for (char new_char = (char)Q_Dequeue(p_rx_q);
-src\uart.c(139): error:  #20: identifier "new_char" is undefined
-  		new_char != NULL;
-src\uart.c: 3 warnings, 20 errors
-compiling timers.c...
-.\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
-  void Init_Ultrasonic();
-src\timers.c(56): warning:  #177-D: variable "LCD_update_delay"  was declared but never referenced
-  	static unsigned LCD_update_delay = LCD_UPDATE_PERIOD;
-src\timers.c: 2 warnings, 0 errors
 compiling main.c...
-.\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
-  void Init_Ultrasonic();
-src\main.c: 1 warning, 0 errors
+compiling LEDs.c...
+compiling queue.c...
 compiling ultrasonic.c...
-.\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
-  void Init_Ultrasonic();
-src\ultrasonic.c(51): warning:  #1-D: last line of file ends without a newline
-  }
-src\ultrasonic.c: 2 warnings, 0 errors
+compiling delay.c...
 compiling LCD_4bit.c...
-assembling startup_MKL25Z4.s...
+compiling timers.c...
 compiling system_MKL25Z4.c...
-".\Objects\Ultrasonic.axf" - 20 Error(s), 8 Warning(s).
+assembling startup_MKL25Z4.s...
+compiling uart.c...
+linking...
+Program Size: Code=5548 RO-data=352 RW-data=36 ZI-data=1456  
+".\Objects\Ultrasonic.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -127,8 +69,7 @@ Package Vendor: Keil
       Include file:  Device\Source\system_MKL25Z4.h
       Source file:   Device\Source\system_MKL25Z4.c
       Source file:   Device\Source\ARM\startup_MKL25Z4.s
-Target not created.
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>
