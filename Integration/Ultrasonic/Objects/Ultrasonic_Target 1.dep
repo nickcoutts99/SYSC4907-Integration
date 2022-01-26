@@ -1,0 +1,101 @@
+Dependencies for Project 'Ultrasonic', Target 'Target 1': (DO NOT MODIFY !)
+CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
+F (.\src\delay.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\delay.o --omf_browse .\objects\delay.crf --depend .\objects\delay.d)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (.\inc\delay.h)(0x61F09FAF)
+F (.\src\LCD_4bit.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\lcd_4bit.o --omf_browse .\objects\lcd_4bit.crf --depend .\objects\lcd_4bit.d)
+I (.\inc\LCD_4bit.h)(0x61F09FAF)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H)(0x585C24CA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (.\inc\delay.h)(0x61F09FAF)
+F (.\src\LEDs.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\leds.o --omf_browse .\objects\leds.crf --depend .\objects\leds.d)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H)(0x585C24CA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (.\inc\LEDs.h)(0x61F09FAF)
+I (.\inc\gpio_defs.h)(0x61F09FAF)
+F (.\src\main.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.H)(0x585C24CA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x6025CC34)
+I (.\inc\gpio_defs.h)(0x61F09FAF)
+I (.\inc\LCD_4bit.h)(0x61F09FAF)
+I (.\inc\LEDs.h)(0x61F09FAF)
+I (.\inc\timers.h)(0x61F09FAF)
+I (.\inc\delay.h)(0x61F09FAF)
+I (.\inc\ultrasonic.h)(0x61F09FAF)
+F (.\src\timers.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\timers.o --omf_browse .\objects\timers.crf --depend .\objects\timers.d)
+I (.\inc\timers.h)(0x61F09FAF)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (.\inc\LEDs.h)(0x61F09FAF)
+I (.\inc\delay.h)(0x61F09FAF)
+I (.\inc\ultrasonic.h)(0x61F09FAF)
+F (.\src\ultrasonic.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\ultrasonic.o --omf_browse .\objects\ultrasonic.crf --depend .\objects\ultrasonic.d)
+I (.\inc\ultrasonic.h)(0x61F09FAF)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (.\inc\LEDS.h)(0x61F09FAF)
+I (.\inc\timers.h)(0x61F09FAF)
+F (.\src\queue.c)(0x61F09FAF)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\queue.o --omf_browse .\objects\queue.crf --depend .\objects\queue.d)
+I (.\inc\queue.h)(0x61F09FAF)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+F (.\src\uart.c)(0x61F0A68B)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\uart.o --omf_browse .\objects\uart.crf --depend .\objects\uart.d)
+I (.\inc\uart.h)(0x61F0A5F0)
+I (C:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x6025CC34)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+I (.\inc\queue.h)(0x61F09FAF)
+F (.\inc\delay.h)(0x61F09FAF)()
+F (.\inc\GPIO_defs.h)(0x61F09FAF)()
+F (.\inc\lcd_4bit.h)(0x61F09FAF)()
+F (.\inc\LEDs.h)(0x61F09FAF)()
+F (.\inc\timers.h)(0x61F09FAF)()
+F (.\inc\ultrasonic.h)(0x61F09FAF)()
+F (.\inc\queue.h)(0x61F09FAF)()
+F (.\inc\uart.h)(0x61F0A5F0)()
+F (RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s)(0x5644C55A)(--cpu Cortex-M0+ --pd "__EVAL SETA 1" -g --apcs=interwork -I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include--pd "__UVISION_VERSION SETA 536" --pd "_RTE_ SETA 1" --pd "MKL25Z128xxx4 SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_mkl25z4.lst --xref -o .\objects\startup_mkl25z4.o --depend .\objects\startup_mkl25z4.d)
+F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c)(0x5644C55A)(-c --cpu Cortex-M0+ -D__EVAL -g -O0 --apcs=interwork --split_sections -I .\inc-I.\RTE\Device\MKL25Z128xxx4-I.\RTE\_Target_1-IC:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-D__UVISION_VERSION="536" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o .\objects\system_mkl25z4.o --omf_browse .\objects\system_mkl25z4.crf --depend .\objects\system_mkl25z4.d)
+I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h)(0x60D491A2)
+I (C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armcc.h)(0x60D491A2)
+I (.\RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
+F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)()

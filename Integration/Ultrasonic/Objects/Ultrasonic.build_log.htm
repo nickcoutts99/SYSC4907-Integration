@@ -1,0 +1,134 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.36.0.0
+Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Nick Coutts, Carleton university, LIC=----
+ 
+Tool Versions:
+Toolchain:       MDK-Lite  Version: 5.36.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.36.0.0
+Dialog DLL:      DARMCM1.DLL V1.19.4.0
+Target DLL:      UL2CM3.DLL V1.164.0.0
+Dialog DLL:      TARMCM1.DLL V1.14.4.0
+ 
+<h2>Project:</h2>
+F:\Capstone proj\Integration\SYSC4907-Integration\Integration\Ultrasonic\Ultrasonic.uvprojx
+Project File Date:  01/25/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'Target 1'
+compiling queue.c...
+compiling delay.c...
+compiling LEDs.c...
+compiling uart.c...
+src\uart.c(17): error:  #29: expected an expression
+  	.uartSCGCMask = SIM_SCGC4_UART1_MASK,
+src\uart.c(18): error:  #29: expected an expression
+  	.uartPort = UART1,
+src\uart.c(19): error:  #29: expected an expression
+  	.pinSCGCMask = SIM_SCGC5_PORTE_MASK,
+src\uart.c(20): error:  #29: expected an expression
+  	.gpioPort = PORTE,
+src\uart.c(21): error:  #29: expected an expression
+  	.pcrMux = 3,
+src\uart.c(22): error:  #29: expected an expression
+  	.txPin = 0,
+src\uart.c(23): error:  #29: expected an expression
+  	.rxPin = 1,
+src\uart.c(24): error:  #29: expected an expression
+  	.nvic_irq = UART1_IRQn
+src\uart.c(31): error:  #29: expected an expression
+  	.uartSCGCMask = SIM_SCGC4_UART2_MASK,
+src\uart.c(32): error:  #29: expected an expression
+  	.uartPort = UART2,
+src\uart.c(33): error:  #29: expected an expression
+  	.pinSCGCMask = SIM_SCGC5_PORTE_MASK,
+src\uart.c(34): error:  #29: expected an expression
+  	.gpioPort = PORTE,
+src\uart.c(35): error:  #29: expected an expression
+  	.pcrMux = 4,
+src\uart.c(36): error:  #29: expected an expression
+  	.txPin = 22,
+src\uart.c(37): error:  #29: expected an expression
+  	.rxPin = 23,
+src\uart.c(38): error:  #29: expected an expression
+  	.nvic_irq = UART2_IRQn
+src\uart.c(86): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_SetPriority(p_cfg->nvic_irq, priority); // 0, 64, 128 or 192
+src\uart.c(87): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_ClearPendingIRQ(p_cfg->nvic_irq); 
+src\uart.c(88): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_EnableIRQ(p_cfg->nvic_irq);
+src\uart.c(112): error:  #29: expected an expression
+  	for (char* curr_char = send_msg;
+src\uart.c(113): error:  #20: identifier "curr_char" is undefined
+  		 *curr_char != NULL;
+src\uart.c(138): error:  #29: expected an expression
+  	for (char new_char = (char)Q_Dequeue(p_rx_q);
+src\uart.c(139): error:  #20: identifier "new_char" is undefined
+  		new_char != NULL;
+src\uart.c: 3 warnings, 20 errors
+compiling timers.c...
+.\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
+  void Init_Ultrasonic();
+src\timers.c(56): warning:  #177-D: variable "LCD_update_delay"  was declared but never referenced
+  	static unsigned LCD_update_delay = LCD_UPDATE_PERIOD;
+src\timers.c: 2 warnings, 0 errors
+compiling main.c...
+.\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
+  void Init_Ultrasonic();
+src\main.c: 1 warning, 0 errors
+compiling ultrasonic.c...
+.\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
+  void Init_Ultrasonic();
+src\ultrasonic.c(51): warning:  #1-D: last line of file ends without a newline
+  }
+src\ultrasonic.c: 2 warnings, 0 errors
+compiling LCD_4bit.c...
+assembling startup_MKL25Z4.s...
+compiling system_MKL25Z4.c...
+".\Objects\Ultrasonic.axf" - 20 Error(s), 8 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.8.0.pack
+                ARM.CMSIS.5.8.0
+                CMSIS (Common Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.5.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.Kinetis_KLxx_DFP.1.15.0.pack
+                Keil.Kinetis_KLxx_DFP.1.15.0
+                NXP Kinetis KLxx Series Device Support and Examples
+   * Component: Startup Version: 2.5.0
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\Device\MKL25Z128xxx4
+  .\RTE\_Target_1
+  C:\Users\Nick9\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include
+  C:\Users\Nick9\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.5.0
+
+   * Component: Keil::Device:Startup:2.5.0
+      Include file:  Device\Source\system_MKL25Z4.h
+      Source file:   Device\Source\system_MKL25Z4.c
+      Source file:   Device\Source\ARM\startup_MKL25Z4.s
+Target not created.
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
