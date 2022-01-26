@@ -1,0 +1,46 @@
+@startuml
+
+' !theme mars
+' !theme plain
+
+component "1602 LCD Screen" as BoardA_LCD
+component "1602 LCD Screen" as BoardB_LCD
+' component "1602 LCD Screen" as BoardC_LCD
+
+component "IR Proximity Sensor" as IR
+component "Buttons" as Buttons
+
+package "MKL25Z Board A (IR Reader)" {
+    component BoardA_UART
+    component BoardA_ADC
+    component BoardA_GPIO
+
+    interface BoardA_Code
+}
+
+package "MKL25Z Board B (Motor)" {
+    component BoardB_UART
+    component BoardB_GPIO
+
+    interface BoardB_Code
+}
+
+' Inter Board connections
+BoardA_UART <-r-> BoardB_UART : Bidrectional Communication
+BoardA_GPIO <-u-> BoardA_Code
+
+
+' Board A layout
+BoardA_GPIO <-l-> BoardA_LCD
+BoardA_ADC <-l-> IR
+BoardA_ADC <--> BoardA_Code
+BoardA_UART <--> BoardA_Code
+
+' ' Board B layout
+Buttons <-[hidden]d-> BoardB_LCD
+BoardB_GPIO <-r-> BoardB_LCD
+BoardB_GPIO <-r-> Buttons : 3
+BoardB_GPIO <-l-> BoardB_Code
+BoardB_UART <-r-> BoardB_Code
+
+@enduml

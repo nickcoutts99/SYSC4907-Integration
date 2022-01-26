@@ -8,14 +8,22 @@
   <WorkspaceName>WorkSpace</WorkspaceName>
 
   <project>
-    <PathAndName>.\IR_Sender\BoardA.uvprojx</PathAndName>
+    <PathAndName>.\libserial\libserial.uvprojx</PathAndName>
     <NodeIsExpanded>1</NodeIsExpanded>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
   <project>
-    <PathAndName>.\LCD_Receiver\BoardB.uvprojx</PathAndName>
+    <PathAndName>.\tests\master-test\master-test.uvprojx</PathAndName>
     <NodeIsActive>1</NodeIsActive>
     <NodeIsExpanded>1</NodeIsExpanded>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
+  </project>
+
+  <project>
+    <PathAndName>.\tests\agent-test\agent-test.uvprojx</PathAndName>
+    <NodeIsExpanded>1</NodeIsExpanded>
+    <NodeIsCheckedInBatchBuild>1</NodeIsCheckedInBatchBuild>
   </project>
 
 </ProjectWorkspace>

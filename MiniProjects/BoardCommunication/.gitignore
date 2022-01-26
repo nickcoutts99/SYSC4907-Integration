@@ -2,4 +2,5 @@
 Documentation/.metadata
 *.zaporter
 */Objects
+tests/*/Objects
 *.Erdem
