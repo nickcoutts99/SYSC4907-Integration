@@ -9,88 +9,44 @@
 #include "lcd_4bit.h"
 #include "LEDs.h"
 
-#define TESTING_MOTOR 0
-#define TESTING_LCD 1
+#define UART_EN
 
+#define BUFF_SIZE (16)
 
-volatile uint8_t hour=0, minute=0, second=0;
-volatile uint16_t millisecond=0;
+extern uint8_t CR_received;
+
+volatile uart_transceiver_t uart1_transceiver;
+volatile uart_transceiver_t uart2_transceiver;
 
 /*----------------------------------------------------------------------------
   MAIN function
  *----------------------------------------------------------------------------*/
- void set_Forward(uint8_t duty_cycle) {
-	Set_PWM_Value_Ch0(duty_cycle);
-	Set_PWM_Value_Ch1(0);
-}
-
-void set_Reverse(uint8_t duty_cycle) {
-	Set_PWM_Value_Ch1(duty_cycle);
-	Set_PWM_Value_Ch0(0);
-}
-
-void set_Stop(){
-	Set_PWM_Value_Ch1(0);
-	Set_PWM_Value_Ch0(0);
-}
 int main (void) {
+	uint16_t i;
 	
-	#if TESTING_MOTOR
-	Init_PIT(BUS_CLOCK_FREQUENCY/TICK_FREQUENCY);
-  Init_PWM();
-
+	Init_UART1(UART_BAUDRATE, sizeof(uint16_t), &uart1_transceiver);
+	
+	char buff[BUFF_SIZE];
 	__enable_irq();
-	Start_PIT();
-	UART1_INIT(UART_BAUDRATE_300, 128);
-	char transmittedMessage[4];
-	char displayMessage[17];
-  int objectClose = 0;
-	Set_PWM_Servo(0);
-	set_Forward(50);
-	int distance = 0;
 	
-	while (!objectClose) {
-		
-		if (Get_Num_Rx_Chars_Available() >= 3) {
-			UART1_READ(transmittedMessage);
-			distance = atoi(transmittedMessage);
-			
-			if(distance < 50){
-				objectClose = 1;
-			}
-		}
-	}
-	set_Stop();
-	#endif
-		
-	#if TESTING_LCD
 	Init_LCD();
+	Set_Cursor(0,0);
+	Print_LCD("bruh");
 	
-	Init_RGB_LEDs();
-	
-	UART1_INIT(UART_BAUDRATE_300, 128);
-	char transmittedMessage[5];
-	char displayMessage[17];
-	char testing[10];
-	Print_LCD("nada");
-	Control_RGB_LEDs(0,0,1);
-	while(1){ 
-		Clear_LCD();
-		sprintf(testing,"%d",Get_Num_Rx_Chars_Available());
-		Print_LCD(testing);
-		if (Get_Num_Rx_Chars_Available() > 0) {
-			toggle_RGB_LEDs(0,1,0);
-			UART1_READ(transmittedMessage);
-			Control_RGB_LEDs(1,0,0);
-			sprintf(displayMessage, "%s cm", transmittedMessage);
+	while(1) {
+		if (Get_Num_Rx_Chars_Available() >= 2) {
+			Control_RGB_LEDs(0,1,0);
+			i = 0;
+			i = (uint16_t)get_data(&uart1_transceiver);
+			sprintf(buff, "TEST: %u", i);
 			Clear_LCD();
 			Set_Cursor(0,0);
-			Print_LCD(displayMessage);
-			
-		}	
-	Delay(1000);		
+			Print_LCD(buff);
+			Set_Cursor(0,1);
+			Print_LCD("Interrupt");
+			Delay(20);
+		}
 	}
-	#endif
 }
 
 

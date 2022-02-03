@@ -7367,8 +7367,8 @@ N
 Nvolatile unsigned PIT_interrupt_counter = 0;
 Nvolatile unsigned LCD_update_requested = 0;
 N
-Nextern volatile uint8_t hour, minute, second;
-Nextern volatile uint16_t millisecond;
+N//extern volatile uint8_t hour, minute, second;
+N//extern volatile uint16_t millisecond;
 N
 Nvolatile unsigned overflow = 0;
 Nvolatile unsigned echoFallingEdge = 0;
@@ -7420,19 +7420,17 @@ X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL &= ~0x1u;
 N}
 N
 N
+N/*
 Nvoid PIT_IRQHandler() {
 N	static unsigned LCD_update_delay = LCD_UPDATE_PERIOD;
-X	static unsigned LCD_update_delay = ((1E3)/10);
 N
 N	//clear pending IRQ
 N	NVIC_ClearPendingIRQ(PIT_IRQn);
 N	
 N	// check to see which channel triggered interrupt 
 N	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK) {
-X	if (((PIT_Type *)(0x40037000u))->CHANNEL[0].TFLG & 0x1u) {
 N		// clear status flag for timer channel 0
 N		PIT->CHANNEL[0].TFLG &= PIT_TFLG_TIF_MASK;
-X		((PIT_Type *)(0x40037000u))->CHANNEL[0].TFLG &= 0x1u;
 N		
 N		// Do ISR work
 N		millisecond++;
@@ -7450,7 +7448,6 @@ N			}
 N		}
 N
 N		PIN_TRIG_PT->PCOR |= PIN_TRIG;
-X		((GPIO_Type *)(0x400FF000u))->PCOR |= (1 << ( 17 ));
 N//		LCD_update_delay--;
 N//		if (LCD_update_delay == 0) {
 N//			LCD_update_requested = 1;
@@ -7464,13 +7461,11 @@ N//		}
 N		
 N				
 N	} else if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK) {
-X	} else if (((PIT_Type *)(0x40037000u))->CHANNEL[1].TFLG & 0x1u) {
 N		// clear status flag for timer channel 1
 N		PIT->CHANNEL[1].TFLG &= PIT_TFLG_TIF_MASK;
-X		((PIT_Type *)(0x40037000u))->CHANNEL[1].TFLG &= 0x1u;
 N	} 
-W "src\timers.c" 56 18 variable "LCD_update_delay"  was declared but never referenced
 N}
+N*/
 N
 N// ================================================================================
 N// TPM IRQ and init here:w

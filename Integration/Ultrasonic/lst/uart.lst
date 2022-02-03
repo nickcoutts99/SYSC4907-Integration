@@ -8425,272 +8425,279 @@ N#endif // QUEUE_H
 N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   
 L 8 "..\Common\inc\uart.h" 2
 N
-N// TODO preset baudrates
-N#define UART_BAUDRATE_300    300
-N#define UART_BAUDRATE_9600   9600
-N#define UART_BAUDRATE_115200 115200
+N#define UART_BAUDRATE 300
 N
-N/* A data structure to contain the configurations
-N * for each UART port.
-N */
-Ntypedef struct
+Ntypedef struct 
 N{
-N	SIM_Type* sim;
-N	uint32_t uartSCGCMask;
-N	UART_Type* uartPort;
-N	
-N	uint32_t pinSCGCMask;
-N	PORT_Type* gpioPort;
-N	uint32_t  pcrMux;
-N	
-N	uint32_t txPin;
-N	uint32_t rxPin;
-N	
-N	unsigned nvic_irq;
-N} uart_cfg_t;
+N	size_t bytes_per_data;
+N	volatile Q_T TxQ;
+N	volatile Q_T RxQ;
+N} uart_transceiver_t;
 N
-Ntypedef struct
-N{
-N	uint32_t uartSCGCMask;
-N	UART_Type* uartPort;
-N	
-N	uint32_t pinSCGCMask;
-N	PORT_Type* gpioPort;
-N	uint32_t  pcrMux;
-N	
-N	uint32_t txPin;
-N	uint32_t rxPin;
-N	
-N	unsigned nvic_irq;
-N} uart_cfg2_t;
+Nvolatile extern uart_transceiver_t uart1_transceiver;
+Nvolatile extern uart_transceiver_t uart2_transceiver;
 N
-N/* Predefined transmit and receive queue for
-N * the UART ports.
-N */
-Nextern Q_T uart1_txQ;
-Nextern Q_T uart1_rxQ;
-Nextern Q_T uart2_txQ;
-Nextern Q_T uart2_rxQ;
+N#define UART_OVERSAMPLE (16)
+N#define BUS_CLOCK 			(24e6)
 N
-N/* Predefined configurations for
-N * the UART ports.
-N * 
-N * If you need to change the default settings
-N * edit the corresponding structure in the
-N * source file and recompile.
-N */
-Nextern uart_cfg_t uart1_cfg;
-Nextern uart_cfg_t uart2_cfg;
+N//uart_transeiver_t Init_UART1(uint32_t baud_rate, size_t data_bytes);
+N//uart_transeiver_t Init_UART2(uint32_t baud_rate, size_t data_bytes);
 N
-N/* Macros for controlling the UART ports.
-N * 
-N * These are wrappers for the general set of functions.
-N * Use these for a simplified interface for interacting 
-N * with the UART devices
-N */
-N#define UART1_INIT(baud_rate, nvic_priority) __uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, baud_rate, nvic_priority)
-N#define UART1_START()                        __uart_start(&uart1_cfg)
-N#define UART1_STOP()                         __uart_start(&uart1_cfg)
-N#define UART1_SEND(msg)                      __uart_send(&uart1_txQ, msg)
-N// NOTE the msg in the read macro is a char array and is passed by referance.
-N#define UART1_READ(msg)                      __uart_read(&uart1_rxQ, msg)
+Nvoid Init_UART1(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver);
+Nvoid Init_UART2(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver);
 N
-N#define UART2_INIT(baud_rate, nvic_priority) __uart_init(&uart2_cfg, &uart2_txQ, &uart2_rxQ, baud_rate, nvic_priority)
-N#define UART2_START()                        __uart_start(&uart1_cfg)
-N#define UART2_STOP()                         __uart_start(&uart2_cfg)
-N#define UART2_SEND(msg)                      __uart_send(&uart2_txQ, msg)
-N// NOTE the msg in the read macro is a char array and is passed by referance.
-N#define UART2_READ(msg)                      __uart_read(&uart2_rxQ, msg)
+N// poling
+Nvoid UART1_Transmit_Poll(uint8_t data);
+Nvoid UART2_Transmit_Poll(uint8_t data);
 N
-N/* Gerneral functions for interacting with the UART ports.
-N * 
-N * Only use these if you wish to have more control over the port.
-N */
-Nvoid __uart_init(uart_cfg_t* p_cfg, Q_T* p_tx_q, Q_T* p_rx_q, uint32_t baud_rate, uint32_t priority);
-Nvoid __uart_start(uart_cfg_t* p_cfg);
-Nvoid __uart_stop(uart_cfg_t* p_cfg);
-Nvoid __uart_send(Q_T* p_tx_q, char* send_msg);
-Nvoid __uart_read(Q_T* p_rx_q, char* received_msg);
+Nuint8_t UART1_Receive_Poll(void);
+Nuint8_t UART2_Receive_Poll(void);
+N
+N// interrupts
+Nvoid send_data(uart_transceiver_t *transeiver, void* data);
 Nuint32_t Get_Num_Rx_Chars_Available(void);
+Nuint32_t get_data(uart_transceiver_t* transeiver);
+N
+Nextern Q_T TxQ, RxQ;
+Nextern uint8_t CR_received;
 N
 N#endif
+N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   
 L 2 "..\Common\src\uart.c" 2
 N#include <stdint.h>
 N
-N// definitions for use in this header. 
-N#define UART_OVERSAMPLE (16)
-N#define BUS_CLOCK 		(24e6)
-N#define MAX_CHARS_READ (4)
 N
-NQ_T uart1_txQ;
-NQ_T uart1_rxQ;
-NQ_T uart2_txQ;
-NQ_T uart2_rxQ;
+NQ_T TxQ, RxQ;
+Nuint8_t CR_received = 0;
 N
-N/* Default config for UART port 1
-N * Sets the SCGC clocks, gpio port, and IRQn that will be needed for UART1.
-N */ 
-Nuart_cfg_t uart1_cfg = {
-N	.uartSCGCMask = SIM_SCGC4_UART1_MASK,
-X	.uartSCGCMask = 0x800u,
-N	.uartPort = UART1,
-X	.uartPort = ((UART_Type *)(0x4006B000u)),
-N	.pinSCGCMask = SIM_SCGC5_PORTE_MASK,
-X	.pinSCGCMask = 0x2000u,
-N	.gpioPort = PORTE,
-X	.gpioPort = ((PORT_Type *)(0x4004D000u)),
-N	.pcrMux = 3,
-N	.txPin = 0,
-N	.rxPin = 1,
-N	.nvic_irq = UART1_IRQn
-N};
-N
-N/* Default config for UART port 2
-N * Sets the SCGC clocks, gpio port, and IRQn that will be needed for UART2.
-N */
-Nuart_cfg_t uart2_cfg = {
-N	.uartSCGCMask = SIM_SCGC4_UART2_MASK,
-X	.uartSCGCMask = 0x1000u,
-N	.uartPort = UART2,
-X	.uartPort = ((UART_Type *)(0x4006C000u)),
-N	.pinSCGCMask = SIM_SCGC5_PORTE_MASK,
-X	.pinSCGCMask = 0x2000u,
-N	.gpioPort = PORTE,
-X	.gpioPort = ((PORT_Type *)(0x4004D000u)),
-N	.pcrMux = 4,
-N	.txPin = 22,
-N	.rxPin = 23,
-N	.nvic_irq = UART2_IRQn
-N};
-N
-N/* Generic init function for any UART port
-N * 
-N * ARGS:
-N * - p_cfg     : The config for the UART port to be configured
-N * - p_txQ     : The transmit queue for the uart port.
-N * - p_rxQ     : The receive queue for the uart port.
-N * - baud_rate : The baud rate that the port transmits and receives at.
-N * - priority  : The priority for the IRQ
-N */
-Nvoid __uart_init(
-N	uart_cfg_t* p_cfg, 
-N	Q_T* p_tx_q,
-N	Q_T* p_rx_q,
-N	uint32_t baud_rate,
-N	uint32_t priority)
-N{	
+N/*
+Nuart_transceiver_t Init_UART1(uint32_t baud_rate, size_t data_bytes) {
+N	uart_transceiver_t transceiver;
 N	uint32_t divisor;
 N	
-N	Q_Init(p_tx_q);
-N	Q_Init(p_rx_q);
-N
 N	// enable clock to UART and Port E
-N	SIM->SCGC4 |= p_cfg->uartSCGCMask;
-X	((SIM_Type *)(0x40047000u))->SCGC4 |= p_cfg->uartSCGCMask;
-N	SIM->SCGC5 |= p_cfg->pinSCGCMask;
-X	((SIM_Type *)(0x40047000u))->SCGC5 |= p_cfg->pinSCGCMask;
+N	SIM->SCGC4 |= SIM_SCGC4_UART1_MASK;
+N	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
 N
 N
 N	// select UART pins
-N	p_cfg->gpioPort->PCR[p_cfg->txPin] = PORT_PCR_MUX(p_cfg->pcrMux);
-X	p_cfg->gpioPort->PCR[p_cfg->txPin] = (((uint32_t)(((uint32_t)(p_cfg->pcrMux))<<8))&0x700u);
-N	p_cfg->gpioPort->PCR[p_cfg->rxPin] = PORT_PCR_MUX(p_cfg->pcrMux);
-X	p_cfg->gpioPort->PCR[p_cfg->rxPin] = (((uint32_t)(((uint32_t)(p_cfg->pcrMux))<<8))&0x700u);
+N	PORTE->PCR[0] = PORT_PCR_MUX(3);
+N	PORTE->PCR[1] = PORT_PCR_MUX(3);
 N	
-N	p_cfg->uartPort->C2 &=  ~(UARTLP_C2_TE_MASK | UARTLP_C2_RE_MASK);
-X	p_cfg->uartPort->C2 &=  ~(0x8u | 0x4u);
+N	UART1->C2 &=  ~(UARTLP_C2_TE_MASK | UARTLP_C2_RE_MASK);
+N		
+N	// Set baud rate to baud rate
+N	divisor = (uint32_t)BUS_CLOCK/(baud_rate*16);
+N	UART1->BDH = UART_BDH_SBR(divisor>>8);
+N	UART1->BDL = UART_BDL_SBR(divisor);
+N	
+N	// No parity, 9 bits, two stop bits, other settings;
+N	UART1->C1 = UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
+N	UART1->S2 = 0;
+N	UART1->C3 = 0;
+N	
+N// Enable transmitter and receiver but not interrupts
+N	UART1->C2 = UART_C2_TE_MASK | UART_C2_RE_MASK;
+N
+N	transceiver.bytes_per_data = data_bytes;
+N	
+N	NVIC_SetPriority(UART1_IRQn, 128); // 0, 64, 128 or 192
+N	NVIC_ClearPendingIRQ(UART1_IRQn); 
+N	NVIC_EnableIRQ(UART1_IRQn);
+N
+N	UART1->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
+N
+N	Q_Init(&transceiver.TxQ);
+N	Q_Init(&transceiver.RxQ);
+N	
+N	return transceiver;
+N}
+N
+Nuart_transceiver_t Init_UART2(uint32_t baud_rate, size_t data_bytes) {
+N	uart_transceiver_t transceiver;
+N	uint32_t divisor;
+N	
+N	// enable clock to UART and Port E
+N	SIM->SCGC4 |= SIM_SCGC4_UART2_MASK;
+N	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
+N
+N
+N	// select UART pins
+N	PORTE->PCR[22] = PORT_PCR_MUX(3);
+N	PORTE->PCR[23] = PORT_PCR_MUX(3);
+N	
+N	UART2->C2 &=  ~(UARTLP_C2_TE_MASK | UARTLP_C2_RE_MASK);
+N		
+N	// Set baud rate to baud rate
+N	divisor = (uint32_t)BUS_CLOCK/(baud_rate*16);
+N	UART2->BDH = UART_BDH_SBR(divisor>>8);
+N	UART2->BDL = UART_BDL_SBR(divisor);
+N	
+N	// No parity, 9 bits, two stop bits, other settings;
+N	UART2->C1 = UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
+N	UART2->S2 = 0;
+N	UART2->C3 = 0;
+N	
+N	UART2->C2 = UART_C2_TE_MASK | UART_C2_RE_MASK;
+N
+N	transceiver.bytes_per_data = data_bytes;
+N	
+N	NVIC_SetPriority(UART2_IRQn, 128); // 0, 64, 128 or 192
+N	NVIC_ClearPendingIRQ(UART2_IRQn); 
+N	NVIC_EnableIRQ(UART2_IRQn);
+N
+N	UART2->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
+N
+N	Q_Init(&transceiver.TxQ);
+N	Q_Init(&transceiver.RxQ);
+N
+N	return transceiver;
+N}
+N*/
+N
+Nvoid Init_UART1(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver) {
+N	uint32_t divisor;
+N	
+N	// enable clock to UART and Port E
+N	SIM->SCGC4 |= SIM_SCGC4_UART1_MASK;
+X	((SIM_Type *)(0x40047000u))->SCGC4 |= 0x800u;
+N	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
+X	((SIM_Type *)(0x40047000u))->SCGC5 |= 0x2000u;
+N
+N
+N	// select UART pins
+N	PORTE->PCR[0] = PORT_PCR_MUX(3);
+X	((PORT_Type *)(0x4004D000u))->PCR[0] = (((uint32_t)(((uint32_t)(3))<<8))&0x700u);
+N	PORTE->PCR[1] = PORT_PCR_MUX(3);
+X	((PORT_Type *)(0x4004D000u))->PCR[1] = (((uint32_t)(((uint32_t)(3))<<8))&0x700u);
+N	
+N	UART1->C2 &=  ~(UARTLP_C2_TE_MASK | UARTLP_C2_RE_MASK);
+X	((UART_Type *)(0x4006B000u))->C2 &=  ~(0x8u | 0x4u);
 N		
 N	// Set baud rate to baud rate
 N	divisor = (uint32_t)BUS_CLOCK/(baud_rate*16);
 X	divisor = (uint32_t)(24e6)/(baud_rate*16);
-N	p_cfg->uartPort->BDH = UART_BDH_SBR(divisor>>8);
-X	p_cfg->uartPort->BDH = (((uint8_t)(((uint8_t)(divisor>>8))<<0))&0x1Fu);
-N	p_cfg->uartPort->BDL = UART_BDL_SBR(divisor);
-X	p_cfg->uartPort->BDL = (((uint8_t)(((uint8_t)(divisor))<<0))&0xFFu);
+N	UART1->BDH = UART_BDH_SBR(divisor>>8);
+X	((UART_Type *)(0x4006B000u))->BDH = (((uint8_t)(((uint8_t)(divisor>>8))<<0))&0x1Fu);
+N	UART1->BDL = UART_BDL_SBR(divisor);
+X	((UART_Type *)(0x4006B000u))->BDL = (((uint8_t)(((uint8_t)(divisor))<<0))&0xFFu);
 N	
 N	// No parity, 9 bits, two stop bits, other settings;
-N	p_cfg->uartPort->C1 = 0; //UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
-N	p_cfg->uartPort->S2 = 0;
-N	p_cfg->uartPort->C3 = 0;
+N	UART1->C1 = UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
+X	((UART_Type *)(0x4006B000u))->C1 = 0x10u | 0x2u | 0x1u; 
+N	UART1->S2 = 0;
+X	((UART_Type *)(0x4006B000u))->S2 = 0;
+N	UART1->C3 = 0;
+X	((UART_Type *)(0x4006B000u))->C3 = 0;
 N	
-N    // Enable transmitter and receiver but not interrupts
-N	p_cfg->uartPort->C2 = UART_C2_TE_MASK | UART_C2_RE_MASK;
-X	p_cfg->uartPort->C2 = 0x8u | 0x4u;
-N	
-W "..\Common\src\uart.c" 87 19 enumerated type mixed with another type
-N	NVIC_SetPriority(p_cfg->nvic_irq, priority); // 0, 64, 128 or 192
-W "..\Common\src\uart.c" 88 23 enumerated type mixed with another type
-N	NVIC_ClearPendingIRQ(p_cfg->nvic_irq); 
-W "..\Common\src\uart.c" 89 17 enumerated type mixed with another type
-N	NVIC_EnableIRQ(p_cfg->nvic_irq);
+N// Enable transmitter and receiver but not interrupts
+N	UART1->C2 = UART_C2_TE_MASK | UART_C2_RE_MASK;
+X	((UART_Type *)(0x4006B000u))->C2 = 0x8u | 0x4u;
 N
-N	p_cfg->uartPort->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
-X	p_cfg->uartPort->C2 |= 0x80u | 0x20u;
-N}
+N	transceiver->bytes_per_data = data_bytes;
 N	
-Nvoid __uart_start(uart_cfg_t* p_cfg)
-N{
-N	
-N}
+N	NVIC_SetPriority(UART1_IRQn, 128); // 0, 64, 128 or 192
+N	NVIC_ClearPendingIRQ(UART1_IRQn); 
+N	NVIC_EnableIRQ(UART1_IRQn);
 N
-Nvoid __uart_stop(uart_cfg_t* p_cfg)
-N{
-N	
-N}
+N	UART1->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
+X	((UART_Type *)(0x4006B000u))->C2 |= 0x80u | 0x20u;
 N
-N/* Generic send function for any UART port
-N * Sends data to the transmit queue.
-N * 
-N * ARGS:
-N * - p_txQ : The transmit queue for the uart port.
-N * - msg   : The message to be sent.
-N */
-Nvoid __uart_send(Q_T* p_tx_q, char* send_msg)
-N{
-N	for (char* curr_char = send_msg;
-N		 *curr_char != NULL;
-X		 *curr_char != 0;
-N		 curr_char++)
-N	{
-N		// Wait while Queue is full.
-N		while(Q_Full(p_tx_q));
-N		Q_Enqueue(p_tx_q, (uint8_t)*curr_char);
-N	}
-N	Q_Enqueue(p_tx_q, (uint8_t)NULL);
-X	Q_Enqueue(p_tx_q, (uint8_t)0);
-N	
-N	
-N	// Start transmitter if it isn't already running
-N	if (!(UART1->C2 & UART_C2_TIE_MASK)) {
-X	if (!(((UART_Type *)(0x4006B000u))->C2 & 0x80u)) {
-N		UART1->C2 |= UART_C2_TIE_MASK;
-X		((UART_Type *)(0x4006B000u))->C2 |= 0x80u;
-N	}
+N	transceiver->bytes_per_data = data_bytes;
+N
+W "..\Common\src\uart.c" 130 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N	Q_Init(&transceiver->TxQ);
+W "..\Common\src\uart.c" 131 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N	Q_Init(&transceiver->RxQ);
 N}
 N
-N/* Generic read function for any UART port
-N * Reads data from the receive queue.
-N * 
-N * ARGS:
-N * - p_rxQ : The recieve queue for the uart port.
-N * - msg   : The message that is read.
-N */
-Nvoid __uart_read(Q_T* p_rx_q, char* received_msg)
-N{
-N	for (char new_char = (char)Q_Dequeue(p_rx_q);
-N		(new_char != NULL) && (Q_Size(p_rx_q) <= MAX_CHARS_READ);
-X		(new_char != 0) && (Q_Size(p_rx_q) <= (4));
-N		new_char = (char)Q_Dequeue(p_rx_q))
-N	{
-N		// Wait while Queue is empty.
-N		while (Q_Empty(p_rx_q));
-N		*received_msg++ = new_char;
-N	}
-N	*received_msg = (char)NULL;
-X	*received_msg = (char)0;
+Nvoid Init_UART2(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver) {
+N	uint32_t divisor;
+N	
+N	// enable clock to UART and Port E
+N	SIM->SCGC4 |= SIM_SCGC4_UART2_MASK;
+X	((SIM_Type *)(0x40047000u))->SCGC4 |= 0x1000u;
+N	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
+X	((SIM_Type *)(0x40047000u))->SCGC5 |= 0x2000u;
+N
+N
+N	// select UART pins
+N	PORTE->PCR[22] = PORT_PCR_MUX(3);
+X	((PORT_Type *)(0x4004D000u))->PCR[22] = (((uint32_t)(((uint32_t)(3))<<8))&0x700u);
+N	PORTE->PCR[23] = PORT_PCR_MUX(3);
+X	((PORT_Type *)(0x4004D000u))->PCR[23] = (((uint32_t)(((uint32_t)(3))<<8))&0x700u);
+N	
+N	UART2->C2 &=  ~(UARTLP_C2_TE_MASK | UARTLP_C2_RE_MASK);
+X	((UART_Type *)(0x4006C000u))->C2 &=  ~(0x8u | 0x4u);
+N		
+N	// Set baud rate to baud rate
+N	divisor = (uint32_t)BUS_CLOCK/(baud_rate*16);
+X	divisor = (uint32_t)(24e6)/(baud_rate*16);
+N	UART2->BDH = UART_BDH_SBR(divisor>>8);
+X	((UART_Type *)(0x4006C000u))->BDH = (((uint8_t)(((uint8_t)(divisor>>8))<<0))&0x1Fu);
+N	UART2->BDL = UART_BDL_SBR(divisor);
+X	((UART_Type *)(0x4006C000u))->BDL = (((uint8_t)(((uint8_t)(divisor))<<0))&0xFFu);
+N	
+N	// No parity, 9 bits, two stop bits, other settings;
+N	UART2->C1 = UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
+X	((UART_Type *)(0x4006C000u))->C1 = 0x10u | 0x2u | 0x1u; 
+N	UART2->S2 = 0;
+X	((UART_Type *)(0x4006C000u))->S2 = 0;
+N	UART2->C3 = 0;
+X	((UART_Type *)(0x4006C000u))->C3 = 0;
+N	
+N	UART2->C2 = UART_C2_TE_MASK | UART_C2_RE_MASK;
+X	((UART_Type *)(0x4006C000u))->C2 = 0x8u | 0x4u;
+N
+N	transceiver->bytes_per_data = data_bytes;
+N	
+N	NVIC_SetPriority(UART2_IRQn, 128); // 0, 64, 128 or 192
+N	NVIC_ClearPendingIRQ(UART2_IRQn); 
+N	NVIC_EnableIRQ(UART2_IRQn);
+N
+N	UART2->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
+X	((UART_Type *)(0x4006C000u))->C2 |= 0x80u | 0x20u;
+N
+N	transceiver->bytes_per_data = data_bytes;
+N
+W "..\Common\src\uart.c" 170 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N	Q_Init(&transceiver->TxQ);
+W "..\Common\src\uart.c" 171 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N	Q_Init(&transceiver->RxQ);
+N
 N}
 N
-N// NOTE Implementing observer pattern
+Nvoid UART1_Transmit_Poll(uint8_t data) {
+N		while (!(UART1->S1 & UART_S1_TDRE_MASK))
+X		while (!(((UART_Type *)(0x4006B000u))->S1 & 0x80u))
+N			;
+N		UART1->D = data;
+X		((UART_Type *)(0x4006B000u))->D = data;
+N}	
+N
+Nuint8_t UART1_Receive_Poll(void) {
+N		while (!(UART1->S1 & UART_S1_RDRF_MASK))
+X		while (!(((UART_Type *)(0x4006B000u))->S1 & 0x20u))
+N			;
+N		return UART1->D;
+X		return ((UART_Type *)(0x4006B000u))->D;
+N}	
+N
+Nvoid UART2_Transmit_Poll(uint8_t data) {
+N		while (!(UART1->S1 & UART_S1_TDRE_MASK))
+X		while (!(((UART_Type *)(0x4006B000u))->S1 & 0x80u))
+N			;
+N		UART1->D = data;
+X		((UART_Type *)(0x4006B000u))->D = data;
+N}	
+N
+Nuint8_t UART2_Receive_Poll(void) {
+N		while (!(UART1->S1 & UART_S1_RDRF_MASK))
+X		while (!(((UART_Type *)(0x4006B000u))->S1 & 0x20u))
+N			;
+N		return UART1->D;
+X		return ((UART_Type *)(0x4006B000u))->D;
+N}	
 N
 Nvoid UART1_IRQHandler(void) {
 N	uint8_t c;
@@ -8698,9 +8705,11 @@ N	NVIC_ClearPendingIRQ(UART1_IRQn);
 N	if (UART1->S1 & UART_S1_TDRE_MASK) {
 X	if (((UART_Type *)(0x4006B000u))->S1 & 0x80u) {
 N		// can send another character
-N		if (!Q_Empty(&uart1_txQ)) {
-N			UART1->D = Q_Dequeue(&uart1_txQ);
-X			((UART_Type *)(0x4006B000u))->D = Q_Dequeue(&uart1_txQ);
+W "..\Common\src\uart.c" 204 16 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		if (!Q_Empty(&uart1_transceiver.TxQ)) {
+W "..\Common\src\uart.c" 205 25 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N			UART1->D = Q_Dequeue(&uart1_transceiver.TxQ);
+X			((UART_Type *)(0x4006B000u))->D = Q_Dequeue(&uart1_transceiver.TxQ);
 N		} else {
 N			// queue is empty so disable transmitter
 N			UART1->C2 &= ~UART_C2_TIE_MASK;
@@ -8710,12 +8719,14 @@ N	}
 N	if (UART1->S1 & UART_S1_RDRF_MASK) {
 X	if (((UART_Type *)(0x4006B000u))->S1 & 0x20u) {
 N		// received a character
-N		if (!Q_Full(&uart1_rxQ)) {
+W "..\Common\src\uart.c" 213 15 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		if (!Q_Full(&uart1_transceiver.RxQ)) {
 N			c = UART1->D;
 X			c = ((UART_Type *)(0x4006B000u))->D;
-N			Q_Enqueue(&uart1_rxQ, c);
+W "..\Common\src\uart.c" 215 14 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N			Q_Enqueue(&uart1_transceiver.RxQ, c);
 N			if (c == '\r') {
-N				//CR_received++;
+N				CR_received++;
 N			}
 N		} else {
 N			// error - queue full.
@@ -8735,9 +8746,6 @@ N				UART_S1_FE_MASK | UART_S1_PF_MASK;
 N		 */
 N		}
 N}
-Nuint32_t Get_Num_Rx_Chars_Available(void) {
-N	return Q_Size(&uart1_rxQ);
-N}
 N
 Nvoid UART2_IRQHandler(void) {
 N	uint8_t c;
@@ -8745,9 +8753,11 @@ N	NVIC_ClearPendingIRQ(UART2_IRQn);
 N	if (UART2->S1 & UART_S1_TDRE_MASK) {
 X	if (((UART_Type *)(0x4006C000u))->S1 & 0x80u) {
 N		// can send another character
-N		if (!Q_Empty(&uart2_txQ)) {
-N			UART2->D = Q_Dequeue(&uart2_txQ);
-X			((UART_Type *)(0x4006C000u))->D = Q_Dequeue(&uart2_txQ);
+W "..\Common\src\uart.c" 241 16 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		if (!Q_Empty(&uart2_transceiver.TxQ)) {
+W "..\Common\src\uart.c" 242 25 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N			UART2->D = Q_Dequeue(&uart2_transceiver.TxQ);
+X			((UART_Type *)(0x4006C000u))->D = Q_Dequeue(&uart2_transceiver.TxQ);
 N		} else {
 N			// queue is empty so disable transmitter
 N			UART2->C2 &= ~UART_C2_TIE_MASK;
@@ -8757,12 +8767,14 @@ N	}
 N	if (UART2->S1 & UART_S1_RDRF_MASK) {
 X	if (((UART_Type *)(0x4006C000u))->S1 & 0x20u) {
 N		// received a character
-N		if (!Q_Full(&uart2_rxQ)) {
+W "..\Common\src\uart.c" 250 15 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		if (!Q_Full(&uart2_transceiver.RxQ)) {
 N			c = UART2->D;
 X			c = ((UART_Type *)(0x4006C000u))->D;
-N			Q_Enqueue(&uart2_rxQ, c);
+W "..\Common\src\uart.c" 252 14 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N			Q_Enqueue(&uart2_transceiver.RxQ, c);
 N			if (c == '\r') {
-N				//CR_received++;
+N				CR_received++;
 N			}
 N		} else {
 N			// error - queue full.
@@ -8781,4 +8793,58 @@ N			UART2->S1 = UART_S1_OR_MASK | UART_S1_NF_MASK |
 N				UART_S1_FE_MASK | UART_S1_PF_MASK;
 N		 */
 N		}
+N}
+N
+N/*
+N * Replacement for send_sting data. Used to send at most 32 bits (4 bytes) of data.
+N *
+N * args:
+N * 	*data ---- void pointer to the data you want to send. 
+N * 	                Allows any data type to be passed into the function. 
+N * 	*transceiver  ---- structure containing the number of bytes to send/receive and tx/rx queues.
+N */
+Nvoid send_data(uart_transceiver_t *transceiver, void* data)
+N{
+N	uint32_t transmit_data = *(uint32_t*) data;
+N	
+N	// send n_bytes
+N	for (int byte_idx = (int)transceiver->bytes_per_data - 1; byte_idx >= 0; byte_idx--)
+N	{
+N		// Wait while Queue is full.
+W "..\Common\src\uart.c" 289 16 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		while(Q_Full(&transceiver->TxQ));
+N
+W "..\Common\src\uart.c" 291 13 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		Q_Enqueue(&transceiver->TxQ, (uint8_t)(transmit_data >> 8*byte_idx));
+N	}
+N
+N	// Start transmitter if it isn't already running
+N	if (!(UART1->C2 & UART_C2_TIE_MASK)) {
+X	if (!(((UART_Type *)(0x4006B000u))->C2 & 0x80u)) {
+N		UART1->C2 |= UART_C2_TIE_MASK;
+X		((UART_Type *)(0x4006B000u))->C2 |= 0x80u;
+N	}
+N}
+N
+Nuint32_t Get_Num_Rx_Chars_Available(void) {
+N	return Q_Size(&RxQ);
+N}
+N
+Nuint32_t get_data(uart_transceiver_t* transceiver)
+N{
+N	uint32_t received_data = 0;
+N
+N	for (int byte_idx = (int)transceiver->bytes_per_data - 1; byte_idx >= 0; byte_idx++)
+N	{
+N		// Wait while Queue is empty.
+W "..\Common\src\uart.c" 311 18 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		while (Q_Empty(&transceiver->RxQ));
+N
+N		// Retreive databytes from the queue
+W "..\Common\src\uart.c" 314 28 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N		uint8_t byte = Q_Dequeue(&transceiver->RxQ);
+N		received_data |= (uint32_t)(byte << 8 * byte_idx);
+N	}
+N
+N	return received_data;
 N}

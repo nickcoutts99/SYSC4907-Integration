@@ -8609,160 +8609,97 @@ N#endif // QUEUE_H
 N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   
 L 8 "..\Common\inc\uart.h" 2
 N
-N// TODO preset baudrates
-N#define UART_BAUDRATE_300    300
-N#define UART_BAUDRATE_9600   9600
-N#define UART_BAUDRATE_115200 115200
+N#define UART_BAUDRATE 300
 N
-N/* A data structure to contain the configurations
-N * for each UART port.
-N */
-Ntypedef struct
+Ntypedef struct 
 N{
-N	SIM_Type* sim;
-N	uint32_t uartSCGCMask;
-N	UART_Type* uartPort;
-N	
-N	uint32_t pinSCGCMask;
-N	PORT_Type* gpioPort;
-N	uint32_t  pcrMux;
-N	
-N	uint32_t txPin;
-N	uint32_t rxPin;
-N	
-N	unsigned nvic_irq;
-N} uart_cfg_t;
+N	size_t bytes_per_data;
+N	volatile Q_T TxQ;
+N	volatile Q_T RxQ;
+N} uart_transceiver_t;
 N
-Ntypedef struct
-N{
-N	uint32_t uartSCGCMask;
-N	UART_Type* uartPort;
-N	
-N	uint32_t pinSCGCMask;
-N	PORT_Type* gpioPort;
-N	uint32_t  pcrMux;
-N	
-N	uint32_t txPin;
-N	uint32_t rxPin;
-N	
-N	unsigned nvic_irq;
-N} uart_cfg2_t;
+Nvolatile extern uart_transceiver_t uart1_transceiver;
+Nvolatile extern uart_transceiver_t uart2_transceiver;
 N
-N/* Predefined transmit and receive queue for
-N * the UART ports.
-N */
-Nextern Q_T uart1_txQ;
-Nextern Q_T uart1_rxQ;
-Nextern Q_T uart2_txQ;
-Nextern Q_T uart2_rxQ;
+N#define UART_OVERSAMPLE (16)
+N#define BUS_CLOCK 			(24e6)
 N
-N/* Predefined configurations for
-N * the UART ports.
-N * 
-N * If you need to change the default settings
-N * edit the corresponding structure in the
-N * source file and recompile.
-N */
-Nextern uart_cfg_t uart1_cfg;
-Nextern uart_cfg_t uart2_cfg;
+N//uart_transeiver_t Init_UART1(uint32_t baud_rate, size_t data_bytes);
+N//uart_transeiver_t Init_UART2(uint32_t baud_rate, size_t data_bytes);
 N
-N/* Macros for controlling the UART ports.
-N * 
-N * These are wrappers for the general set of functions.
-N * Use these for a simplified interface for interacting 
-N * with the UART devices
-N */
-N#define UART1_INIT(baud_rate, nvic_priority) __uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, baud_rate, nvic_priority)
-N#define UART1_START()                        __uart_start(&uart1_cfg)
-N#define UART1_STOP()                         __uart_start(&uart1_cfg)
-N#define UART1_SEND(msg)                      __uart_send(&uart1_txQ, msg)
-N// NOTE the msg in the read macro is a char array and is passed by referance.
-N#define UART1_READ(msg)                      __uart_read(&uart1_rxQ, msg)
+Nvoid Init_UART1(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver);
+Nvoid Init_UART2(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver);
 N
-N#define UART2_INIT(baud_rate, nvic_priority) __uart_init(&uart2_cfg, &uart2_txQ, &uart2_rxQ, baud_rate, nvic_priority)
-N#define UART2_START()                        __uart_start(&uart1_cfg)
-N#define UART2_STOP()                         __uart_start(&uart2_cfg)
-N#define UART2_SEND(msg)                      __uart_send(&uart2_txQ, msg)
-N// NOTE the msg in the read macro is a char array and is passed by referance.
-N#define UART2_READ(msg)                      __uart_read(&uart2_rxQ, msg)
+N// poling
+Nvoid UART1_Transmit_Poll(uint8_t data);
+Nvoid UART2_Transmit_Poll(uint8_t data);
 N
-N/* Gerneral functions for interacting with the UART ports.
-N * 
-N * Only use these if you wish to have more control over the port.
-N */
-Nvoid __uart_init(uart_cfg_t* p_cfg, Q_T* p_tx_q, Q_T* p_rx_q, uint32_t baud_rate, uint32_t priority);
-Nvoid __uart_start(uart_cfg_t* p_cfg);
-Nvoid __uart_stop(uart_cfg_t* p_cfg);
-Nvoid __uart_send(Q_T* p_tx_q, char* send_msg);
-Nvoid __uart_read(Q_T* p_rx_q, char* received_msg);
+Nuint8_t UART1_Receive_Poll(void);
+Nuint8_t UART2_Receive_Poll(void);
+N
+N// interrupts
+Nvoid send_data(uart_transceiver_t *transeiver, void* data);
 Nuint32_t Get_Num_Rx_Chars_Available(void);
+Nuint32_t get_data(uart_transceiver_t* transeiver);
+N
+Nextern Q_T TxQ, RxQ;
+Nextern uint8_t CR_received;
 N
 N#endif
+N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   
 L 12 "src\main.c" 2
 N
-N#define BUFFER_SIZE (4)
-Nvolatile uint8_t hour=0, minute=0, second=0;
-Nvolatile uint16_t millisecond=0;
+N#define UART_EN
 N
-Nvolatile int tpm0_flag = 0;
+N#define IR_SAMPLE_PERIOD 40000
+N#define UART_BAUDRATE 300
+N
+Nvolatile uart_transceiver_t uart1_transceiver;
+Nvolatile uart_transceiver_t uart2_transceiver;
+N
 N
 N/*----------------------------------------------------------------------------
 N  MAIN function
 N *----------------------------------------------------------------------------*/
 Nint main (void) {
-N#if 0
-S	float measurement = 0;
-S	char measurementStr[17];
-S	Init_RGB_LEDs();
-S	Init_PIT(240); //gives us a period of 10 microseconds
-S	Init_Ultrasonic();
-S	Init_LCD();
-S	__enable_irq();
-S	Clear_LCD();
-S	Set_Cursor(0,0);
-S	Init_TPM();
-S	while(1) {
-S		Generate_Trigger();
-S		Measure_Reading(&measurement);
-S		sprintf(measurementStr, "%d", (int) measurement);
-S		Set_Cursor(0,1);
-S		Print_LCD(measurementStr);
-S		toggle_RGB_LEDs(1,0,0);
-S		Delay(1000);
-S		Clear_LCD();
-S	}
-S	
-N#else
-N	float measurement = 0;
-N	char measurementStr[BUFFER_SIZE];
-X	char measurementStr[(4)];
-N	Init_RGB_LEDs();
-N	Init_LCD();
-N	Init_PIT(240); //gives us a period of 10 microseconds
-N	Init_Ultrasonic();
-N	UART1_INIT(UART_BAUDRATE_300, 128);
-X	__uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, 300, 128);
-N	__enable_irq();
-N	int minimumDist = 200;
-N	Init_TPM();
-N	while(1) {
-N		Generate_Trigger();
-N		Measure_Reading(&measurement);
-N		snprintf(measurementStr,BUFFER_SIZE, "%d", (int) measurement);
-X		snprintf(measurementStr,(4), "%d", (int) measurement);
-N		Set_Cursor(0,1);
-N		Print_LCD(measurementStr);
-N		toggle_RGB_LEDs(1,0,0);
-N		if(measurement < minimumDist){ 
-N			UART1_SEND("5");
-X			__uart_send(&uart1_txQ, "5");
-N			
-N			Delay(2000);
-N			Clear_LCD();
-N		}
-N	}
+N	static unsigned on_brightness = 0, off_brightness = 0;
+N	static int avg_diff;
+N	static int diff;
+N	unsigned n;
 N
-N#endif
+W "src\main.c" 31 46 argument of type "volatile uart_transceiver_t *" is incompatible with parameter of type "uart_transceiver_t *"
+N	Init_UART1(UART_BAUDRATE, sizeof(uint16_t), &uart1_transceiver);
+X	Init_UART1(300, sizeof(uint16_t), &uart1_transceiver);
+N  
+N	Init_LCD();	
+N	Clear_LCD();
+N	Set_Cursor(0, 0);
+N	Print_LCD("Hello World");
+N	
+N	//Init_ADC();	
+N	Init_RGB_LEDs();
+N	//Init_IR_LED();
+N	Control_RGB_LEDs(0, 0, 0);	
+N	
+N	__enable_irq();
+N	
+N	while(1) {
+N		avg_diff = 5;
+N
+N		// light RGB LED according to range
+N		//Display_Range(avg_diff);
+N			
+N		#ifdef UART_EN
+W "src\main.c" 52 13 argument of type "volatile uart_transceiver_t *" is incompatible with parameter of type "uart_transceiver_t *"
+N		send_data(&uart1_transceiver, &avg_diff);
+N		#endif
+N		
+N		Delay(10);
+N	}
+W "src\main.c" 26 18 variable "on_brightness"  was declared but never referenced
+W "src\main.c" 26 37 variable "off_brightness"  was declared but never referenced
+W "src\main.c" 28 13 variable "diff"  was declared but never referenced
+W "src\main.c" 29 11 variable "n"  was declared but never referenced
 N}
 N
 N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   

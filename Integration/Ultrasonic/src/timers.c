@@ -7,8 +7,8 @@
 volatile unsigned PIT_interrupt_counter = 0;
 volatile unsigned LCD_update_requested = 0;
 
-extern volatile uint8_t hour, minute, second;
-extern volatile uint16_t millisecond;
+//extern volatile uint8_t hour, minute, second;
+//extern volatile uint16_t millisecond;
 
 volatile unsigned overflow = 0;
 volatile unsigned echoFallingEdge = 0;
@@ -52,6 +52,7 @@ void Stop_PIT(void) {
 }
 
 
+/*
 void PIT_IRQHandler() {
 	static unsigned LCD_update_delay = LCD_UPDATE_PERIOD;
 
@@ -96,6 +97,7 @@ void PIT_IRQHandler() {
 		PIT->CHANNEL[1].TFLG &= PIT_TFLG_TIF_MASK;
 	} 
 }
+*/
 
 // ================================================================================
 // TPM IRQ and init here:w

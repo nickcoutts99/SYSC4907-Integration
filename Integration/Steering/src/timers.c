@@ -4,8 +4,8 @@
 volatile unsigned PIT_interrupt_counter = 0;
 volatile unsigned LCD_update_requested = 0;
 
-extern volatile uint8_t hour, minute, second;
-extern volatile uint16_t millisecond;
+//extern volatile uint8_t hour, minute, second;
+//extern volatile uint16_t millisecond;
 
 void Init_PIT(unsigned period) {
 	// Enable clock to PIT module
@@ -42,6 +42,7 @@ void Stop_PIT(void) {
 }
 
 
+/*
 void PIT_IRQHandler() {
 
 	//clear pending IRQ
@@ -78,6 +79,7 @@ void PIT_IRQHandler() {
 		PIT->CHANNEL[1].TFLG &= PIT_TFLG_TIF_MASK;
 	} 
 }
+*/
 
 void Init_PWM()
 {
