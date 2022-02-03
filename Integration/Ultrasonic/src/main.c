@@ -21,69 +21,50 @@ volatile int tpm0_flag = 0;
  *----------------------------------------------------------------------------*/
 int main (void) {
 #if 0
-	char buffer[9];
-	
+	float measurement = 0;
+	char measurementStr[17];
 	Init_RGB_LEDs();
-	PORTD->PCR[0] = PORT_PCR_MUX(4);
-	// Init_LCD();
-	Init_PIT(BUS_CLOCK_FREQUENCY/TICK_FREQUENCY);
-	Init_PWM();
-	
-	Control_RGB_LEDs(0,0,0);
-
-	/*
+	Init_PIT(240); //gives us a period of 10 microseconds
+	Init_Ultrasonic();
+	Init_LCD();
+	__enable_irq();
 	Clear_LCD();
 	Set_Cursor(0,0);
-	Print_LCD(" Hello  ");
-	Set_Cursor(0,1);
-	Print_LCD(" World! ");
-	*/
-
-	__enable_irq();
-	
-	Start_PIT();
-	// Clear_LCD();
-	
-	
-	while (1) {
-		
-		Control_RGB_LEDs(0, 0, 0);
-		Delay(10);
-		
-		/*
-		if (LCD_update_requested) {
-			LCD_update_requested = 0; // Clear the request
-			sprintf(buffer, "%02d:%02d", hour, minute);
-			Set_Cursor(0,0);
-			Print_LCD(buffer);
-			sprintf(buffer, "%02d.%03d", second, millisecond);
-			Set_Cursor(0,1);
-			Print_LCD(buffer);
-		}
-		*/
+	Init_TPM();
+	while(1) {
+		Generate_Trigger();
+		Measure_Reading(&measurement);
+		sprintf(measurementStr, "%d", (int) measurement);
+		Set_Cursor(0,1);
+		Print_LCD(measurementStr);
+		toggle_RGB_LEDs(1,0,0);
+		Delay(1000);
+		Clear_LCD();
 	}
+	
 #else
 	float measurement = 0;
 	char measurementStr[BUFFER_SIZE];
 	Init_RGB_LEDs();
+	Init_LCD();
 	Init_PIT(240); //gives us a period of 10 microseconds
 	Init_Ultrasonic();
 	UART1_INIT(UART_BAUDRATE_300, 128);
 	__enable_irq();
-	
 	int minimumDist = 200;
 	Init_TPM();
 	while(1) {
 		Generate_Trigger();
 		Measure_Reading(&measurement);
-		snprintf(measurementStr,BUFFER_SIZE, "%3d", (int) measurement);
+		snprintf(measurementStr,BUFFER_SIZE, "%d", (int) measurement);
+		Set_Cursor(0,1);
+		Print_LCD(measurementStr);
+		toggle_RGB_LEDs(1,0,0);
 		if(measurement < minimumDist){ 
-			UART1_SEND(measurementStr);
-			//Set_Cursor(0,1);
-			//Print_LCD(measurementStr);
-			toggle_RGB_LEDs(1,0,0);
-			Delay(1000);
-			//Clear_LCD();
+			UART1_SEND("5");
+			
+			Delay(2000);
+			Clear_LCD();
 		}
 	}
 

@@ -7,6 +7,7 @@
 #include "delay.h"
 #include "uart.h"
 #include "lcd_4bit.h"
+#include "LEDs.h"
 
 #define TESTING_MOTOR 0
 #define TESTING_LCD 1
@@ -64,18 +65,30 @@ int main (void) {
 		
 	#if TESTING_LCD
 	Init_LCD();
+	
+	Init_RGB_LEDs();
+	
 	UART1_INIT(UART_BAUDRATE_300, 128);
-	char transmittedMessage[4];
+	char transmittedMessage[5];
 	char displayMessage[17];
+	char testing[10];
+	Print_LCD("nada");
+	Control_RGB_LEDs(0,0,1);
 	while(1){ 
-		if (Get_Num_Rx_Chars_Available() >= 3) {
+		Clear_LCD();
+		sprintf(testing,"%d",Get_Num_Rx_Chars_Available());
+		Print_LCD(testing);
+		if (Get_Num_Rx_Chars_Available() > 0) {
+			toggle_RGB_LEDs(0,1,0);
 			UART1_READ(transmittedMessage);
-			sprintf(displayMessage, "Object: %s cm", transmittedMessage);
+			Control_RGB_LEDs(1,0,0);
+			sprintf(displayMessage, "%s cm", transmittedMessage);
 			Clear_LCD();
 			Set_Cursor(0,0);
 			Print_LCD(displayMessage);
-			Delay(150);
-		}		
+			
+		}	
+	Delay(1000);		
 	}
 	#endif
 }
