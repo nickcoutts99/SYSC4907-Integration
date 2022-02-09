@@ -49,7 +49,7 @@ int main (void) {
 	Init_LCD();
 	Init_PIT(240); //gives us a period of 10 microseconds
 	Init_Ultrasonic();
-	UART1_INIT(UART_BAUDRATE_300, 128);
+	UART1_INIT(UART_BAUDRATE_9600, 128);
 	__enable_irq();
 	int minimumDist = 200;
 	Init_TPM();
@@ -63,9 +63,9 @@ int main (void) {
 		if(measurement < minimumDist){ 
 			UART1_SEND("5");
 			
-			Delay(2000);
 			Clear_LCD();
 		}
+		Delay(2000);
 	}
 
 #endif

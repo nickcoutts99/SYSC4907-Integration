@@ -8609,7 +8609,8 @@ N	p_cfg->uartPort->BDL = UART_BDL_SBR(divisor);
 X	p_cfg->uartPort->BDL = (((uint8_t)(((uint8_t)(divisor))<<0))&0xFFu);
 N	
 N	// No parity, 9 bits, two stop bits, other settings;
-N	p_cfg->uartPort->C1 = 0; //UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
+N	p_cfg->uartPort->C1 |= UART_C1_M_MASK | UART_C1_PE_MASK | UART_C1_PT_MASK; 
+X	p_cfg->uartPort->C1 |= 0x10u | 0x2u | 0x1u; 
 N	p_cfg->uartPort->S2 = 0;
 N	p_cfg->uartPort->C3 = 0;
 N	
@@ -8656,6 +8657,7 @@ N		// Wait while Queue is full.
 N		while(Q_Full(p_tx_q));
 N		Q_Enqueue(p_tx_q, (uint8_t)*curr_char);
 N	}
+N	Q_Enqueue(p_tx_q, (uint8_t)'@');
 N	Q_Enqueue(p_tx_q, (uint8_t)NULL);
 X	Q_Enqueue(p_tx_q, (uint8_t)0);
 N	
@@ -8678,8 +8680,8 @@ N */
 Nvoid __uart_read(Q_T* p_rx_q, char* received_msg)
 N{
 N	for (char new_char = (char)Q_Dequeue(p_rx_q);
-N		(new_char != NULL) && (Q_Size(p_rx_q) <= MAX_CHARS_READ);
-X		(new_char != 0) && (Q_Size(p_rx_q) <= (4));
+N		(new_char != '@') && (Q_Size(p_rx_q) <= MAX_CHARS_READ);
+X		(new_char != '@') && (Q_Size(p_rx_q) <= (4));
 N		new_char = (char)Q_Dequeue(p_rx_q))
 N	{
 N		// Wait while Queue is empty.
@@ -8690,7 +8692,6 @@ N	*received_msg = (char)NULL;
 X	*received_msg = (char)0;
 N}
 N
-N// NOTE Implementing observer pattern
 N
 Nvoid UART1_IRQHandler(void) {
 N	uint8_t c;

@@ -68,7 +68,6 @@ void PIT_IRQHandler() {
 		}
 
 		if (millisecond < 600) {
-			Set_PWM_Value_Ch1(millisecond/6);
 			Set_PWM_Value_Ch0(millisecond/6);
 		}
 		
@@ -93,25 +92,22 @@ void Init_PWM()
 	
 	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
 	PORTA->PCR[12] = PORT_PCR_MUX(3);
-	PORTA->PCR[13] = PORT_PCR_MUX(3);
-	PORTA->PCR[1] = PORT_PCR_MUX(3);
-	
 		
 	//set channels to center-aligned high-true PWM
 	TPM1->CONTROLS[0].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
-	TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
+	//TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
 	
-	TPM2->CONTROLS[0].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
+	//TPM2->CONTROLS[0].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
 	//set TPM to up-down and divide by 8 prescaler and clock mode
 	TPM1->SC = (TPM_SC_CPWMS_MASK | TPM_SC_CMOD(1) | TPM_SC_PS(3));
-	TPM2->SC = (TPM_SC_CMOD(1) | TPM_SC_PS(1));
+	//TPM2->SC = (TPM_SC_CMOD(1) | TPM_SC_PS(1));
 	//set trigger mode
 	TPM1->CONF |= TPM_CONF_TRGSEL(0x8);
-	TPM2->CONF |= TPM_CONF_TRGSEL(0x8);
+	//TPM2->CONF |= TPM_CONF_TRGSEL(0x8);
 	
 	TPM1->CONTROLS[0].CnV = PWM_MAX_COUNT/2;
-	TPM1->CONTROLS[1].CnV = PWM_MAX_COUNT/2;
-	TPM2->CONTROLS[0].CnV = 35008;
+	//TPM1->CONTROLS[1].CnV = PWM_MAX_COUNT/2;
+	//TPM2->CONTROLS[0].CnV = 35008;
 }
 
 
@@ -120,22 +116,5 @@ void Set_PWM_Value_Ch0(uint8_t duty_cycle) {
 	
 	n = duty_cycle*PWM_MAX_COUNT/100; 
   TPM1->CONTROLS[0].CnV = n;
-}
-
-void Set_PWM_Value_Ch1(uint8_t duty_cycle) {
-	uint16_t n;
-	
-	n = duty_cycle*PWM_MAX_COUNT/100; 
-  TPM1->CONTROLS[1].CnV = n;
-}
-
-
-void Set_PWM_Servo(uint8_t degree){
-	uint16_t n;
-	if (degree >120){
-		return;
-	}
-	n = 21600 + degree * 240;
-	TPM2->CONTROLS[0].CnV = n;
 }
 // *******************************ARM University Program Copyright ? ARM Ltd 2013*************************************   

@@ -418,6 +418,11 @@
               <FileType>1</FileType>
               <FilePath>..\Common\src\LCD_4bit.c</FilePath>
             </File>
+            <File>
+              <FileName>motor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\motor.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -457,6 +462,11 @@
               <FileName>queue.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Common\inc\queue.h</FilePath>
+            </File>
+            <File>
+              <FileName>motor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\motor.h</FilePath>
             </File>
           </Files>
         </Group>

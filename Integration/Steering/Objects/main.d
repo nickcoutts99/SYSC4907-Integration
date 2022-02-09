@@ -10,4 +10,5 @@
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h inc\timers.h \
   C:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h \
   ..\Common\inc\delay.h ..\Common\inc\uart.h ..\Common\inc\queue.h \
-  ..\Common\inc\lcd_4bit.h ..\Common\inc\LEDs.h
+  ..\Common\inc\lcd_4bit.h ..\Common\inc\LEDs.h inc\motor.h \
+  ..\Common\inc\LEDS.h inc\timers.h

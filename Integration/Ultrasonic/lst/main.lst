@@ -8740,8 +8740,8 @@ N	Init_RGB_LEDs();
 N	Init_LCD();
 N	Init_PIT(240); //gives us a period of 10 microseconds
 N	Init_Ultrasonic();
-N	UART1_INIT(UART_BAUDRATE_300, 128);
-X	__uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, 300, 128);
+N	UART1_INIT(UART_BAUDRATE_9600, 128);
+X	__uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, 9600, 128);
 N	__enable_irq();
 N	int minimumDist = 200;
 N	Init_TPM();
@@ -8757,9 +8757,9 @@ N		if(measurement < minimumDist){
 N			UART1_SEND("5");
 X			__uart_send(&uart1_txQ, "5");
 N			
-N			Delay(2000);
 N			Clear_LCD();
 N		}
+N		Delay(2000);
 N	}
 N
 N#endif

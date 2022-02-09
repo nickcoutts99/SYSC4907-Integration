@@ -8,9 +8,10 @@
 #include "uart.h"
 #include "lcd_4bit.h"
 #include "LEDs.h"
+#include "motor.h"
 
-#define TESTING_MOTOR 0
-#define TESTING_LCD 1
+#define TESTING_MOTOR 1
+#define TESTING_LCD 0
 
 
 volatile uint8_t hour=0, minute=0, second=0;
@@ -19,25 +20,12 @@ volatile uint16_t millisecond=0;
 /*----------------------------------------------------------------------------
   MAIN function
  *----------------------------------------------------------------------------*/
- void set_Forward(uint8_t duty_cycle) {
-	Set_PWM_Value_Ch0(duty_cycle);
-	Set_PWM_Value_Ch1(0);
-}
-
-void set_Reverse(uint8_t duty_cycle) {
-	Set_PWM_Value_Ch1(duty_cycle);
-	Set_PWM_Value_Ch0(0);
-}
-
-void set_Stop(){
-	Set_PWM_Value_Ch1(0);
-	Set_PWM_Value_Ch0(0);
-}
 int main (void) {
 	
 	#if TESTING_MOTOR
 	Init_PIT(BUS_CLOCK_FREQUENCY/TICK_FREQUENCY);
   Init_PWM();
+	Init_Drive_Motor();
 
 	__enable_irq();
 	Start_PIT();
@@ -45,10 +33,9 @@ int main (void) {
 	char transmittedMessage[4];
 	char displayMessage[17];
   int objectClose = 0;
-	Set_PWM_Servo(0);
-	set_Forward(50);
 	int distance = 0;
-	
+	#endif
+	#if 0
 	while (!objectClose) {
 		
 		if (Get_Num_Rx_Chars_Available() >= 3) {
@@ -60,7 +47,17 @@ int main (void) {
 			}
 		}
 	}
-	set_Stop();
+	
+	
+	Set_Stop();
+	#else
+	Set_Forward(80);
+	Delay(500);
+	Set_Stop();
+	Delay(500);
+	Set_Reverse(50);
+	Delay(500);
+	Set_Stop();
 	#endif
 		
 	#if TESTING_LCD
@@ -68,7 +65,7 @@ int main (void) {
 	
 	Init_RGB_LEDs();
 	
-	UART1_INIT(UART_BAUDRATE_300, 128);
+	UART1_INIT(UART_BAUDRATE_9600, 128);
 	char transmittedMessage[5];
 	char displayMessage[17];
 	char testing[10];
@@ -79,7 +76,7 @@ int main (void) {
 		sprintf(testing,"%d",Get_Num_Rx_Chars_Available());
 		Print_LCD(testing);
 		if (Get_Num_Rx_Chars_Available() > 0) {
-			toggle_RGB_LEDs(0,1,0);
+			Control_RGB_LEDs(0,1,0);
 			UART1_READ(transmittedMessage);
 			Control_RGB_LEDs(1,0,0);
 			sprintf(displayMessage, "%s cm", transmittedMessage);

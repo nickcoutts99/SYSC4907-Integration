@@ -17,9 +17,7 @@ void Start_PIT(void);
 void Stop_PIT(void);
 
 void Init_PWM(void);
-void Set_PWM_Value_Ch1(uint8_t duty_cycle);
 void Set_PWM_Value_Ch0(uint8_t duty_cycle);
-void Set_PWM_Servo(uint8_t degree);
 
 extern volatile unsigned PIT_interrupt_counter;
 extern volatile unsigned LCD_update_requested;
