@@ -16,7 +16,7 @@ I (..\Common\inc\uart.h)(0x61F81752)
 I (..\Common\inc\queue.h)(0x61F81752)
 I (..\Common\inc\lcd_4bit.h)(0x61F81752)
 I (..\Common\inc\LEDs.h)(0x61F81752)
-I (inc\motor.h)(0x62040F56)
+I (inc\motor.h)(0x62041148)
 F (.\src\timers.c)(0x62040C56)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./inc -I ../Common/inc-I./RTE/Device/MKL25Z128xxx4-I./RTE/_Steering-IC:/Users/Nick/AppData/Local/Arm/Packs/ARM/CMSIS/5.8.0/CMSIS/Core/Include-IC:/Users/Nick/AppData/Local/Arm/Packs/Keil/Kinetis_KLxx_DFP/1.15.0/Device/Include-D__UVISION_VERSION="535" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o ./objects/timers.o -MD)
 I (inc\timers.h)(0x62040C44)
 I (C:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
@@ -70,7 +70,7 @@ I (C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsi
 I (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h)(0x5644C55A)
 I (..\Common\inc\delay.h)(0x61F81752)
 F (.\src\motor.c)(0x62040C0B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./inc -I ../Common/inc-I./RTE/Device/MKL25Z128xxx4-I./RTE/_Steering-IC:/Users/Nick/AppData/Local/Arm/Packs/ARM/CMSIS/5.8.0/CMSIS/Core/Include-IC:/Users/Nick/AppData/Local/Arm/Packs/Keil/Kinetis_KLxx_DFP/1.15.0/Device/Include-D__UVISION_VERSION="535" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o ./objects/motor.o -MD)
-I (inc\motor.h)(0x62040F56)
+I (inc\motor.h)(0x62041148)
 I (C:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h)(0x585C24CA)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6035B090)
 I (C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h)(0x60D491A2)
@@ -87,7 +87,7 @@ F (..\Common\inc\GPIO_defs.h)(0x61F81752)()
 F (..\Common\inc\lcd_4bit.h)(0x61F81752)()
 F (..\Common\inc\LEDs.h)(0x61F81752)()
 F (..\Common\inc\queue.h)(0x61F81752)()
-F (.\inc\motor.h)(0x62040F56)()
+F (.\inc\motor.h)(0x62041148)()
 F (RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s)(0x5644C55A)(--target=arm-arm-none-eabi -mcpu=cortex-m0plus -masm=auto -c-gdwarf-3 -Wa,armasm,--pd,"__EVAL SETA 1"-I./RTE/Device/MKL25Z128xxx4-I./RTE/_Steering-IC:/Users/Nick/AppData/Local/Arm/Packs/ARM/CMSIS/5.8.0/CMSIS/Core/Include-IC:/Users/Nick/AppData/Local/Arm/Packs/Keil/Kinetis_KLxx_DFP/1.15.0/Device/Include-Wa,armasm,--pd,"__UVISION_VERSION SETA 535" -Wa,armasm,--pd,"_RTE_ SETA 1" -Wa,armasm,--pd,"MKL25Z128xxx4 SETA 1" -Wa,armasm,--pd,"_RTE_ SETA 1"-o ./objects/startup_mkl25z4.o)
 F (RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c)(0x5644C55A)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-D__EVAL -gdwarf-4 -O1 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -I ./inc -I ../Common/inc-I./RTE/Device/MKL25Z128xxx4-I./RTE/_Steering-IC:/Users/Nick/AppData/Local/Arm/Packs/ARM/CMSIS/5.8.0/CMSIS/Core/Include-IC:/Users/Nick/AppData/Local/Arm/Packs/Keil/Kinetis_KLxx_DFP/1.15.0/Device/Include-D__UVISION_VERSION="535" -D_RTE_ -DMKL25Z128xxx4 -D_RTE_-o ./objects/system_mkl25z4.o -MD)
 I (C:\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x6035B090)
