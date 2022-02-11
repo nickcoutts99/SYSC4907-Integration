@@ -26,14 +26,18 @@ Project File Date:  02/03/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
-Build Project 'Steering' - Target 'Steering'
+Rebuild Project 'Steering' - Target 'Steering'
+compiling LCD_4bit.c...
+compiling delay.c...
+compiling queue.c...
+compiling LEDs.c...
 D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Steering\src\main.c(27): warning: passing 'volatile uart_transceiver_t *' to parameter of type 'uart_transceiver_t *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
         Init_UART1(UART_BAUDRATE, sizeof(uint16_t), &uart1_transceiver);
                                                     ^~~~~~~~~~~~~~~~~~
 D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\uart.h(27): note: passing argument to parameter 'transceiver' here
 void Init_UART1(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver);
                                                                            ^
-D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Steering\src\main.c(40): warning: passing 'volatile uart_transceiver_t *' to parameter of type 'uart_transceiver_t *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Steering\src\main.c(46): warning: passing 'volatile uart_transceiver_t *' to parameter of type 'uart_transceiver_t *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
                         i = (uint16_t)get_data(&uart1_transceiver);
                                                ^~~~~~~~~~~~~~~~~~
 D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\uart.h(40): note: passing argument to parameter 'transeiver' here
@@ -41,9 +45,110 @@ uint32_t get_data(uart_transceiver_t* transeiver);
                                       ^
 2 warnings generated.
 compiling main.c...
+compiling timers.c...
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(127): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+  Q_Init(&transceiver->TxQ);
+         ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(21): note: passing argument to parameter 'q' here
+extern void Q_Init(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(128): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+        Q_Init(&transceiver->RxQ);
+               ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(21): note: passing argument to parameter 'q' here
+extern void Q_Init(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(170): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+        Q_Init(&transceiver->TxQ);
+               ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(21): note: passing argument to parameter 'q' here
+extern void Q_Init(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(171): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+        Q_Init(&transceiver->RxQ);
+               ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(21): note: passing argument to parameter 'q' here
+extern void Q_Init(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(204): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                if (!Q_Empty(&uart1_transceiver.TxQ)) {
+                             ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(17): note: passing argument to parameter 'q' here
+extern int Q_Empty(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(205): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                        UART1->D = Q_Dequeue(&uart1_transceiver.TxQ);
+                                             ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(20): note: passing argument to parameter 'q' here
+extern uint8_t Q_Dequeue(Q_T * q);
+                               ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(213): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                if (!Q_Full(&uart1_transceiver.RxQ)) {
+                            ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(18): note: passing argument to parameter 'q' here
+extern int Q_Full(Q_T * q);
+                        ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(215): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                        Q_Enqueue(&uart1_transceiver.RxQ, c);
+                                  ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(19): note: passing argument to parameter 'q' here
+extern int Q_Enqueue(Q_T * q, uint8_t d);
+                           ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(241): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                if (!Q_Empty(&uart2_transceiver.TxQ)) {
+                             ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(17): note: passing argument to parameter 'q' here
+extern int Q_Empty(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(242): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                        UART2->D = Q_Dequeue(&uart2_transceiver.TxQ);
+                                             ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(20): note: passing argument to parameter 'q' here
+extern uint8_t Q_Dequeue(Q_T * q);
+                               ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(250): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                if (!Q_Full(&uart2_transceiver.RxQ)) {
+                            ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(18): note: passing argument to parameter 'q' here
+extern int Q_Full(Q_T * q);
+                        ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(252): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                        Q_Enqueue(&uart2_transceiver.RxQ, c);
+                                  ^~~~~~~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(19): note: passing argument to parameter 'q' here
+extern int Q_Enqueue(Q_T * q, uint8_t d);
+                           ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(289): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                while(Q_Full(&transceiver->TxQ));
+                             ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(18): note: passing argument to parameter 'q' here
+extern int Q_Full(Q_T * q);
+                        ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(291): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                Q_Enqueue(&transceiver->TxQ, (uint8_t)(transmit_data >> 8*byte_idx));
+                          ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(19): note: passing argument to parameter 'q' here
+extern int Q_Enqueue(Q_T * q, uint8_t d);
+                           ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(311): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                while (Q_Empty(&transceiver->RxQ));
+                               ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(17): note: passing argument to parameter 'q' here
+extern int Q_Empty(Q_T * q);
+                         ^
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\src\uart.c(314): warning: passing 'volatile Q_T *' to parameter of type 'Q_T *' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+                uint8_t byte = Q_Dequeue(&transceiver->RxQ);
+                                         ^~~~~~~~~~~~~~~~~
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\queue.h(20): note: passing argument to parameter 'q' here
+extern uint8_t Q_Dequeue(Q_T * q);
+                               ^
+16 warnings generated.
+compiling uart.c...
+compiling system_MKL25Z4.c...
+assembling startup_MKL25Z4.s...
 linking...
-Program Size: Code=2880 RO-data=208 RW-data=0 ZI-data=1704  
-".\Objects\Steering.axf" - 0 Error(s), 2 Warning(s).
+Program Size: Code=2936 RO-data=208 RW-data=0 ZI-data=1704  
+".\Objects\Steering.axf" - 0 Error(s), 18 Warning(s).
 
 <h2>Software Packages used:</h2>
 

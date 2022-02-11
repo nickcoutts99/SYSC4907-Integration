@@ -8649,7 +8649,7 @@ N#endif
 N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   
 L 12 "src\main.c" 2
 N
-N#define UART_EN
+N#define UART_EN 1
 N
 N#define IR_SAMPLE_PERIOD 40000
 N#define UART_BAUDRATE 300
@@ -8663,7 +8663,7 @@ N  MAIN function
 N *----------------------------------------------------------------------------*/
 Nint main (void) {
 N	static unsigned on_brightness = 0, off_brightness = 0;
-N	static int avg_diff;
+N	static char avg_diff;
 N	static int diff;
 N	unsigned n;
 N
@@ -8684,15 +8684,13 @@ N
 N	__enable_irq();
 N	
 N	while(1) {
-N		avg_diff = 5;
+N		avg_diff = 'f';
 N
 N		// light RGB LED according to range
 N		//Display_Range(avg_diff);
 N			
-N		#ifdef UART_EN
-W "src\main.c" 52 13 argument of type "volatile uart_transceiver_t *" is incompatible with parameter of type "uart_transceiver_t *"
+W "src\main.c" 51 13 argument of type "volatile uart_transceiver_t *" is incompatible with parameter of type "uart_transceiver_t *"
 N		send_data(&uart1_transceiver, &avg_diff);
-N		#endif
 N		
 N		Delay(10);
 N	}

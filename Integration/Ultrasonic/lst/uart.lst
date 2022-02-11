@@ -8602,13 +8602,13 @@ N	NVIC_EnableIRQ(UART1_IRQn);
 N
 N	UART1->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
 X	((UART_Type *)(0x4006B000u))->C2 |= 0x80u | 0x20u;
-N
+W "..\Common\src\uart.c" 127 10 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N  Q_Init(&transceiver->TxQ);
+W "..\Common\src\uart.c" 128 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
+N	Q_Init(&transceiver->RxQ);
 N	transceiver->bytes_per_data = data_bytes;
 N
-W "..\Common\src\uart.c" 130 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
-N	Q_Init(&transceiver->TxQ);
-W "..\Common\src\uart.c" 131 9 argument of type "volatile Q_T *" is incompatible with parameter of type "Q_T *"
-N	Q_Init(&transceiver->RxQ);
+N	
 N}
 N
 Nvoid Init_UART2(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver) {

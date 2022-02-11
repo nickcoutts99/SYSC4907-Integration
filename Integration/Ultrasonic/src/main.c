@@ -10,7 +10,7 @@
 #include "ultrasonic.h"
 #include "uart.h"
 
-#define UART_EN
+#define UART_EN 1
 
 #define IR_SAMPLE_PERIOD 40000
 #define UART_BAUDRATE 300
@@ -24,7 +24,7 @@ volatile uart_transceiver_t uart2_transceiver;
  *----------------------------------------------------------------------------*/
 int main (void) {
 	static unsigned on_brightness = 0, off_brightness = 0;
-	static int avg_diff;
+	static char avg_diff;
 	static int diff;
 	unsigned n;
 
@@ -43,14 +43,12 @@ int main (void) {
 	__enable_irq();
 	
 	while(1) {
-		avg_diff = 5;
+		avg_diff = 'f';
 
 		// light RGB LED according to range
 		//Display_Range(avg_diff);
 			
-		#ifdef UART_EN
 		send_data(&uart1_transceiver, &avg_diff);
-		#endif
 		
 		Delay(10);
 	}

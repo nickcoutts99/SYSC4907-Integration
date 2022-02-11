@@ -124,11 +124,11 @@ void Init_UART1(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *trans
 	NVIC_EnableIRQ(UART1_IRQn);
 
 	UART1->C2 |= UART_C2_TIE_MASK | UART_C2_RIE_MASK;
-
+  Q_Init(&transceiver->TxQ);
+	Q_Init(&transceiver->RxQ);
 	transceiver->bytes_per_data = data_bytes;
 
-	Q_Init(&transceiver->TxQ);
-	Q_Init(&transceiver->RxQ);
+	
 }
 
 void Init_UART2(uint32_t baud_rate, size_t data_bytes, uart_transceiver_t *transceiver) {

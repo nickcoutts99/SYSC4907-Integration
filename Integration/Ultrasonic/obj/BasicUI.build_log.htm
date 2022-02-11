@@ -27,7 +27,48 @@ Project File Date:  02/03/2022
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build Project 'BasicUI' - Target 'KL25Z Flash'
-".\obj\BasicUI.axf" - 0 Error(s), 0 Warning(s).
+compiling system_MKL25Z4.c...
+compiling timers.c...
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
+  void Init_Ultrasonic();
+src\timers.c: 2 warnings, 0 errors
+compiling main.c...
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
+  void Init_Ultrasonic();
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(31): warning:  #167-D: argument of type "volatile uart_transceiver_t *" is incompatible with parameter of type "uart_transceiver_t *"
+  	Init_UART1(UART_BAUDRATE, sizeof(uint16_t), &uart1_transceiver);
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(51): warning:  #167-D: argument of type "volatile uart_transceiver_t *" is incompatible with parameter of type "uart_transceiver_t *"
+  		send_data(&uart1_transceiver, &avg_diff);
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(26): warning:  #177-D: variable "on_brightness"  was declared but never referenced
+  	static unsigned on_brightness = 0, off_brightness = 0;
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(26): warning:  #177-D: variable "off_brightness"  was declared but never referenced
+  	static unsigned on_brightness = 0, off_brightness = 0;
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(28): warning:  #177-D: variable "diff"  was declared but never referenced
+  	static int diff;
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(29): warning:  #177-D: variable "n"  was declared but never referenced
+  	unsigned n;
+src\main.c: 8 warnings, 0 errors
+compiling LCD_4bit.c...
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Common\src\LCD_4bit.c: 1 warning, 0 errors
+compiling delay.c...
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Common\src\delay.c: 1 warning, 0 errors
+compiling ultrasonic.c...
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
+  void Init_Ultrasonic();
+D:\Skool\fourthyear\winter2022\SYSC4907\integrationv1\SYSC4907-Integration\Integration\Ultrasonic\src\ultrasonic.c(51): warning:  #1-D: last line of file ends without a newline
+  }
+src\ultrasonic.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=3452 RO-data=224 RW-data=52 ZI-data=2644  
+".\obj\BasicUI.axf" - 0 Error(s), 14 Warning(s).
 Build Time Elapsed:  00:00:01
 </pre>
 </body>

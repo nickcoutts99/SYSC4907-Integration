@@ -34,7 +34,13 @@ int main (void) {
 	Print_LCD("bruh");
 	
 	while(1) {
-		if (Get_Num_Rx_Chars_Available() >= 2) {
+		Delay(200);
+		Clear_LCD();
+		Set_Cursor(0,0);
+		sprintf(buff, "Start: %d", Get_Num_Rx_Chars_Available());
+		Print_LCD(buff);
+		
+		if (Get_Num_Rx_Chars_Available() > 0) {
 			Control_RGB_LEDs(0,1,0);
 			i = 0;
 			i = (uint16_t)get_data(&uart1_transceiver);
