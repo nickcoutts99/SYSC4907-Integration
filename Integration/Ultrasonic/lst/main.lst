@@ -8521,9 +8521,11 @@ N#define PLL_CLOCK_FREQUENCY (50000000)
 N
 N#define PWM_MAX_COUNT (0xFFFF)
 N
-Nvoid Init_PIT(unsigned period);
-Nvoid Start_PIT(void);
-Nvoid Stop_PIT(void);
+Nvoid Init_PITs(unsigned period1, unsigned period2);
+Nvoid Start_PIT1(void);
+Nvoid Stop_PIT1(void);
+Nvoid Start_PIT2(void);
+Nvoid Stop_PIT2(void);
 N
 Nvoid Init_TPM(void);
 Nvoid Set_PWM_Value(uint8_t duty_cycle);
@@ -8619,7 +8621,7 @@ N * for each UART port.
 N */
 Ntypedef struct
 N{
-N	SIM_Type* sim;
+N	//SIM_Type* sim;
 N	uint32_t uartSCGCMask;
 N	UART_Type* uartPort;
 N	
@@ -8633,21 +8635,6 @@ N
 N	unsigned nvic_irq;
 N} uart_cfg_t;
 N
-Ntypedef struct
-N{
-N	uint32_t uartSCGCMask;
-N	UART_Type* uartPort;
-N	
-N	uint32_t pinSCGCMask;
-N	PORT_Type* gpioPort;
-N	uint32_t  pcrMux;
-N	
-N	uint32_t txPin;
-N	uint32_t rxPin;
-N	
-N	unsigned nvic_irq;
-N} uart_cfg2_t;
-N
 N/* Predefined transmit and receive queue for
 N * the UART ports.
 N */
@@ -8656,6 +8643,9 @@ Nextern Q_T uart1_rxQ;
 Nextern Q_T uart2_txQ;
 Nextern Q_T uart2_rxQ;
 N
+N// Added counters for the number of messages in the rx queue so reading can only happen when a full word is in the queue
+Nextern volatile uint32_t messages_received_uart1;
+Nextern volatile uint32_t messages_received_uart2;
 N/* Predefined configurations for
 N * the UART ports.
 N * 
@@ -8673,30 +8663,36 @@ N * Use these for a simplified interface for interacting
 N * with the UART devices
 N */
 N#define UART1_INIT(baud_rate, nvic_priority) __uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, baud_rate, nvic_priority)
-N#define UART1_START()                        __uart_start(&uart1_cfg)
-N#define UART1_STOP()                         __uart_start(&uart1_cfg)
-N#define UART1_SEND(msg)                      __uart_send(&uart1_txQ, msg)
+N#define UART1_START_TX()                     __uart_start_tx(&uart1_cfg)
+N#define UART1_START_RX()                     __uart_start_rx(&uart1_cfg)
+N#define UART1_STOP_TX()                      __uart_stop_tx(&uart1_cfg)
+N#define UART1_STOP_RX()                      __uart_stop_rx(&uart1_cfg)
+N#define UART1_SEND(msg)                      __uart_send (&uart1_cfg, &uart1_txQ, msg)
 N// NOTE the msg in the read macro is a char array and is passed by referance.
-N#define UART1_READ(msg)                      __uart_read(&uart1_rxQ, msg)
+N#define UART1_READ(msg)                      __uart_read (&uart1_rxQ, msg)
 N
 N#define UART2_INIT(baud_rate, nvic_priority) __uart_init(&uart2_cfg, &uart2_txQ, &uart2_rxQ, baud_rate, nvic_priority)
-N#define UART2_START()                        __uart_start(&uart1_cfg)
-N#define UART2_STOP()                         __uart_start(&uart2_cfg)
-N#define UART2_SEND(msg)                      __uart_send(&uart2_txQ, msg)
+N#define UART2_START_TX()                     __uart_start_tx(&uart2_cfg)
+N#define UART2_START_RX()                     __uart_start_rx(&uart2_cfg)
+N#define UART2_STOP_TX()                      __uart_stop_tx(&uart2_cfg)
+N#define UART2_STOP_RX()                      __uart_stop_rx(&uart2_cfg)
+N#define UART2_SEND(msg)                      __uart_send (&uart2_cfg, &uart2_txQ, msg)
 N// NOTE the msg in the read macro is a char array and is passed by referance.
-N#define UART2_READ(msg)                      __uart_read(&uart2_rxQ, msg)
+N#define UART2_READ(msg)                      __uart_read (&uart2_rxQ, msg)
 N
 N/* Gerneral functions for interacting with the UART ports.
 N * 
 N * Only use these if you wish to have more control over the port.
 N */
 Nvoid __uart_init(uart_cfg_t* p_cfg, Q_T* p_tx_q, Q_T* p_rx_q, uint32_t baud_rate, uint32_t priority);
-Nvoid __uart_start(uart_cfg_t* p_cfg);
-Nvoid __uart_stop(uart_cfg_t* p_cfg);
-Nvoid __uart_send(Q_T* p_tx_q, char* send_msg);
-Nvoid __uart_read(Q_T* p_rx_q, char* received_msg);
-Nuint32_t Get_Num_Rx_Chars_Available(void);
+Nvoid __uart_start_tx(uart_cfg_t* p_cfg);
+Nvoid __uart_start_rx(uart_cfg_t* p_cfg);
+Nvoid __uart_stop_tx(uart_cfg_t* p_cfg);
+Nvoid __uart_stop_rx(uart_cfg_t* p_cfg);
+Nint __uart_send(uart_cfg_t *p_cfg, Q_T* p_tx_q, char* send_msg);
+Nint __uart_read(Q_T* p_rx_q, char* received_msg);
 N
+W "..\Common\inc\uart.h" 90 7 last line of file ends without a newline
 N#endif
 L 12 "src\main.c" 2
 N
@@ -8705,6 +8701,7 @@ Nvolatile uint8_t hour=0, minute=0, second=0;
 Nvolatile uint16_t millisecond=0;
 N
 Nvolatile int tpm0_flag = 0;
+Nvolatile extern int timeoutFlag;
 N
 N/*----------------------------------------------------------------------------
 N  MAIN function
@@ -8738,29 +8735,57 @@ N	char measurementStr[BUFFER_SIZE];
 X	char measurementStr[(4)];
 N	Init_RGB_LEDs();
 N	Init_LCD();
-N	Init_PIT(240); //gives us a period of 10 microseconds
+N	Init_PITs(240,73000); //gives us a period of 10 microseconds, and just over 11.66 milliseconds(72886 ticks)
 N	Init_Ultrasonic();
-N	UART1_INIT(UART_BAUDRATE_9600, 128);
-X	__uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, 9600, 128);
+N	UART1_INIT(UART_BAUDRATE_300, 128);
+X	__uart_init (&uart1_cfg, &uart1_txQ, &uart1_rxQ, 300, 128);
 N	__enable_irq();
 N	int minimumDist = 200;
 N	Init_TPM();
 N	while(1) {
 N		Generate_Trigger();
 N		Measure_Reading(&measurement);
+N		if(timeoutFlag){	
+N			Control_RGB_LEDs(0,0,1);
+N			Delay(500);
+N			timeoutFlag = 0;
+N			continue;
+N		}
 N		snprintf(measurementStr,BUFFER_SIZE, "%d", (int) measurement);
 X		snprintf(measurementStr,(4), "%d", (int) measurement);
 N		Set_Cursor(0,1);
+N		Clear_LCD();
 N		Print_LCD(measurementStr);
 N		toggle_RGB_LEDs(1,0,0);
-N		if(measurement < minimumDist){ 
-N			UART1_SEND("5");
-X			__uart_send(&uart1_txQ, "5");
+N		if(measurement < minimumDist){
+N			UART1_SEND(measurementStr);
+X			__uart_send (&uart1_cfg, &uart1_txQ, measurementStr);
 N			
-N			Clear_LCD();
+N			
 N		}
-N		Delay(2000);
+N		Delay(200);
 N	}
+N	/* Zachs Test code
+N	UART1_INIT(UART_BAUDRATE_300, 128);
+N	
+N	char uart_msg[4];
+N	char lcd_msg[16];
+N	
+N	sprintf(uart_msg, "Fuck This");
+N	sprintf(lcd_msg, "Send: %s", uart_msg);
+N	
+N	Init_LCD();
+N		
+N	for (;;)
+N	{
+N		Set_Cursor(0, 0);
+N		Clear_LCD();
+N		UART1_SEND(uart_msg);
+N		Print_LCD(lcd_msg);
+N		
+N		Delay(25);
+N	}
+N		*/
 N
 N#endif
 N}

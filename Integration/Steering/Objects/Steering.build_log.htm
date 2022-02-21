@@ -9,12 +9,12 @@ License Information: Nick Coutts, Carleton, LIC=----
  
 Tool Versions:
 Toolchain:       MDK-Lite  Version: 5.35.0.2
-Toolchain Path:  C:\Keil_v5\ARM\ARMCLANG\Bin
-C Compiler:      ArmClang.exe V6.16
-Assembler:       Armasm.exe V6.16
-Linker/Locator:  ArmLink.exe V6.16
-Library Manager: ArmAr.exe V6.16
-Hex Converter:   FromElf.exe V6.16
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
 CPU DLL:         SARMCM3.DLL V5.35.0.2
 Dialog DLL:      DARMCM1.DLL V1.19.4.0
 Target DLL:      PEMicro\Pemicro_ArmCortexInterface.dll V1.3.0.0
@@ -22,54 +22,75 @@ Dialog DLL:      TARMCM1.DLL V1.14.4.0
  
 <h2>Project:</h2>
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\Steering.uvprojx
-Project File Date:  02/09/2022
+Project File Date:  02/17/2022
 
 <h2>Output:</h2>
-*** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild Project 'Steering' - Target 'Steering'
 compiling queue.c...
-compiling timers.c...
-compiling LEDs.c...
 compiling delay.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Common\src\delay.c: 1 warning, 0 errors
 compiling main.c...
-compiling LCD_4bit.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\timers.h(25): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\uart.h(90): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\motor.h(18): warning:  #1295-D: Deprecated declaration Init_Drive_Motor - give arg types
+  void Init_Drive_Motor();
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\motor.h(19): warning:  #1295-D: Deprecated declaration Set_Stop - give arg types
+  void Set_Stop();
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\src\main.c(105): warning:  #177-D: variable "testing"  was declared but never referenced
+  	char testing[10];
+src\main.c: 6 warnings, 0 errors
+compiling LEDs.c...
+compiling timers.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\timers.h(25): warning:  #1-D: last line of file ends without a newline
+  #endif
+src\timers.c: 1 warning, 0 errors
 compiling uart.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\uart.h(90): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\src\uart.c(88): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_SetPriority(p_cfg->nvic_irq, priority); // 0, 64, 128 or 192
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\src\uart.c(89): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_ClearPendingIRQ(p_cfg->nvic_irq); 
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\src\uart.c(90): warning:  #188-D: enumerated type mixed with another type
+  	NVIC_EnableIRQ(p_cfg->nvic_irq);
+..\Common\src\uart.c: 4 warnings, 0 errors
+compiling LCD_4bit.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Common\src\LCD_4bit.c: 1 warning, 0 errors
 compiling motor.c...
-compiling system_MKL25Z4.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\timers.h(25): warning:  #1-D: last line of file ends without a newline
+  #endif
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\motor.h(18): warning:  #1295-D: Deprecated declaration Init_Drive_Motor - give arg types
+  void Init_Drive_Motor();
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Steering\inc\motor.h(19): warning:  #1295-D: Deprecated declaration Set_Stop - give arg types
+  void Set_Stop();
+src\motor.c: 3 warnings, 0 errors
 assembling startup_MKL25Z4.s...
+compiling system_MKL25Z4.c...
 linking...
-Program Size: Code=2272 RO-data=224 RW-data=36 ZI-data=1432  
-".\Objects\Steering.axf" - 0 Error(s), 0 Warning(s).
+Program Size: Code=3736 RO-data=496 RW-data=72 ZI-data=2192  
+".\Objects\Steering.axf" - 0 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
-
-Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.8.0.pack
-                ARM.CMSIS.5.8.0
-                CMSIS (Common Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.5.0
 
 Package Vendor: Keil
                 http://www.keil.com/pack/Keil.Kinetis_KLxx_DFP.1.15.0.pack
                 Keil.Kinetis_KLxx_DFP.1.15.0
                 NXP Kinetis KLxx Series Device Support and Examples
-   * Component: Startup Version: 2.5.0
 
 <h2>Collection of Component include folders:</h2>
-  .\RTE\Device\MKL25Z128xxx4
-  .\RTE\_Steering
-  C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include
   C:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
-
-   * Component: ARM::CMSIS:CORE:5.5.0
-
-   * Component: Keil::Device:Startup:2.5.0
-      Source file:   Device\Source\system_MKL25Z4.c
-      Source file:   Device\Source\ARM\startup_MKL25Z4.s
-      Include file:  Device\Source\system_MKL25Z4.h
-Build Time Elapsed:  00:00:00
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

@@ -15,6 +15,7 @@ volatile uint8_t hour=0, minute=0, second=0;
 volatile uint16_t millisecond=0;
 
 volatile int tpm0_flag = 0;
+volatile extern int timeoutFlag;
 
 /*----------------------------------------------------------------------------
   MAIN function
@@ -47,26 +48,54 @@ int main (void) {
 	char measurementStr[BUFFER_SIZE];
 	Init_RGB_LEDs();
 	Init_LCD();
-	Init_PIT(240); //gives us a period of 10 microseconds
+	Init_PITs(240,73000); //gives us a period of 10 microseconds, and just over 11.66 milliseconds(72886 ticks)
 	Init_Ultrasonic();
-	UART1_INIT(UART_BAUDRATE_9600, 128);
+	UART1_INIT(UART_BAUDRATE_300, 128);
 	__enable_irq();
 	int minimumDist = 200;
 	Init_TPM();
 	while(1) {
 		Generate_Trigger();
 		Measure_Reading(&measurement);
+		if(timeoutFlag){	
+			Control_RGB_LEDs(0,0,1);
+			Delay(500);
+			timeoutFlag = 0;
+			continue;
+		}
 		snprintf(measurementStr,BUFFER_SIZE, "%d", (int) measurement);
 		Set_Cursor(0,1);
+		Clear_LCD();
 		Print_LCD(measurementStr);
 		toggle_RGB_LEDs(1,0,0);
-		if(measurement < minimumDist){ 
-			UART1_SEND("5");
+		if(measurement < minimumDist){
+			UART1_SEND(measurementStr);
 			
-			Clear_LCD();
+			
 		}
-		Delay(2000);
+		Delay(200);
 	}
+	/* Zachs Test code
+	UART1_INIT(UART_BAUDRATE_300, 128);
+	
+	char uart_msg[4];
+	char lcd_msg[16];
+	
+	sprintf(uart_msg, "Fuck This");
+	sprintf(lcd_msg, "Send: %s", uart_msg);
+	
+	Init_LCD();
+		
+	for (;;)
+	{
+		Set_Cursor(0, 0);
+		Clear_LCD();
+		UART1_SEND(uart_msg);
+		Print_LCD(lcd_msg);
+		
+		Delay(25);
+	}
+		*/
 
 #endif
 }

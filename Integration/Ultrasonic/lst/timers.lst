@@ -7293,9 +7293,11 @@ N#define PLL_CLOCK_FREQUENCY (50000000)
 N
 N#define PWM_MAX_COUNT (0xFFFF)
 N
-Nvoid Init_PIT(unsigned period);
-Nvoid Start_PIT(void);
-Nvoid Stop_PIT(void);
+Nvoid Init_PITs(unsigned period1, unsigned period2);
+Nvoid Start_PIT1(void);
+Nvoid Stop_PIT1(void);
+Nvoid Start_PIT2(void);
+Nvoid Stop_PIT2(void);
 N
 Nvoid Init_TPM(void);
 Nvoid Set_PWM_Value(uint8_t duty_cycle);
@@ -7367,17 +7369,15 @@ N
 Nvolatile unsigned PIT_interrupt_counter = 0;
 Nvolatile unsigned LCD_update_requested = 0;
 N
-Nextern volatile uint8_t hour, minute, second;
-Nextern volatile uint16_t millisecond;
-N
 Nvolatile unsigned overflow = 0;
 Nvolatile unsigned echoFallingEdge = 0;
 Nvolatile int ticksElapsed = 0;
 Nvolatile unsigned measureFlag = 0;
+Nvolatile int timeoutFlag = 0; 
 N
 Nvolatile extern int tpm0_flag;
 N
-Nvoid Init_PIT(unsigned period) {
+Nvoid Init_PITs(unsigned period1, unsigned period2) {
 N	// Enable clock to PIT module
 N	SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
 X	((SIM_Type *)(0x40047000u))->SCGC6 |= 0x800000u;
@@ -7388,17 +7388,23 @@ X	((PIT_Type *)(0x40037000u))->MCR &= ~0x2u;
 N	PIT->MCR |= PIT_MCR_FRZ_MASK;
 X	((PIT_Type *)(0x40037000u))->MCR |= 0x1u;
 N	
-N	// Initialize PIT0 to count down from argument 
-N	PIT->CHANNEL[0].LDVAL = PIT_LDVAL_TSV(period);
-X	((PIT_Type *)(0x40037000u))->CHANNEL[0].LDVAL = (((uint32_t)(((uint32_t)(period))<<0))&0xFFFFFFFFu);
+N	// Initialize PITs to count down from argument 
+N	PIT->CHANNEL[0].LDVAL = PIT_LDVAL_TSV(period1);
+X	((PIT_Type *)(0x40037000u))->CHANNEL[0].LDVAL = (((uint32_t)(((uint32_t)(period1))<<0))&0xFFFFFFFFu);
+N	PIT->CHANNEL[1].LDVAL = PIT_LDVAL_TSV(period2);
+X	((PIT_Type *)(0x40037000u))->CHANNEL[1].LDVAL = (((uint32_t)(((uint32_t)(period2))<<0))&0xFFFFFFFFu);
 N
 N	// No chaining
 N	PIT->CHANNEL[0].TCTRL &= PIT_TCTRL_CHN_MASK;
 X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL &= 0x4u;
+N	PIT->CHANNEL[1].TCTRL &= PIT_TCTRL_CHN_MASK;
+X	((PIT_Type *)(0x40037000u))->CHANNEL[1].TCTRL &= 0x4u;
 N	
 N	// Generate interrupts
 N	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TIE_MASK;
 X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL |= 0x2u;
+N	PIT->CHANNEL[1].TCTRL |= PIT_TCTRL_TIE_MASK;
+X	((PIT_Type *)(0x40037000u))->CHANNEL[1].TCTRL |= 0x2u;
 N
 N	/* Enable Interrupts */
 N	NVIC_SetPriority(PIT_IRQn, 128); // 0, 64, 128 or 192
@@ -7407,14 +7413,25 @@ N	NVIC_EnableIRQ(PIT_IRQn);
 N}
 N
 N
-Nvoid Start_PIT(void) {
+Nvoid Start_PIT1(void) {
 N// Enable counter
 N	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK;
 X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL |= 0x1u;
 N}
 N
-Nvoid Stop_PIT(void) {
+Nvoid Stop_PIT1(void) {
+N// disable counter
+N	PIT->CHANNEL[0].TCTRL &= ~PIT_TCTRL_TEN_MASK;
+X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL &= ~0x1u;
+N}
+Nvoid Start_PIT2(void) {
 N// Enable counter
+N	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK;
+X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL |= 0x1u;
+N}
+N
+Nvoid Stop_PIT2(void) {
+N// disable counter
 N	PIT->CHANNEL[0].TCTRL &= ~PIT_TCTRL_TEN_MASK;
 X	((PIT_Type *)(0x40037000u))->CHANNEL[0].TCTRL &= ~0x1u;
 N}
@@ -7433,47 +7450,23 @@ X	if (((PIT_Type *)(0x40037000u))->CHANNEL[0].TFLG & 0x1u) {
 N		// clear status flag for timer channel 0
 N		PIT->CHANNEL[0].TFLG &= PIT_TFLG_TIF_MASK;
 X		((PIT_Type *)(0x40037000u))->CHANNEL[0].TFLG &= 0x1u;
-N		
-N		// Do ISR work
-N		millisecond++;
-N		if (millisecond > 999) {
-N			millisecond = 0;
-N			second++;
-N			if (second > 59) {
-N				second = 0;
-N				minute++;
-N				if (minute > 59) {
-N					minute = 0;
-N					hour++;
-N				}
-N			}
-N		}
 N
-N		PIN_TRIG_PT->PCOR |= PIN_TRIG;
-X		((GPIO_Type *)(0x400FF000u))->PCOR |= (1 << ( 17 ));
-N//		LCD_update_delay--;
-N//		if (LCD_update_delay == 0) {
-N//			LCD_update_requested = 1;
-N//			LCD_update_delay = LCD_UPDATE_PERIOD;
-N//		}
-N
-N//		// light LED in first portion of each second
-N//		if (millisecond < 600) {
-N//			Set_PWM_Value(millisecond/6);
-N//		}
-N		
+N		PIN_TRIG_PT->PCOR |= PIN_TRIG;	
+X		((GPIO_Type *)(0x400FF000u))->PCOR |= (1 << ( 17 ));	
 N				
 N	} else if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK) {
 X	} else if (((PIT_Type *)(0x40037000u))->CHANNEL[1].TFLG & 0x1u) {
 N		// clear status flag for timer channel 1
 N		PIT->CHANNEL[1].TFLG &= PIT_TFLG_TIF_MASK;
 X		((PIT_Type *)(0x40037000u))->CHANNEL[1].TFLG &= 0x1u;
+N		timeoutFlag = 1;
+N		
 N	} 
-W "src\timers.c" 56 18 variable "LCD_update_delay"  was declared but never referenced
+W "src\timers.c" 66 18 variable "LCD_update_delay"  was declared but never referenced
 N}
 N
 N// ================================================================================
-N// TPM IRQ and init here:w
+N// TPM IRQ and init here:
 N
 N// ================================================================================
 Nvolatile int is_rising = 0;
@@ -7529,6 +7522,7 @@ X		((TPM_Type *)(0x40038000u))->CONTROLS[0].CnSC |= 0x80u;
 N		
 N		//When it's rising edge start measuring
 N		if(!echoFallingEdge) {
+N			Stop_PIT2();
 N						
 N			//Signal to start measurement
 N			echoFallingEdge = 1;

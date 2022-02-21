@@ -13,9 +13,11 @@
 
 #define PWM_MAX_COUNT (0xFFFF)
 
-void Init_PIT(unsigned period);
-void Start_PIT(void);
-void Stop_PIT(void);
+void Init_PITs(unsigned period1, unsigned period2);
+void Start_PIT1(void);
+void Stop_PIT1(void);
+void Start_PIT2(void);
+void Stop_PIT2(void);
 
 void Init_TPM(void);
 void Set_PWM_Value(uint8_t duty_cycle);

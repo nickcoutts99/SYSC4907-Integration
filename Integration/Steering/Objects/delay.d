@@ -1,8 +1,8 @@
-./objects/delay.o: ..\Common\src\delay.c \
-  C:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include\MKL25Z4.h \
-  C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdint.h \
-  C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm0plus.h \
-  C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h \
-  C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h \
-  C:\Users\Nick\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_armclang.h \
-  RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h ..\Common\inc\delay.h
+.\objects\delay.o: ..\Common\src\delay.c
+.\objects\delay.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.h
+.\objects\delay.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h
+.\objects\delay.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\delay.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\delay.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\delay.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
+.\objects\delay.o: ..\Common\inc\delay.h

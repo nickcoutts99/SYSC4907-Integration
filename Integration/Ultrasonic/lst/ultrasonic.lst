@@ -7317,9 +7317,11 @@ N#define PLL_CLOCK_FREQUENCY (50000000)
 N
 N#define PWM_MAX_COUNT (0xFFFF)
 N
-Nvoid Init_PIT(unsigned period);
-Nvoid Start_PIT(void);
-Nvoid Stop_PIT(void);
+Nvoid Init_PITs(unsigned period1, unsigned period2);
+Nvoid Start_PIT1(void);
+Nvoid Stop_PIT1(void);
+Nvoid Start_PIT2(void);
+Nvoid Stop_PIT2(void);
 N
 Nvoid Init_TPM(void);
 Nvoid Set_PWM_Value(uint8_t duty_cycle);
@@ -7352,8 +7354,13 @@ N#endif
 L 2 "src\ultrasonic.c" 2
 N
 Nvolatile extern int measureFlag;
+Nvolatile extern int timeoutFlag;
 Nextern volatile int ticksElapsed;
 Nvolatile extern int overflow;
+N
+N//Speed of sound in cm/ms
+Nfloat speedOfSound = 34.3;
+Nfloat ticksToMilliseconds = 50000.0/8;
 N
 Nvoid Init_Ultrasonic(void)
 N{
@@ -7380,26 +7387,26 @@ N
 Nvoid Generate_Trigger(){
 N	PIN_TRIG_PT->PSOR |= PIN_TRIG;
 X	((GPIO_Type *)(0x400FF000u))->PSOR |= (1 << ( 17 ));
-N	Start_PIT();
+N	Start_PIT1();
 N	TPM0->SC |= TPM_SC_CMOD(1);
 X	((TPM_Type *)(0x40038000u))->SC |= (((uint32_t)(((uint32_t)(1))<<3))&0x18u);
 N}
 N
 Nvoid Measure_Reading(float* measurement) {
 N	
-N	//Speed of sound in cm/ms
-N	float speedOfSound = 34.3;
+N	
+N	Start_PIT2();//start the timeout timer
 N	double timeElapsed = 0;
 N	//Poll until we receive the measuring flag
 N	while(!measureFlag){
-N		//printf("%lu", (unsigned long)TPM2_C3V);
+N		if(timeoutFlag){return;}
 N	}
 N	
 N	
 N	//reset overflow counter
 N	overflow = 0;
 N	//convert ticks to miliseconds
-N	timeElapsed = ticksElapsed / 50000.0 * 8;
+N	timeElapsed = ticksElapsed / ticksToMilliseconds;
 N	
 N	//Distance (cm) = (Time of Entire Pulse (ms) / 2) * speed of sound (cm/ms)
 N	*measurement = (timeElapsed* speedOfSound) / 2;
@@ -7407,5 +7414,5 @@ N
 N	//reset ticks elapsed
 N	ticksElapsed = 0;
 N	measureFlag = 0;
-W "src\ultrasonic.c" 51 2 last line of file ends without a newline
+W "src\ultrasonic.c" 56 2 last line of file ends without a newline
 N}

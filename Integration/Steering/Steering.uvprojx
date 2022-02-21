@@ -10,8 +10,8 @@
       <TargetName>Steering</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6160000::V6.16::ARMCLANG</pCCUsed>
-      <uAC6>1</uAC6>
+      <pCCUsed>5060960::V5.06 update 7 (build 960)::ARMCC</pCCUsed>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>MKL25Z128xxx4</Device>
@@ -89,7 +89,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>0</SelectedForBatchBuild>
+          <SelectedForBatchBuild>1</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -313,7 +313,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -322,10 +322,10 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>3</wLevel>
+            <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <uGnu>0</uGnu>
             <useXO>0</useXO>
             <v6Lang>3</v6Lang>
@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\inc;..\Common\inc</IncludePath>
+              <IncludePath>.\inc;..\Common\inc;..\Ultrasonic\src;..\Ultrasonic;..\Ultrasonic\lst;C:\Keil_v5\ARM\INC\Freescale\Kinetis</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -471,10 +471,19 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>::CMSIS</GroupName>
-        </Group>
-        <Group>
-          <GroupName>::Device</GroupName>
+          <GroupName>Startup</GroupName>
+          <Files>
+            <File>
+              <FileName>system_MKL25Z4.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Ultrasonic\src\system_MKL25Z4.c</FilePath>
+            </File>
+            <File>
+              <FileName>startup_MKL25Z4.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\Ultrasonic\startup_MKL25Z4.s</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>
@@ -482,44 +491,25 @@
 
   <RTE>
     <apis/>
-    <components>
-      <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.5.0" condition="ARMv6_7_8-M Device">
-        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.8.0"/>
-        <targetInfos>
-          <targetInfo name="Steering"/>
-        </targetInfos>
-      </component>
-      <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.5.0" condition="MKL25Z4 CMSIS">
-        <package name="Kinetis_KLxx_DFP" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.15.0"/>
-        <targetInfos>
-          <targetInfo name="Steering"/>
-        </targetInfos>
-      </component>
-    </components>
+    <components/>
     <files>
       <file attr="config" category="source" condition="Compiler ARMCC" name="Device\Source\ARM\startup_MKL25Z4.s" version="2.5.0">
-        <instance index="0">RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s</instance>
+        <instance index="0" removed="1">RTE\Device\MKL25Z128xxx4\startup_MKL25Z4.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.5.0" condition="MKL25Z4 CMSIS"/>
         <package name="Kinetis_KLxx_DFP" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.15.0"/>
-        <targetInfos>
-          <targetInfo name="Steering"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="source" name="Device\Source\system_MKL25Z4.c" version="2.5.0">
-        <instance index="0">RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c</instance>
+        <instance index="0" removed="1">RTE\Device\MKL25Z128xxx4\system_MKL25Z4.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.5.0" condition="MKL25Z4 CMSIS"/>
         <package name="Kinetis_KLxx_DFP" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.15.0"/>
-        <targetInfos>
-          <targetInfo name="Steering"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
       <file attr="config" category="header" name="Device\Source\system_MKL25Z4.h" version="2.5.0">
-        <instance index="0">RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h</instance>
+        <instance index="0" removed="1">RTE\Device\MKL25Z128xxx4\system_MKL25Z4.h</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Keil" Cversion="2.5.0" condition="MKL25Z4 CMSIS"/>
         <package name="Kinetis_KLxx_DFP" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.15.0"/>
-        <targetInfos>
-          <targetInfo name="Steering"/>
-        </targetInfos>
+        <targetInfos/>
       </file>
     </files>
   </RTE>

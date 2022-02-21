@@ -8,3 +8,4 @@
 .\obj\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
 .\obj\uart.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
 .\obj\uart.o: ..\Common\inc\queue.h
+.\obj\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
