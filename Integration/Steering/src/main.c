@@ -115,7 +115,7 @@ int main (void) {
 			Control_RGB_LEDs(0,1,0);
 			sprintf(displayMessage, "%s cm", transmittedMessage);
 			int distance = atoi(transmittedMessage);
-		if( distance > 0 && distance < 10){
+		if( distance > 1 && distance < 15){
 			Control_RGB_LEDs(0,0,1);
 			Set_Stop();
 			//break;
