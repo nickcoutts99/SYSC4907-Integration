@@ -9,13 +9,12 @@
 #include "lcd_4bit.h"
 #include "LEDs.h"
 #include "motor.h"
+#include "IR.h"
 
 #define TESTING_MOTOR 0
-#define TESTING_LCD 1
+#define TESTING_LCD 0
 
-
-volatile uint8_t hour=0, minute=0, second=0;
-volatile uint16_t millisecond=0;
+volatile extern unsigned timeout;
 
 /*----------------------------------------------------------------------------
   MAIN function
@@ -129,6 +128,89 @@ int main (void) {
 	}
 	
 	//*/
+	#endif
+	#if 1
+	int default_brightness;
+	int brightness_diff = 0;
+	int curr_brightness;
+	char num_rotations[10];
+	int rotations = 0;
+	int black = 1;
+	int rpm = 0;
+	unsigned ticks = 0;
+	int time = 0;
+	char rpm_value[10];
+	
+	Init_ADC();
+	//Init_RGB_LEDs();
+	Init_IR_LED();
+	//Control_RGB_LEDs(0, 0, 0);
+	Init_LCD();
+	
+	Init_PITs(PIT_MAX_VALUE, TIMEOUT_VALUE);
+	
+	default_brightness = get_avg_diff();
+	sprintf(num_rotations, "%5d", default_brightness);
+	
+	Clear_LCD();
+	Set_Cursor(0,0);
+	Print_LCD("        0");
+	Start_PITs();
+	while (1) {
+		curr_brightness = get_avg_diff();
+		
+		// light RGB LED according to range
+		// Display_Range(avg_diff);
+		// Delay(50);
+		if(timeout){
+			Stop_PITs();
+			timeout = 0;
+			rpm = 0;
+			Start_PITs();
+			Set_Cursor(0, 1);
+			Print_LCD("0        ");
+		}
+			
+		/*
+		if timeout
+			set rpm to 0
+			set timeout false
+		*/
+		brightness_diff = default_brightness - curr_brightness;
+		if (black && (brightness_diff > BRIGHTNESS_RANGE || brightness_diff < -BRIGHTNESS_RANGE)) {
+			rotations++;
+			black = 0;
+			
+			ticks = PIT_MAX_VALUE - Get_RPM_PIT_Val();
+			Stop_PITs();
+			Start_PITs();
+			rpm = (int) ConvertTicksToRPM(ticks);
+			
+			sprintf(rpm_value, "%d", rpm);
+			
+			
+			
+			/*
+			stop pit and read value
+			
+			start both PIT
+			do math			
+			output value
+			*/
+			sprintf(num_rotations, "%9d", rotations);
+			
+			Clear_LCD();
+			
+			Set_Cursor(0, 1);
+			Print_LCD(rpm_value);
+			
+			Set_Cursor(0, 0);
+			Print_LCD(num_rotations);
+			
+		} else if (!black && (brightness_diff < BRIGHTNESS_RANGE && brightness_diff > -BRIGHTNESS_RANGE)) {
+			black = 1;
+		}
+	}
 	#endif
 }
 

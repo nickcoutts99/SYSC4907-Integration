@@ -1,0 +1,11 @@
+.\objects\ir.o: src\IR.c
+.\objects\ir.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.H
+.\objects\ir.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h
+.\objects\ir.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\ir.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\ir.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\ir.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
+.\objects\ir.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\ir.o: .\inc\IR.h
+.\objects\ir.o: ..\Common\inc\LEDs.h
+.\objects\ir.o: .\inc\timers.h

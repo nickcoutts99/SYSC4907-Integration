@@ -14,3 +14,4 @@
 .\objects\main.o: ..\Common\inc\lcd_4bit.h
 .\objects\main.o: ..\Common\inc\LEDs.h
 .\objects\main.o: .\inc\motor.h
+.\objects\main.o: .\inc\IR.h

@@ -42,6 +42,10 @@ int main (void) {
 		Delay(1000);
 		Clear_LCD();
 	}
+#endif
+#if 0
+
+#endif
 	
 #else
 	float measurement = 0;
@@ -75,28 +79,6 @@ int main (void) {
 		}
 		Delay(200);
 	}
-	/* Zachs Test code
-	UART1_INIT(UART_BAUDRATE_300, 128);
-	
-	char uart_msg[4];
-	char lcd_msg[16];
-	
-	sprintf(uart_msg, "Fuck This");
-	sprintf(lcd_msg, "Send: %s", uart_msg);
-	
-	Init_LCD();
-		
-	for (;;)
-	{
-		Set_Cursor(0, 0);
-		Clear_LCD();
-		UART1_SEND(uart_msg);
-		Print_LCD(lcd_msg);
-		
-		Delay(25);
-	}
-		*/
-
 #endif
 }
 

@@ -4,10 +4,9 @@
 volatile unsigned PIT_interrupt_counter = 0;
 volatile unsigned LCD_update_requested = 0;
 
-extern volatile uint8_t hour, minute, second;
-extern volatile uint16_t millisecond;
+volatile unsigned timeout = 0;
 
-void Init_PIT(unsigned period) {
+void Init_PITs(unsigned period, unsigned timeout_period) {
 	// Enable clock to PIT module
 	SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
 	
@@ -17,12 +16,15 @@ void Init_PIT(unsigned period) {
 	
 	// Initialize PIT0 to count down from argument 
 	PIT->CHANNEL[0].LDVAL = PIT_LDVAL_TSV(period);
+	PIT->CHANNEL[1].LDVAL = PIT_LDVAL_TSV(timeout_period);
 
 	// No chaining
 	PIT->CHANNEL[0].TCTRL &= PIT_TCTRL_CHN_MASK;
+	PIT->CHANNEL[1].TCTRL &= PIT_TCTRL_CHN_MASK;
 	
 	// Generate interrupts
 	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TIE_MASK;
+	PIT->CHANNEL[1].TCTRL |= PIT_TCTRL_TIE_MASK;
 
 	/* Enable Interrupts */
 	NVIC_SetPriority(PIT_IRQn, 128); // 0, 64, 128 or 192
@@ -30,15 +32,21 @@ void Init_PIT(unsigned period) {
 	NVIC_EnableIRQ(PIT_IRQn);	
 }
 
-
-void Start_PIT(void) {
-// Enable counter
-	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK;
+int Get_RPM_PIT_Val(){
+	return PIT->CHANNEL[0].CVAL;
 }
 
-void Stop_PIT(void) {
+
+void Start_PITs(void) {
+// Enable counter
+	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK;
+	PIT->CHANNEL[1].TCTRL |= PIT_TCTRL_TEN_MASK;
+}
+
+void Stop_PITs(void) {
 // Enable counter
 	PIT->CHANNEL[0].TCTRL &= ~PIT_TCTRL_TEN_MASK;
+	PIT->CHANNEL[1].TCTRL &= ~PIT_TCTRL_TEN_MASK;
 }
 
 
@@ -52,29 +60,12 @@ void PIT_IRQHandler() {
 		// clear status flag for timer channel 0
 		PIT->CHANNEL[0].TFLG &= PIT_TFLG_TIF_MASK;
 		
-		// Do ISR work
-		millisecond++;
-		if (millisecond > 999) {
-			millisecond = 0;
-			second++;
-			if (second > 59) {
-				second = 0;
-				minute++;
-				if (minute > 59) {
-					minute = 0;
-					hour++;
-				}
-			}
-		}
-
-		if (millisecond < 600) {
-			Set_PWM_Value_Ch0(millisecond/6);
-		}
-		
 				
 	} else if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK) {
 		// clear status flag for timer channel 1
 		PIT->CHANNEL[1].TFLG &= PIT_TFLG_TIF_MASK;
+		timeout = 1;
+		
 	} 
 }
 
