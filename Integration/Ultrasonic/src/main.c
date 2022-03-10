@@ -42,10 +42,6 @@ int main (void) {
 		Delay(1000);
 		Clear_LCD();
 	}
-#endif
-#if 0
-
-#endif
 	
 #else
 	float measurement = 0;
@@ -72,12 +68,12 @@ int main (void) {
 		Clear_LCD();
 		Print_LCD(measurementStr);
 		toggle_RGB_LEDs(1,0,0);
-		if(measurement < minimumDist){
+		//if(measurement < minimumDist){
 			UART1_SEND(measurementStr);
 			
 			
-		}
-		Delay(200);
+		//}
+		Delay(100);
 	}
 #endif
 }

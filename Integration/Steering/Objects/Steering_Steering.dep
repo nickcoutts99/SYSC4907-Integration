@@ -1,6 +1,6 @@
 Dependencies for Project 'Steering', Target 'Steering': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::ARMCC
-F (.\src\main.c)(0x6217E602)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -W -O0 --apcs=interwork --split_sections -I .\inc -I ..\Common\inc -I ..\Ultrasonic\src -I ..\Ultrasonic -I ..\Ultrasonic\lst -I C:\Keil_v5\ARM\INC\Freescale\Kinetis-IC:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DMKL25Z128xxx4-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\src\main.c)(0x62227D48)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -W -O0 --apcs=interwork --split_sections -I .\inc -I ..\Common\inc -I ..\Ultrasonic\src -I ..\Ultrasonic -I ..\Ultrasonic\lst -I C:\Keil_v5\ARM\INC\Freescale\Kinetis-IC:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DMKL25Z128xxx4-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.H)(0x559D97D2)
 I (C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h)(0x559DA26A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
@@ -15,7 +15,7 @@ I (..\Common\inc\uart.h)(0x6217AF2D)
 I (..\Common\inc\queue.h)(0x6217AF2D)
 I (..\Common\inc\lcd_4bit.h)(0x6217AF2D)
 I (..\Common\inc\LEDs.h)(0x6217AF2D)
-I (.\inc\motor.h)(0x6217AF2E)
+I (.\inc\motor.h)(0x62227455)
 I (.\inc\IR.h)(0x6217BED2)
 F (.\src\timers.c)(0x6217D880)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -W -O0 --apcs=interwork --split_sections -I .\inc -I ..\Common\inc -I ..\Ultrasonic\src -I ..\Ultrasonic -I ..\Ultrasonic\lst -I C:\Keil_v5\ARM\INC\Freescale\Kinetis-IC:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DMKL25Z128xxx4-o .\objects\timers.o --omf_browse .\objects\timers.crf --depend .\objects\timers.d)
 I (.\inc\timers.h)(0x6217E3B9)
@@ -65,8 +65,8 @@ I (C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h)(0x559DA26A)
 I (C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h)(0x559DA26A)
 I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h)(0x559D97D2)
 I (..\Common\inc\delay.h)(0x6217AF2D)
-F (.\src\motor.c)(0x6217AF2E)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -W -O0 --apcs=interwork --split_sections -I .\inc -I ..\Common\inc -I ..\Ultrasonic\src -I ..\Ultrasonic -I ..\Ultrasonic\lst -I C:\Keil_v5\ARM\INC\Freescale\Kinetis-IC:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DMKL25Z128xxx4-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
-I (.\inc\motor.h)(0x6217AF2E)
+F (.\src\motor.c)(0x62227458)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -W -O0 --apcs=interwork --split_sections -I .\inc -I ..\Common\inc -I ..\Ultrasonic\src -I ..\Ultrasonic -I ..\Ultrasonic\lst -I C:\Keil_v5\ARM\INC\Freescale\Kinetis-IC:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DMKL25Z128xxx4-o .\objects\motor.o --omf_browse .\objects\motor.crf --depend .\objects\motor.d)
+I (.\inc\motor.h)(0x62227455)
 I (C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.h)(0x559D97D2)
 I (C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h)(0x559DA26A)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)
@@ -93,7 +93,7 @@ F (..\Common\inc\GPIO_defs.h)(0x6217AF2D)()
 F (..\Common\inc\lcd_4bit.h)(0x6217AF2D)()
 F (..\Common\inc\LEDs.h)(0x6217AF2D)()
 F (..\Common\inc\queue.h)(0x6217AF2D)()
-F (.\inc\motor.h)(0x6217AF2E)()
+F (.\inc\motor.h)(0x62227455)()
 F (.\inc\IR.h)(0x6217BED2)()
 F (..\Ultrasonic\src\system_MKL25Z4.c)(0x6217AF2E)(--c99 -c --cpu Cortex-M0+ -D__EVAL -g -W -O0 --apcs=interwork --split_sections -I .\inc -I ..\Common\inc -I ..\Ultrasonic\src -I ..\Ultrasonic -I ..\Ultrasonic\lst -I C:\Keil_v5\ARM\INC\Freescale\Kinetis-IC:\Users\Nick\AppData\Local\Arm\Packs\Keil\Kinetis_KLxx_DFP\1.15.0\Device\Include-IC:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="535" -DMKL25Z128xxx4-o .\objects\system_mkl25z4.o --omf_browse .\objects\system_mkl25z4.crf --depend .\objects\system_mkl25z4.d)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x6025CC3E)

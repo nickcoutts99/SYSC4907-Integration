@@ -10,9 +10,9 @@
 #define PIN_INA1_SHIFT  ( 2 )
 #define PIN_INA1	(1 << PIN_INA1_SHIFT)
 
-#define PIN_INB1_PORT	PORTD
-#define PIN_INB1_PT	PTD
-#define PIN_INB1_SHIFT  ( 4 )
+#define PIN_INB1_PORT	PORTA
+#define PIN_INB1_PT	PTA
+#define PIN_INB1_SHIFT  ( 1 )
 #define PIN_INB1        ( 1 << PIN_INB1_SHIFT)
 
 void Init_Drive_Motor();

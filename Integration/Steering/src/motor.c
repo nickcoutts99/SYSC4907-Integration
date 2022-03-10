@@ -1,6 +1,6 @@
 #include "motor.h"
 void Init_Drive_Motor(){
-  	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTD_MASK;
+  SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK | SIM_SCGC5_PORTD_MASK;
 
 	//set to GPIO
 	PIN_INA1_PORT->PCR[PIN_INA1_SHIFT] &= ~PORT_PCR_MUX_MASK;          

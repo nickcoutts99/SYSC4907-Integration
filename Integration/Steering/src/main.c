@@ -12,7 +12,7 @@
 #include "IR.h"
 
 #define TESTING_MOTOR 0
-#define TESTING_LCD 0
+#define TESTING_LCD 1
 
 volatile extern unsigned timeout;
 
@@ -22,9 +22,9 @@ volatile extern unsigned timeout;
 int main (void) {
 	
 	#if TESTING_MOTOR
-	//Init_PIT(BUS_CLOCK_FREQUENCY/TICK_FREQUENCY);
+	Init_LCD();
   Init_PWM();
-	Init_Drive_Motor();
+	//Init_Drive_Motor();
 	Init_RGB_LEDs();
 
 	__enable_irq();
@@ -39,6 +39,7 @@ int main (void) {
 	while (!objectClose) {
 			UART1_READ(transmittedMessage);
 			distance = atoi(transmittedMessage);
+		 Print_LCD(transmittedMessage);
 			
 			if(distance < 10){
 				objectClose = 1;
@@ -92,7 +93,7 @@ int main (void) {
 	}*/
 	
 	///*
-	//Init_LCD();
+	Init_LCD();
 	Init_Drive_Motor();
 	Init_PWM();
 	
@@ -102,34 +103,40 @@ int main (void) {
 	char transmittedMessage[5];
 	char displayMessage[17];
 	char testing[10];
-	//int distance = 100;
-	//Print_LCD("nada");
-	Control_RGB_LEDs(0,0,1);
+	int distance = 100;
 	
 	while(1){
 		Set_Forward(80);		
 		//Clear_LCD();
+		UART1_READ(transmittedMessage);
+			
+			//sprintf(displayMessage, "%s cm", transmittedMessage);
+		int distance = atoi(transmittedMessage);
+		
+		Clear_LCD();
+		Set_Cursor(0,0);
+		Print_LCD(transmittedMessage);
+		
+		//Delay(20);
+		if( distance >= 1 && distance < 15){
 			Control_RGB_LEDs(1,0,0);
-			UART1_READ(transmittedMessage);
-			Control_RGB_LEDs(0,1,0);
-			sprintf(displayMessage, "%s cm", transmittedMessage);
-			int distance = atoi(transmittedMessage);
-		if( distance > 1 && distance < 15){
-			Control_RGB_LEDs(0,0,1);
 			Set_Stop();
 			//break;
+		}
+		else{
+			Control_RGB_LEDs(0,1,0);
 		}
 		//Control_RGB_LEDs(1,1,1);
 			//Clear_LCD();
 			//Set_Cursor(0,0);
 			//Print_LCD(displayMessage);
 			
-	Delay(200);		
+	Delay(100);		
 	}
 	
 	//*/
 	#endif
-	#if 1
+	#if 0
 	int default_brightness;
 	int brightness_diff = 0;
 	int curr_brightness;

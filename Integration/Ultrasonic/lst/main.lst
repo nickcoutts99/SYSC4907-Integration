@@ -8757,37 +8757,16 @@ N		Set_Cursor(0,1);
 N		Clear_LCD();
 N		Print_LCD(measurementStr);
 N		toggle_RGB_LEDs(1,0,0);
-N		if(measurement < minimumDist){
+N		//if(measurement < minimumDist){
 N			UART1_SEND(measurementStr);
 X			__uart_send (&uart1_cfg, &uart1_txQ, measurementStr);
 N			
 N			
-N		}
-N		Delay(200);
+N		//}
+N		Delay(100);
 N	}
-N	/* Zachs Test code
-N	UART1_INIT(UART_BAUDRATE_300, 128);
-N	
-N	char uart_msg[4];
-N	char lcd_msg[16];
-N	
-N	sprintf(uart_msg, "Fuck This");
-N	sprintf(lcd_msg, "Send: %s", uart_msg);
-N	
-N	Init_LCD();
-N		
-N	for (;;)
-N	{
-N		Set_Cursor(0, 0);
-N		Clear_LCD();
-N		UART1_SEND(uart_msg);
-N		Print_LCD(lcd_msg);
-N		
-N		Delay(25);
-N	}
-N		*/
-N
 N#endif
+W "src\main.c" 55 6 variable "minimumDist"  was declared but never referenced
 N}
 N
 N// *******************************ARM University Program Copyright © ARM Ltd 2013*************************************   

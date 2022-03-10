@@ -22,27 +22,23 @@ Dialog DLL:      TARMCM1.DLL V1.14.4.0
  
 <h2>Project:</h2>
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Ultrasonic\BasicUI.uvproj
-Project File Date:  02/17/2022
+Project File Date:  02/24/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild Project 'BasicUI' - Target 'KL25Z Flash'
 assembling startup_MKL25Z4.s...
-compiling system_MKL25Z4.c...
-compiling LCD_4bit.c...
-D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\Common\src\LCD_4bit.c: 1 warning, 0 errors
-compiling delay.c...
-D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
-  #endif
-..\Common\src\delay.c: 1 warning, 0 errors
 compiling ultrasonic.c...
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Ultrasonic\inc\ultrasonic.h(19): warning:  #1295-D: Deprecated declaration Init_Ultrasonic - give arg types
   void Init_Ultrasonic();
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Ultrasonic\src\ultrasonic.c(56): warning:  #1-D: last line of file ends without a newline
   }
 src\ultrasonic.c: 2 warnings, 0 errors
+compiling delay.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Common\src\delay.c: 1 warning, 0 errors
+compiling system_MKL25Z4.c...
 compiling main.c...
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
   #endif
@@ -50,7 +46,13 @@ D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integr
   void Init_Ultrasonic();
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\uart.h(90): warning:  #1-D: last line of file ends without a newline
   #endif
-src\main.c: 3 warnings, 0 errors
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Ultrasonic\src\main.c(55): warning:  #177-D: variable "minimumDist"  was declared but never referenced
+  	int minimumDist = 200;
+src\main.c: 4 warnings, 0 errors
+compiling LCD_4bit.c...
+D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\Common\src\LCD_4bit.c: 1 warning, 0 errors
 compiling timers.c...
 D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integration\Integration\Common\inc\delay.h(6): warning:  #1-D: last line of file ends without a newline
   #endif
@@ -72,9 +74,9 @@ D:\Users\Nick\Documents\4th year stuff\4th year proj\Integration\SYSC4907-Integr
   	NVIC_EnableIRQ(p_cfg->nvic_irq);
 ..\Common\src\uart.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=5512 RO-data=224 RW-data=112 ZI-data=2096  
-".\obj\BasicUI.axf" - 0 Error(s), 14 Warning(s).
-Build Time Elapsed:  00:00:01
+Program Size: Code=5472 RO-data=224 RW-data=112 ZI-data=2096  
+".\obj\BasicUI.axf" - 0 Error(s), 15 Warning(s).
+Build Time Elapsed:  00:00:00
 </pre>
 </body>
 </html>
