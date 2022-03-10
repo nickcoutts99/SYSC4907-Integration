@@ -1,0 +1,9 @@
+.\objects\lcd_4bit.o: ..\Common\src\LCD_4bit.c
+.\objects\lcd_4bit.o: ..\Common\inc\LCD_4bit.h
+.\objects\lcd_4bit.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.H
+.\objects\lcd_4bit.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h
+.\objects\lcd_4bit.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\lcd_4bit.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\lcd_4bit.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\lcd_4bit.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
+.\objects\lcd_4bit.o: ..\Common\inc\delay.h

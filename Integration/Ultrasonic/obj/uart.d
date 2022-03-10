@@ -1,0 +1,11 @@
+.\obj\uart.o: ..\Common\src\uart.c
+.\obj\uart.o: ..\Common\inc\uart.h
+.\obj\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\obj\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\obj\uart.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.h
+.\obj\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h
+.\obj\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\obj\uart.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\obj\uart.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
+.\obj\uart.o: ..\Common\inc\queue.h
+.\obj\uart.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -1,0 +1,9 @@
+.\objects\leds.o: ..\Common\src\LEDs.c
+.\objects\leds.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\MKL25Z4.H
+.\objects\leds.o: C:\Keil_v5\ARM\CMSIS\Include\core_cm0plus.h
+.\objects\leds.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\leds.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmInstr.h
+.\objects\leds.o: C:\Keil_v5\ARM\CMSIS\Include\core_cmFunc.h
+.\objects\leds.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
+.\objects\leds.o: ..\Common\inc\LEDs.h
+.\objects\leds.o: ..\Common\inc\gpio_defs.h

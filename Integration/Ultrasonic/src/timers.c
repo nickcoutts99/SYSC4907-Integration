@@ -7,17 +7,15 @@
 volatile unsigned PIT_interrupt_counter = 0;
 volatile unsigned LCD_update_requested = 0;
 
-extern volatile uint8_t hour, minute, second;
-extern volatile uint16_t millisecond;
-
 volatile unsigned overflow = 0;
 volatile unsigned echoFallingEdge = 0;
 volatile int ticksElapsed = 0;
 volatile unsigned measureFlag = 0;
+volatile int timeoutFlag = 0; 
 
 volatile extern int tpm0_flag;
 
-void Init_PIT(unsigned period) {
+void Init_PITs(unsigned period1, unsigned period2) {
 	// Enable clock to PIT module
 	SIM->SCGC6 |= SIM_SCGC6_PIT_MASK;
 	
@@ -25,14 +23,17 @@ void Init_PIT(unsigned period) {
 	PIT->MCR &= ~PIT_MCR_MDIS_MASK;
 	PIT->MCR |= PIT_MCR_FRZ_MASK;
 	
-	// Initialize PIT0 to count down from argument 
-	PIT->CHANNEL[0].LDVAL = PIT_LDVAL_TSV(period);
+	// Initialize PITs to count down from argument 
+	PIT->CHANNEL[0].LDVAL = PIT_LDVAL_TSV(period1);
+	PIT->CHANNEL[1].LDVAL = PIT_LDVAL_TSV(period2);
 
 	// No chaining
 	PIT->CHANNEL[0].TCTRL &= PIT_TCTRL_CHN_MASK;
+	PIT->CHANNEL[1].TCTRL &= PIT_TCTRL_CHN_MASK;
 	
 	// Generate interrupts
 	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TIE_MASK;
+	PIT->CHANNEL[1].TCTRL |= PIT_TCTRL_TIE_MASK;
 
 	/* Enable Interrupts */
 	NVIC_SetPriority(PIT_IRQn, 128); // 0, 64, 128 or 192
@@ -41,13 +42,22 @@ void Init_PIT(unsigned period) {
 }
 
 
-void Start_PIT(void) {
+void Start_PIT1(void) {
 // Enable counter
 	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK;
 }
 
-void Stop_PIT(void) {
+void Stop_PIT1(void) {
+// disable counter
+	PIT->CHANNEL[0].TCTRL &= ~PIT_TCTRL_TEN_MASK;
+}
+void Start_PIT2(void) {
 // Enable counter
+	PIT->CHANNEL[0].TCTRL |= PIT_TCTRL_TEN_MASK;
+}
+
+void Stop_PIT2(void) {
+// disable counter
 	PIT->CHANNEL[0].TCTRL &= ~PIT_TCTRL_TEN_MASK;
 }
 
@@ -62,43 +72,19 @@ void PIT_IRQHandler() {
 	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK) {
 		// clear status flag for timer channel 0
 		PIT->CHANNEL[0].TFLG &= PIT_TFLG_TIF_MASK;
-		
-		// Do ISR work
-		millisecond++;
-		if (millisecond > 999) {
-			millisecond = 0;
-			second++;
-			if (second > 59) {
-				second = 0;
-				minute++;
-				if (minute > 59) {
-					minute = 0;
-					hour++;
-				}
-			}
-		}
 
-		PIN_TRIG_PT->PCOR |= PIN_TRIG;
-//		LCD_update_delay--;
-//		if (LCD_update_delay == 0) {
-//			LCD_update_requested = 1;
-//			LCD_update_delay = LCD_UPDATE_PERIOD;
-//		}
-
-//		// light LED in first portion of each second
-//		if (millisecond < 600) {
-//			Set_PWM_Value(millisecond/6);
-//		}
-		
+		PIN_TRIG_PT->PCOR |= PIN_TRIG;	
 				
 	} else if (PIT->CHANNEL[1].TFLG & PIT_TFLG_TIF_MASK) {
 		// clear status flag for timer channel 1
 		PIT->CHANNEL[1].TFLG &= PIT_TFLG_TIF_MASK;
+		timeoutFlag = 1;
+		
 	} 
 }
 
 // ================================================================================
-// TPM IRQ and init here:w
+// TPM IRQ and init here:
 
 // ================================================================================
 volatile int is_rising = 0;
@@ -150,6 +136,7 @@ void TPM0_IRQHandler(void) {
 		
 		//When it's rising edge start measuring
 		if(!echoFallingEdge) {
+			Stop_PIT2();
 						
 			//Signal to start measurement
 			echoFallingEdge = 1;
