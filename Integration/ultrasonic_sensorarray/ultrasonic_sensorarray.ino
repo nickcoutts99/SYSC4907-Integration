@@ -34,32 +34,50 @@ int DB7 = 8;
 LiquidCrystal lcd(RS, RW, E, DB4, DB5, DB6, DB7);
 
 //Measurements
-const int numMeas = 10;
+const int numMeas = 11;
 int samples[numMeas];
 
-float avMeas, avMeas2;
-int j;
-float sum1, sum2;
+int j, i, swap_var, firstReading;
 int duration[2];
 float distance[2];
 
 #define SPEED_OF_SOUND 0.034
 
-int medianFiltering() {
-    
+int medianFiltering(int samples[]) {
+  sort(samples);
+  return samples[numMeas/2];
 }
+
+void sort(int samples[]) {
+  for (i = 0 ; i < numMeas - 1; i++){
+    for (j = 0 ; j < numMeas - i - 1; j++)
+    {
+      if (samples[j] > samples[j+1]){
+        swap_var = samples[j];
+        samples[j] = samples[j+1];
+        samples[j+1] = swap_var;
+      }
+    }
+  }
+}
+
 void setup() {
   // put your setup code here, to run once:
   pinMode(trigPin_1, OUTPUT);
   pinMode(echoPin_1, INPUT);
   pinMode(trigPin_2, OUTPUT);
   pinMode(echoPin_2, INPUT);
-  sum1 = 0;
-  avMeas = 0;
-  sum2 = 0;
-  avMeas2 = 0;
+  firstReading = 1;
   lcd.begin(16,2);
   Serial.begin(9600);
+}
+
+void generateTrigger(int trigPin){
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
 }
 
 void loop() {
@@ -67,41 +85,26 @@ void loop() {
   lcd.clear();
   delay(5000);
 
-//  for(j=1; j < numMeas; j = j+1) {
-//    digitalWrite(trigPin_1, LOW);
-//    delayMicroseconds(10);
-//    digitalWrite(trigPin_1, HIGH);
-//    delayMicroseconds(10);
-//    digitalWrite(trigPin_1, LOW);
-//    duration[0] = pulseIn(echoPin_1, HIGH);
-//    distance[0] = duration[0] * SPEED_OF_SOUND / 2;
-//    Serial.print(distance[0]);
-//    sum1 = sum1 + distance[0];
-//  }
-//
-//  avMeas = sum1 / numMeas;
-//
-//  for(j=1; j < numMeas; j = j+1) {
-//    digitalWrite(trigPin_2, LOW);
-//    delayMicroseconds(10);
-//    digitalWrite(trigPin_2, HIGH);
-//    delayMicroseconds(10);
-//    digitalWrite(trigPin_2, LOW);
-//    duration[1] = pulseIn(echoPin_2, HIGH);
-//    distance[1] = duration[1] * SPEED_OF_SOUND / 2;
-//    Serial.print(distance[1]);
-//    sum2 = sum2 + distance[1];
-//  }
-
-//  avMeas2 = sum2 / numMeas;
-
+  if(firstReading) {
+    Serial.print("| ");
+    for(j = 0; j < numMeas; j++) {
+      generateTrigger(trigPin_1);
+      samples[j] = pulseIn(echoPin_1, HIGH);
+      Serial.print(samples[j]);
+      Serial.print(" ");
+    }
+    firstReading = 0;
+  }
+  else{
+    
+  }
+  duration[0] = medianFiltering(samples);
+  Serial.print(" * ");
+  Serial.print(duration[0]);
+  Serial.print(" * |");
 //  //Front Ultrasonic
-  digitalWrite(trigPin_1, LOW);
-  delayMicroseconds(10);
-  digitalWrite(trigPin_1, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trigPin_1, LOW);
-  duration[0] = pulseIn(echoPin_1, HIGH);
+//  generateTrigger(trigPin_1);
+  //duration[0] = pulseIn(echoPin_1, HIGH);
   distance[0] = duration[0] * SPEED_OF_SOUND / 2;
   delay(25);
 
@@ -124,9 +127,5 @@ void loop() {
 //  lcd.print("S2: ");
 //  lcd.print(distance[1]);
 //  lcd.print(" cm");
-  avMeas = 0;
-  avMeas2 = 0;
-  sum1 = 0;
-  sum2 = 0;
   delay(1000);
 }
