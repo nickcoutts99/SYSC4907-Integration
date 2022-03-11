@@ -1,4 +1,5 @@
 #include <LiquidCrystal.h>
+#define MAX_SENSORS (6)
 //front
 int trigPin_1 = 12;
 int echoPin_1 = 11;
@@ -35,23 +36,46 @@ LiquidCrystal lcd(RS, RW, E, DB4, DB5, DB6, DB7);
 
 //Measurements
 const int numMeas = 11;
-int samples[numMeas];
+int samples[MAX_SENSORS][numMeas];
+int trigPins[] = {trigPin_1, trigPin_2, trigPin_3, trigPin_4, trigPin_5, trigPin_6};
+int echoPins[] = {echoPin_1, echoPin_2, echoPin_3, echoPin_4, echoPin_5, echoPin_6};
 
 int j, i, swap_var, firstReading;
-int duration[2];
-float distance[2];
+int currIndex;
+int duration[MAX_SENSORS];
+float distance[MAX_SENSORS];
+int numSensors;
 
 #define SPEED_OF_SOUND 0.034
 
+void setup() {
+  // put your setup code here, to run once:
+  numSensors = 2;
+  currIndex = 0;
+  firstReading = 1;
+ // trigPins = {trigPin_1, trigPin_2, trigPin_3, trigPin_4, trigPin_5, trigPin_6};
+  //echoPins = ;
+  for(int i = 0; i < numSensors; i++){
+    pinMode(trigPins[i],OUTPUT);
+    pinMode(echoPins[i], INPUT);
+  }
+  lcd.begin(16,2);
+  Serial.begin(9600);
+}
+
 int medianFiltering(int samples[]) {
   sort(samples);
+  Serial.print("| ");
+  for(int i = 0; i < numMeas; i++){
+    Serial.print(samples[i]);
+    Serial.print(" ");
+  }
   return samples[numMeas/2];
 }
 
 void sort(int samples[]) {
   for (i = 0 ; i < numMeas - 1; i++){
-    for (j = 0 ; j < numMeas - i - 1; j++)
-    {
+    for (j = 0 ; j < numMeas - i - 1; j++) {
       if (samples[j] > samples[j+1]){
         swap_var = samples[j];
         samples[j] = samples[j+1];
@@ -59,17 +83,6 @@ void sort(int samples[]) {
       }
     }
   }
-}
-
-void setup() {
-  // put your setup code here, to run once:
-  pinMode(trigPin_1, OUTPUT);
-  pinMode(echoPin_1, INPUT);
-  pinMode(trigPin_2, OUTPUT);
-  pinMode(echoPin_2, INPUT);
-  firstReading = 1;
-  lcd.begin(16,2);
-  Serial.begin(9600);
 }
 
 void generateTrigger(int trigPin){
@@ -83,29 +96,37 @@ void generateTrigger(int trigPin){
 void loop() {
   // put your main code here, to run repeatedly:
   lcd.clear();
-  delay(5000);
+  //delay(5000);
 
   if(firstReading) {
-    Serial.print("| ");
-    for(j = 0; j < numMeas; j++) {
-      generateTrigger(trigPin_1);
-      samples[j] = pulseIn(echoPin_1, HIGH);
-      Serial.print(samples[j]);
-      Serial.print(" ");
+    for(int currSensor = 0; currSensor < numSensors; currSensor++){
+      for(j = 0; j < numMeas; j++) {
+        generateTrigger(trigPins[currSensor]);
+        samples[currSensor][j] = pulseIn(echoPins[currSensor], HIGH);
+      } 
+      duration[currSensor] = medianFiltering(samples[currSensor]);
+      distance[currSensor] = duration[currSensor] * SPEED_OF_SOUND / 2;
     }
     firstReading = 0;
+
   }
   else{
-    
-  }
-  duration[0] = medianFiltering(samples);
-  Serial.print(" * ");
-  Serial.print(duration[0]);
-  Serial.print(" * |");
+    for(int currSensor = 0; currSensor < numSensors; currSensor++){
+        generateTrigger(trigPins[currSensor]);
+        samples[currSensor][currIndex] = pulseIn(echoPins[currSensor], HIGH);
+        currIndex = (currIndex + 1) % numMeas;
+        duration[currSensor] = medianFiltering(samples[currSensor]);
+        distance[currSensor] = duration[currSensor] * SPEED_OF_SOUND / 2;
+      } 
+    }
+  //lcd.print(duration[0]);
+//  Serial.print(" * ");
+//  Serial.print(duration[0]);
+//  Serial.print(" * |");
 //  //Front Ultrasonic
 //  generateTrigger(trigPin_1);
   //duration[0] = pulseIn(echoPin_1, HIGH);
-  distance[0] = duration[0] * SPEED_OF_SOUND / 2;
+  
   delay(25);
 
   //Front Left Ultrasonic
@@ -120,12 +141,14 @@ void loop() {
 
   //Printing Ultrasonics
   lcd.setCursor(0,0);
-  lcd.print("S1: ");
-  lcd.print(distance[0]);
-  lcd.print(" cm");
+  for(int currSensor = 0; currSensor < numSensors; currSensor++){
+  lcd.print(distance[currSensor]);
+  lcd.print("  ");
+  }
+ 
 //  lcd.setCursor(0,1);
 //  lcd.print("S2: ");
 //  lcd.print(distance[1]);
 //  lcd.print(" cm");
-  delay(1000);
+  delay(10);
 }
