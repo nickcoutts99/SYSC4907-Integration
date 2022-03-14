@@ -23,6 +23,10 @@ int echoPin_5 = 8;
 int trigPin_6 = 9;
 int echoPin_6 = 12;
 
+
+//Object to close PIN
+int objectDetectPin = 7;
+
 //Measurements
 const int numMeas = 11;
 int samples[MAX_SENSORS][numMeas];
@@ -34,27 +38,29 @@ int currIndex;
 int duration[MAX_SENSORS];
 float distance[MAX_SENSORS];
 int numSensors;
+char transmittedMessage[5];
 
 #define SPEED_OF_SOUND 0.034
 
 void setup() {
   // put your setup code here, to run once:
-  numSensors = 2;
+  numSensors = 3;
   currIndex = 0;
   firstReading = 1;
   for(int i = 0; i < numSensors; i++){
     pinMode(trigPins[i],OUTPUT);
     pinMode(echoPins[i], INPUT);
   }
+  pinMode(objectDetectPin, OUTPUT);
   Serial.begin(9600);
 }
 
 int medianFiltering(int samples[]) {
   sort(samples);
-  Serial.print("| ");
+  //Serial.print("| ");
   for(int i = 0; i < numMeas; i++){
-    Serial.print(samples[i]);
-    Serial.print(" ");
+//    Serial.print(samples[i]);
+//    Serial.print(" ");
   }
   return samples[numMeas/2];
 }
@@ -103,6 +109,11 @@ void loop() {
         distance[currSensor] = duration[currSensor] * SPEED_OF_SOUND / 2;
       } 
     }
+
+    if(distance[0] < 30.0 || distance[1] < 30.0 || distance[2] < 30.0) {
+        digitalWrite(objectDetectPin, HIGH);
+    } else {
+      digitalWrite(objectDetectPin, LOW);
+    }
   
-  delay(25);
 }
