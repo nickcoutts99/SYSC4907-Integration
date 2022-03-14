@@ -1,4 +1,3 @@
-#include <LiquidCrystal.h>
 #define MAX_SENSORS (6)
 //front
 int trigPin_1 = 12;
@@ -24,16 +23,6 @@ int echoPin_5 = 8;
 int trigPin_6 = 9;
 int echoPin_6 = 12;
 
-//LCD stuff
-int RS = 2;
-int RW = 3;
-int E = 4;
-int DB4 = 5;
-int DB5 = 6;
-int DB6 = 7;
-int DB7 = 8;
-LiquidCrystal lcd(RS, RW, E, DB4, DB5, DB6, DB7);
-
 //Measurements
 const int numMeas = 11;
 int samples[MAX_SENSORS][numMeas];
@@ -53,13 +42,10 @@ void setup() {
   numSensors = 2;
   currIndex = 0;
   firstReading = 1;
- // trigPins = {trigPin_1, trigPin_2, trigPin_3, trigPin_4, trigPin_5, trigPin_6};
-  //echoPins = ;
   for(int i = 0; i < numSensors; i++){
     pinMode(trigPins[i],OUTPUT);
     pinMode(echoPins[i], INPUT);
   }
-  lcd.begin(16,2);
   Serial.begin(9600);
 }
 
@@ -95,8 +81,6 @@ void generateTrigger(int trigPin){
 
 void loop() {
   // put your main code here, to run repeatedly:
-  lcd.clear();
-  //delay(5000);
 
   if(firstReading) {
     for(int currSensor = 0; currSensor < numSensors; currSensor++){
@@ -119,36 +103,6 @@ void loop() {
         distance[currSensor] = duration[currSensor] * SPEED_OF_SOUND / 2;
       } 
     }
-  //lcd.print(duration[0]);
-//  Serial.print(" * ");
-//  Serial.print(duration[0]);
-//  Serial.print(" * |");
-//  //Front Ultrasonic
-//  generateTrigger(trigPin_1);
-  //duration[0] = pulseIn(echoPin_1, HIGH);
   
   delay(25);
-
-  //Front Left Ultrasonic
-//  digitalWrite(trigPin_2, LOW);
-//  delayMicroseconds(10);
-//  digitalWrite(trigPin_2, HIGH);
-//  delayMicroseconds(10);
-//  digitalWrite(trigPin_2, LOW);
-//  duration[1] = pulseIn(echoPin_2, HIGH);
-//  distance[1] = duration[1] * SPEED_OF_SOUND / 2;
-//  delay(25);
-
-  //Printing Ultrasonics
-  lcd.setCursor(0,0);
-  for(int currSensor = 0; currSensor < numSensors; currSensor++){
-  lcd.print(distance[currSensor]);
-  lcd.print("  ");
-  }
- 
-//  lcd.setCursor(0,1);
-//  lcd.print("S2: ");
-//  lcd.print(distance[1]);
-//  lcd.print(" cm");
-  delay(10);
 }
