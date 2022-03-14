@@ -12,7 +12,7 @@
 #include "IR.h"
 
 #define TESTING_MOTOR 0
-#define TESTING_LCD 1
+#define TESTING_LED 1
 
 volatile extern unsigned timeout;
 
@@ -62,37 +62,41 @@ int main (void) {
 	Set_Stop();*/
 	#endif
 		
-	#if TESTING_LCD
-	/*
-	Init_LCD();
-	Init_Drive_Motor();
+	#if TESTING_LED
+	
+	PORTA->PCR[16] &= ~PORT_PCR_MUX_MASK;          
+	PORTA->PCR[16] |=  PORT_PCR_MUX(1) | PORT_PCR_IRQC(12); 
+	PTA->PDDR &= ~MASK(16); //input
+	
 	Init_PWM();
 	
 	Init_RGB_LEDs();
+	NVIC_SetPriority(PORTA_IRQn, 128); // 0, 64, 128 or 192
+	NVIC_ClearPendingIRQ(PORTA_IRQn); 
+	NVIC_EnableIRQ(PORTA_IRQn);
+	__enable_irq();
 	
-	UART1_INIT(UART_BAUDRATE_300, 128);
+//	UART1_INIT(UART_BAUDRATE_9600, 128);
 	char transmittedMessage[5];
-	char displayMessage[17];
-	char testing[10];
-	//Print_LCD("nada");
 	Control_RGB_LEDs(0,0,1);
 	while(1){ 
-		Clear_LCD();
-//		sprintf(testing,"%d",Get_Num_Rx_Chars_Available());
-//		Print_LCD(testing);
-//		if (Get_Num_Rx_Chars_Available() > 0) {
+		if(~(PORTA->ISFR) & MASK(16)){
 			Control_RGB_LEDs(0,1,0);
-			UART1_READ(transmittedMessage);
-			Control_RGB_LEDs(1,0,0);
-			sprintf(displayMessage, "%s cm", transmittedMessage);
-			Clear_LCD();
-			Set_Cursor(0,0);
-			Print_LCD(displayMessage);
+		}
+		//UART1_READ(transmittedMessage);
+		//float distance = atof(transmittedMessage);
 			
-	Delay(500);		
-	}*/
+//		if (distance < 15){
+//			Control_RGB_LEDs(1,0,0);
+//		}
+//		else {
+//			Control_RGB_LEDs(0,1,0);
+//		}
+			
+		//Delay(500);		
+	}
 	
-	///*
+	/*
 	Init_LCD();
 	Init_Drive_Motor();
 	Init_PWM();
@@ -134,7 +138,7 @@ int main (void) {
 	Delay(100);		
 	}
 	
-	//*/
+	*/
 	#endif
 	#if 0
 	int default_brightness;
@@ -220,6 +224,13 @@ int main (void) {
 	}
 	#endif
 }
-
+void PORTA_IRQHandler(void) {
+	NVIC_ClearPendingIRQ(PORTA_IRQn);
+	if(PORTA->ISFR & MASK(16)) {
+		Control_RGB_LEDs(1,0,0);
+	}
+	PORTA->ISFR = 0xffffffff;
+	
+}
 
 // *******************************ARM University Program Copyright ? ARM Ltd 2013*************************************   

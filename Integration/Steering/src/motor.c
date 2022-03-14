@@ -32,4 +32,3 @@ void Set_Reverse(uint8_t duty_cycle){
 	PIN_INB1_PT->PCOR |= PIN_INB1;
 	Set_PWM_Value_Ch0(duty_cycle);
 }
-
