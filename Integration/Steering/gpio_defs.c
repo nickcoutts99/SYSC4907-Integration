@@ -1,0 +1,25 @@
+#include "GPIO_defs.h"
+#include "LEDs.h"
+#include "motor.h"
+
+void Init_GPIO(){
+	
+	ULTRASONIC_READING_PORT->PCR[ULTRASONIC_READING_SHIFT] &= ~PORT_PCR_MUX_MASK;          
+	ULTRASONIC_READING_PORT->PCR[ULTRASONIC_READING_SHIFT] |=  PORT_PCR_MUX(1) | PORT_PCR_IRQC(12); 
+	ULTRASONIC_READING_PT->PDDR &= ~MASK(ULTRASONIC_READING_SHIFT); //input
+	
+}
+
+int check_ultrasonic_low(){
+	return (~(ULTRASONIC_READING_PORT->ISFR) & MASK(ULTRASONIC_READING_SHIFT));
+}
+
+void PORTA_IRQHandler(void) {
+	NVIC_ClearPendingIRQ(PORTA_IRQn);
+	if(PORTA->ISFR & MASK(ULTRASONIC_READING_SHIFT)) {
+		Control_RGB_LEDs(1,0,0);
+		Set_Stop();
+	}
+	PORTA->ISFR = 0xffffffff;
+	
+}

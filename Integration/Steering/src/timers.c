@@ -5,6 +5,7 @@ volatile unsigned PIT_interrupt_counter = 0;
 volatile unsigned LCD_update_requested = 0;
 
 volatile unsigned timeout = 0;
+#define TPM1_CH (1)
 
 void Init_PITs(unsigned period, unsigned timeout_period) {
 	// Enable clock to PIT module
@@ -72,20 +73,20 @@ void PIT_IRQHandler() {
 void Init_PWM()
 {
 	//turn on clock to TPM 
-	SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK | SIM_SCGC6_TPM2_MASK;
+	SIM->SCGC6 |= SIM_SCGC6_TPM1_MASK;
 	
 	//set clock source for tpm
 	SIM->SOPT2 |= (SIM_SOPT2_TPMSRC(1) | SIM_SOPT2_PLLFLLSEL_MASK);
 
 	//load the counter and mod
-	TPM1->MOD = PWM_MAX_COUNT*2;
-	TPM2->MOD = 65535;
+	TPM1->MOD = PWM_MAX_COUNT;
+	//TPM2->MOD = 65535;
 	
 	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
-	PORTA->PCR[12] = PORT_PCR_MUX(3);
+	PORTA->PCR[13] = PORT_PCR_MUX(3);
 		
 	//set channels to center-aligned high-true PWM
-	TPM1->CONTROLS[0].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
+	TPM1->CONTROLS[TPM1_CH].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
 	//TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
 	
 	//TPM2->CONTROLS[0].CnSC = TPM_CnSC_MSB_MASK | TPM_CnSC_ELSB_MASK;
@@ -96,7 +97,7 @@ void Init_PWM()
 	TPM1->CONF |= TPM_CONF_TRGSEL(0x8);
 	//TPM2->CONF |= TPM_CONF_TRGSEL(0x8);
 	
-	TPM1->CONTROLS[0].CnV = PWM_MAX_COUNT/2;
+	TPM1->CONTROLS[0].CnV = PWM_MAX_COUNT;
 }
 
 
@@ -104,6 +105,6 @@ void Set_PWM_Value_Ch0(uint8_t duty_cycle) {
 	uint16_t n;
 	
 	n = duty_cycle*PWM_MAX_COUNT/100; 
-  TPM1->CONTROLS[0].CnV = n;
+  TPM1->CONTROLS[TPM1_CH].CnV = n;
 }
 // *******************************ARM University Program Copyright ? ARM Ltd 2013*************************************   

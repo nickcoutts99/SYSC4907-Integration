@@ -52,16 +52,10 @@ void setup() {
     pinMode(echoPins[i], INPUT);
   }
   pinMode(objectDetectPin, OUTPUT);
-  Serial.begin(9600);
 }
 
 int medianFiltering(int samples[]) {
   sort(samples);
-  //Serial.print("| ");
-  for(int i = 0; i < numMeas; i++){
-//    Serial.print(samples[i]);
-//    Serial.print(" ");
-  }
   return samples[numMeas/2];
 }
 
@@ -110,7 +104,7 @@ void loop() {
       } 
     }
 
-    if(distance[0] < 30.0 || distance[1] < 30.0 || distance[2] < 30.0) {
+    if(distance[0] > 0 && distance[0] < 30.0 || distance[0] > 0 && distance[1] < 30.0 || distance[0] > 0 && distance[2] < 30.0) {
         digitalWrite(objectDetectPin, HIGH);
     } else {
       digitalWrite(objectDetectPin, LOW);
