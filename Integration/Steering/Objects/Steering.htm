@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Objects\Steering.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Steering.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Mar 18 14:36:13 2022
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Mar 18 15:31:28 2022
 <BR><P>
 <H3>Maximum Stack Usage =         40 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-PORTD_IRQHandler &rArr; Set_Stop &rArr; Set_PWM_Value_Ch0 &rArr; __aeabi_idivmod
+PORTA_IRQHandler &rArr; Set_Stop &rArr; Set_PWM_Value_Ch0 &rArr; __aeabi_idivmod
 <P>
 <H3>
 Functions with no stack information
@@ -440,10 +440,11 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_mkl25z4.o(RESET)
 </UL>
-<P><STRONG><a name="[29]"></a>PORTA_IRQHandler</STRONG> (Thumb, 42 bytes, Stack size 8 bytes, gpio_defs.o(i.PORTA_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = PORTA_IRQHandler &rArr; Control_RGB_LEDs
+<P><STRONG><a name="[29]"></a>PORTA_IRQHandler</STRONG> (Thumb, 46 bytes, Stack size 8 bytes, gpio_defs.o(i.PORTA_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = PORTA_IRQHandler &rArr; Set_Stop &rArr; Set_PWM_Value_Ch0 &rArr; __aeabi_idivmod
 </UL>
 <BR>[Calls]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_ClearPendingIRQ
+<LI><a href="#[49]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_Stop
 <LI><a href="#[48]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_RGB_LEDs
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_mkl25z4.o(RESET)
@@ -480,6 +481,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Set_PWM_Value_Ch0
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTD_IRQHandler
+<LI><a href="#[29]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PORTA_IRQHandler
 </UL>
 
 <P><STRONG><a name="[2b]"></a>SystemInit</STRONG> (Thumb, 168 bytes, Stack size 0 bytes, system_mkl25z4.o(i.SystemInit))

@@ -399,11 +399,6 @@
               <FilePath>.\src\main.c</FilePath>
             </File>
             <File>
-              <FileName>gpio_defs.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\gpio_defs.c</FilePath>
-            </File>
-            <File>
               <FileName>LEDs.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Common\src\LEDs.c</FilePath>
@@ -418,11 +413,6 @@
         <Group>
           <GroupName>inc</GroupName>
           <Files>
-            <File>
-              <FileName>IR.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\IR.h</FilePath>
-            </File>
             <File>
               <FileName>motor.h</FileName>
               <FileType>5</FileType>

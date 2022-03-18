@@ -27,89 +27,17 @@ Project File Date:  03/18/2022
 <h2>Output:</h2>
 *** Using Compiler 'V6.16', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
 Rebuild target 'Target 1'
-../Common/src/LEDs.c(1): warning: non-portable path to file '<MKL25Z4.h>'; specified path differs in case from file name on disk [-Wnonportable-include-path]
-#include <MKL25Z4.H>
-         ^~~~~~~~~~~
-         <MKL25Z4.h>
-../Common/src/LEDs.c(3): warning: non-portable path to file '"GPIO_defs.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
-#include "gpio_defs.h"
-         ^~~~~~~~~~~~~
-         "GPIO_defs.h"
-../Common/src/LEDs.c(3): warning: In file included from...
-../Common/inc\gpio_defs.h(16): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void Init_GPIO();
-              ^
-               void
-../Common/inc\gpio_defs.h(17): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-int check_ultrasonic_low();
-                        ^
-                         void
-../Common/src/LEDs.c(7): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
-        SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK | SIM_SCGC5_PORTD_MASK;;
-                                                                  ^
-5 warnings generated.
-compiling LEDs.c...
-../Common/src/delay.c(2): warning: In file included from...
-../Common/inc\delay.h(6): warning: no newline at end of file [-Wnewline-eof]
-#endif
-      ^
-1 warning generated.
-compiling delay.c...
-compiling timers.c...
-src/motor.c(67): warning: no newline at end of file [-Wnewline-eof]
-}
- ^
-1 warning generated.
-compiling motor.c...
 assembling startup_MKL25Z4.s...
-src/gpio_defs.c(1): warning: In file included from...
-../Common/inc\GPIO_defs.h(16): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-void Init_GPIO();
-              ^
-               void
-../Common/inc\GPIO_defs.h(17): warning: this function declaration is not a prototype [-Wstrict-prototypes]
-int check_ultrasonic_low();
-                        ^
-                         void
-src/gpio_defs.c(5): warning: no previous prototype for function 'Init_GPIO' [-Wmissing-prototypes]
-void Init_GPIO(){
-     ^
-../Common/inc\GPIO_defs.h(16): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
-void Init_GPIO();
-     ^
-               void
-src/gpio_defs.c(5): warning: this old-style function definition is not preceded by a prototype [-Wstrict-prototypes]
-void Init_GPIO(){
-              ^
-src/gpio_defs.c(18): warning: no previous prototype for function 'check_ultrasonic_low' [-Wmissing-prototypes]
-int check_ultrasonic_low(){
-    ^
-../Common/inc\GPIO_defs.h(17): note: this declaration is not a prototype; add 'void' to make it a prototype for a zero-parameter function
-int check_ultrasonic_low();
-    ^
-                         void
-src/gpio_defs.c(18): warning: this old-style function definition is not preceded by a prototype [-Wstrict-prototypes]
-int check_ultrasonic_low(){
-                        ^
-src/gpio_defs.c(22): warning: no previous prototype for function 'PORTA_IRQHandler' [-Wmissing-prototypes]
-void PORTA_IRQHandler(void) {
-     ^
-src/gpio_defs.c(22): note: declare 'static' if the function is not intended to be used outside of this translation unit
-void PORTA_IRQHandler(void) {
-^
-static 
-7 warnings generated.
-compiling gpio_defs.c...
 src/main.c(3): warning: non-portable path to file '<MKL25Z4.h>'; specified path differs in case from file name on disk [-Wnonportable-include-path]
 #include <MKL25Z4.H>
          ^~~~~~~~~~~
          <MKL25Z4.h>
 src/main.c(6): warning: In file included from...
-../Common/inc\GPIO_defs.h(16): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+../Common/inc\GPIO_defs.h(21): warning: this function declaration is not a prototype [-Wstrict-prototypes]
 void Init_GPIO();
               ^
                void
-../Common/inc\GPIO_defs.h(17): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+../Common/inc\GPIO_defs.h(22): warning: this function declaration is not a prototype [-Wstrict-prototypes]
 int check_ultrasonic_low();
                         ^
                          void
@@ -124,10 +52,44 @@ src/main.c(9): warning: In file included from...
          <MKL25Z4.h>
 5 warnings generated.
 compiling main.c...
+../Common/src/delay.c(2): warning: In file included from...
+../Common/inc\delay.h(6): warning: no newline at end of file [-Wnewline-eof]
+#endif
+      ^
+1 warning generated.
+compiling delay.c...
+compiling timers.c...
+../Common/src/LEDs.c(1): warning: non-portable path to file '<MKL25Z4.h>'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+#include <MKL25Z4.H>
+         ^~~~~~~~~~~
+         <MKL25Z4.h>
+../Common/src/LEDs.c(3): warning: non-portable path to file '"GPIO_defs.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+#include "gpio_defs.h"
+         ^~~~~~~~~~~~~
+         "GPIO_defs.h"
+../Common/src/LEDs.c(3): warning: In file included from...
+../Common/inc\gpio_defs.h(21): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+void Init_GPIO();
+              ^
+               void
+../Common/inc\gpio_defs.h(22): warning: this function declaration is not a prototype [-Wstrict-prototypes]
+int check_ultrasonic_low();
+                        ^
+                         void
+../Common/src/LEDs.c(7): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK | SIM_SCGC5_PORTD_MASK;;
+                                                                  ^
+5 warnings generated.
+compiling LEDs.c...
 compiling system_MKL25Z4.c...
+src/motor.c(67): warning: no newline at end of file [-Wnewline-eof]
+}
+ ^
+1 warning generated.
+compiling motor.c...
 linking...
-Program Size: Code=960 RO-data=208 RW-data=0 ZI-data=352  
-".\Objects\testing.axf" - 0 Error(s), 19 Warning(s).
+Program Size: Code=464 RO-data=576 RW-data=0 ZI-data=352  
+".\Objects\testing.axf" - 0 Error(s), 12 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -154,8 +116,8 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.5.0
 
    * Component: Keil::Device:Startup:2.5.0
-      Include file:  Device\Source\system_MKL25Z4.h
       Source file:   Device\Source\system_MKL25Z4.c
+      Include file:  Device\Source\system_MKL25Z4.h
       Source file:   Device\Source\ARM\startup_MKL25Z4.s
 Build Time Elapsed:  00:00:01
 </pre>

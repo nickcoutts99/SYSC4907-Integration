@@ -10,8 +10,8 @@
 #include "LEDs.h"
 #include "motor.h"
 
-#define TESTING_MOTOR 1
-#define TESTING_LED 0
+#define TESTING_MOTOR 0
+#define TESTING_LED 1
 #define FORWARD_SPEED (80)
 
 volatile extern unsigned timeout;
@@ -22,21 +22,17 @@ volatile extern unsigned timeout;
 int main (void) {
 	
 	#if TESTING_LED
-	Init_GPIO();
+	//Init_GPIO();
+	SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
 	
-	Init_RGB_LEDs();
+	ULTRASONIC_READING_PORT->PCR[ULTRASONIC_READING_SHIFT] &= ~PORT_PCR_MUX_MASK;          
+	ULTRASONIC_READING_PORT->PCR[ULTRASONIC_READING_SHIFT] |=  PORT_PCR_MUX(1) | PORT_PCR_IRQC(12); 
+	ULTRASONIC_READING_PT->PDDR |= MASK(ULTRASONIC_READING_SHIFT); //output
+	Delay(1000);
+	ULTRASONIC_READING_PT->PSOR |= MASK(ULTRASONIC_READING_SHIFT); 
+	Delay(10);
+	ULTRASONIC_READING_PT->PCOR |= MASK(ULTRASONIC_READING_SHIFT); 
 	
-	__enable_irq();
-	
-	//char transmittedMessage[5];
-	Control_RGB_LEDs(0,0,1);
-	while(1){ 
-		if(check_ultrasonic_low()){
-			Control_RGB_LEDs(0,1,0);
-		}
-		
-	}
-		
 	#endif
 	#if TESTING_MOTOR
 	Init_PWM();

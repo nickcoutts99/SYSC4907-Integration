@@ -32,7 +32,7 @@ void PORTA_IRQHandler(void) {
 	NVIC_ClearPendingIRQ(PORTA_IRQn);
 	if(PORTA->ISFR & MASK(ULTRASONIC_READING_SHIFT)) { // Ultrasonic sensor has sent a high signal, meaning something is in front of vehicle
 		Control_RGB_LEDs(1,0,0);
-		//Set_Stop();
+		Set_Stop();
 	}
 	PORTA->ISFR = 0xffffffff;
 	
