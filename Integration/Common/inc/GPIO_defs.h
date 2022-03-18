@@ -12,6 +12,11 @@
 #define ULTRASONIC_READING_PT (PTA)
 #define ULTRASONIC_READING_SHIFT (16)
 
+//IR board signal
+#define IR_STOP_SIGNAL_PORT (PORTD)
+#define IR_STOP_SIGNAL_PT (PTD)
+#define IR_STOP_SIGNAL_SHIFT (4)
+
 #define MASK(x) (1UL << (x))
 void Init_GPIO();
 int check_ultrasonic_low();

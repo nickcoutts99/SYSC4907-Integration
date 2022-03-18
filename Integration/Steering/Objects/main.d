@@ -7,6 +7,7 @@
 .\objects\main.o: C:\Keil_v5\ARM\INC\Freescale\Kinetis\system_MKL25Z4.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\main.o: ..\Common\inc\GPIO_defs.h
 .\objects\main.o: .\inc\timers.h
 .\objects\main.o: ..\Common\inc\delay.h
 .\objects\main.o: ..\Common\inc\uart.h

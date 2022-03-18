@@ -12,12 +12,12 @@
 #include "motor.h"
 #include "IR.h"
 
-#define TESTING_MOTOR_ULTRASONIC 1
+#define TESTING_MOTOR_ULTRASONIC 1 //NOTE CHECK GPIO_DEFS.c
 #define TESTING_MOTOR 0
 #define TESTING_LED 0
-#define FORWARD_SPEED (80)
+#define FORWARD_SPEED (30)
 
-volatile extern unsigned timeout;
+volatile unsigned irStopSignal = 0;
 
 /*----------------------------------------------------------------------------
   MAIN function
@@ -40,26 +40,22 @@ int main (void) {
 	__enable_irq();
 	
 	Control_RGB_LEDs(0,0,1);
-	while(1){ 
+	while(!irStopSignal){ 
 		if(check_ultrasonic_low()){
 			Control_RGB_LEDs(0,1,0);
 			Set_Forward(FORWARD_SPEED);
 		}
-		
 	}
 	#endif
 		
 	#if TESTING_LED
-	
 	Init_GPIO();
-	Init_PWM();
 	
 	Init_RGB_LEDs();
 	
 	__enable_irq();
 	
-//	UART1_INIT(UART_BAUDRATE_9600, 128);
-	char transmittedMessage[5];
+	//char transmittedMessage[5];
 	Control_RGB_LEDs(0,0,1);
 	while(1){ 
 		if(check_ultrasonic_low()){

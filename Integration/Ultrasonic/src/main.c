@@ -8,7 +8,6 @@
 #include "timers.h"
 #include "delay.h"
 #include "ultrasonic.h"
-#include "uart.h"
 
 #define BUFFER_SIZE (4)
 volatile uint8_t hour=0, minute=0, second=0;

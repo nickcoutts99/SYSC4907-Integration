@@ -399,16 +399,6 @@
               <FilePath>..\Common\src\delay.c</FilePath>
             </File>
             <File>
-              <FileName>uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Common\src\uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>queue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Common\src\queue.c</FilePath>
-            </File>
-            <File>
               <FileName>LEDs.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Common\src\LEDs.c</FilePath>
@@ -424,9 +414,9 @@
               <FilePath>.\src\motor.c</FilePath>
             </File>
             <File>
-              <FileName>IR.c</FileName>
+              <FileName>gpio_defs.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\IR.c</FilePath>
+              <FilePath>.\src\gpio_defs.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -444,11 +434,6 @@
               <FilePath>..\Common\inc\delay.h</FilePath>
             </File>
             <File>
-              <FileName>uart.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Common\inc\uart.h</FilePath>
-            </File>
-            <File>
               <FileName>GPIO_defs.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Common\inc\GPIO_defs.h</FilePath>
@@ -464,19 +449,9 @@
               <FilePath>..\Common\inc\LEDs.h</FilePath>
             </File>
             <File>
-              <FileName>queue.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Common\inc\queue.h</FilePath>
-            </File>
-            <File>
               <FileName>motor.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\motor.h</FilePath>
-            </File>
-            <File>
-              <FileName>IR.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\IR.h</FilePath>
             </File>
           </Files>
         </Group>
