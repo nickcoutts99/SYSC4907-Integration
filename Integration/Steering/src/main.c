@@ -11,13 +11,15 @@
 #include "LEDs.h"
 #include "motor.h"
 #include "IR.h"
+#include "switches.h"
 
-#define TESTING_MOTOR_ULTRASONIC 1 //NOTE CHECK GPIO_DEFS.c
-#define TESTING_MOTOR 0
+#define TESTING_MOTOR_ULTRASONIC 0 //NOTE CHECK GPIO_DEFS.c
+#define TESTING_MOTOR 1
 #define TESTING_LED 0
 #define FORWARD_SPEED (30)
 
 volatile unsigned irStopSignal = 0;
+extern volatile unsigned MOTOR_STOP;
 
 /*----------------------------------------------------------------------------
   MAIN function
@@ -69,14 +71,18 @@ int main (void) {
 	Init_PWM();
 	Init_Drive_Motor();
 	Init_RGB_LEDs();
+	Init_Switch();
+	__enable_irq();
 	while(1){
-		Set_Forward(80);
-		Control_RGB_LEDs(0,1,0);
-		Delay(500);
-		Set_Stop();
-		Control_RGB_LEDs(1,0,0);
+		while(!MOTOR_STOP) {
+			Set_Forward(80);
+			Control_RGB_LEDs(0,1,0);
+			Delay(500);
+			Set_Stop();
+			Control_RGB_LEDs(1,0,0);
 
-		Delay(500);
+			Delay(500);
+		}
 	}
 	#endif
 }
