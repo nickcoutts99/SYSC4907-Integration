@@ -15,7 +15,7 @@
 #define TESTING_MOTOR_ULTRASONIC 1 //NOTE CHECK GPIO_DEFS.c
 #define TESTING_MOTOR 0
 #define TESTING_LED 0
-#define FORWARD_SPEED (30)
+#define FORWARD_SPEED (15)
 
 volatile unsigned irStopSignal = 0;
 

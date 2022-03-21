@@ -24,8 +24,8 @@ int objectDetectPin = 7;
 //Measurements
 const int numMeas = 11;
 int samples[MAX_SENSORS][numMeas];
-int trigPins[] = {trigPin_1, trigPin_2, trigPin_3, trigPin_4, trigPin_5, trigPin_6};
-int echoPins[] = {echoPin_1, echoPin_2, echoPin_3, echoPin_4, echoPin_5, echoPin_6};
+int trigPins[] = {trigPin_1, trigPin_2, trigPin_3};
+int echoPins[] = {echoPin_1, echoPin_2, echoPin_3};
 
 int j, i, swap_var, firstReading;
 int currIndex;
