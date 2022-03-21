@@ -25,9 +25,14 @@ void delay(uint32_t dly)
 
 void set_turn_pwm(double diff){
 	// adjust vduty based on how Set_PWM_Value_Ch1 works
-	uint8_t duty = fabs(diff) /RANGE * 100; //double check this conversion
+	uint8_t duty = fabs(diff) /RANGE * 100;
+	if (diff > 40){
+		duty = duty *1.1; //double check this conversion
+	}
 	if (duty < DUTY_MIN){
 		duty = DUTY_MIN;
+	}else if (duty >100){
+		duty =100;
 	}
 	if(diff < 0){
 		Set_Forward(duty);
@@ -110,6 +115,7 @@ int main(void)
 			Set_Stop();
 			continue;
 		}
+			
 		// if steering is already close to max angle stop motor
 		if((difference < 0 && current_angle <2.5) || (difference > 0 && current_angle >77.5)){
 			Set_Stop();

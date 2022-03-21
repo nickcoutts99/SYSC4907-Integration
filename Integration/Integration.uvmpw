@@ -9,7 +9,7 @@
 
   <project>
     <PathAndName>.\Steering\Steering.uvprojx</PathAndName>
-    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
   <project>
@@ -18,6 +18,8 @@
 
   <project>
     <PathAndName>.\Linefollow_Steering\linedetection.uvprojx</PathAndName>
+    <NodeIsActive>1</NodeIsActive>
+    <NodeIsExpanded>1</NodeIsExpanded>
   </project>
 
 </ProjectWorkspace>

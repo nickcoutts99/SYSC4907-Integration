@@ -38,7 +38,6 @@ int main (void) {
 	Init_RGB_LEDs();
 	
 	__enable_irq();
-	
 	Control_RGB_LEDs(0,0,1);
 	while(!irStopSignal){ 
 		if(check_ultrasonic_low()){
