@@ -1,10 +1,10 @@
 #define MAX_SENSORS (6)
 
 #define SPEED_OF_SOUND 0.034
-#define LEFT_THRESHOLD (30.0)
+#define LEFT_THRESHOLD (15.0)
 
-#define MIDDLE_THRESHOLD (30.0)
-#define RIGHT_THRESHOLD (30.0)
+#define MIDDLE_THRESHOLD (15.0)
+#define RIGHT_THRESHOLD (15.0)
 //front
 int trigPin_1 = 12;
 int echoPin_1 = 11;
@@ -24,8 +24,8 @@ int objectDetectPin = 7;
 //Measurements
 const int numMeas = 11;
 int samples[MAX_SENSORS][numMeas];
-int trigPins[] = {trigPin_1, trigPin_2, trigPin_3, trigPin_4, trigPin_5, trigPin_6};
-int echoPins[] = {echoPin_1, echoPin_2, echoPin_3, echoPin_4, echoPin_5, echoPin_6};
+int trigPins[] = {trigPin_1, trigPin_2, trigPin_3};
+int echoPins[] = {echoPin_1, echoPin_2, echoPin_3};
 
 int j, i, swap_var, firstReading;
 int currIndex;
@@ -35,14 +35,14 @@ int numSensors;
 
 void setup() {
   // put your setup code here, to run once:
-  numSensors = 3;
+  numSensors = 2;
   currIndex = 0;
   firstReading = 1;
   for(int i = 0; i < numSensors; i++){
     pinMode(trigPins[i],OUTPUT);
     pinMode(echoPins[i], INPUT);
   }
-  //Serial.begin(9600);
+  Serial.begin(9600);
   pinMode(objectDetectPin, OUTPUT);
   
   for(int currSensor = 0; currSensor < numSensors; currSensor++){
@@ -82,12 +82,12 @@ void generateTrigger(int trigPin){
 }
 
 void outputResults(){
-  if(distance[0] > 0 && distance[0] < MIDDLE_THRESHOLD || distance[1] > 0 && distance[1] < LEFT_THRESHOLD || distance[2] > 0 && distance[2] < RIGHT_THRESHOLD) {
+  if((distance[0] > 0 && distance[0] < MIDDLE_THRESHOLD) || (distance[1] > 0 && distance[1] < LEFT_THRESHOLD)){ //|| (distance[2] > 0 && distance[2] < RIGHT_THRESHOLD)) {
         digitalWrite(objectDetectPin, HIGH); 
-        //Serial.print("H ");
+        Serial.print("H ");
     } else {
         digitalWrite(objectDetectPin, LOW);
-        //Serial.print("L ");
+        Serial.print("L ");
     }
 }
 

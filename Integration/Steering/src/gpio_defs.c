@@ -17,10 +17,10 @@ void Init_GPIO(){
 	NVIC_SetPriority(PORTA_IRQn, 128); // 0, 64, 128 or 192
 	NVIC_ClearPendingIRQ(PORTA_IRQn); 
 	NVIC_EnableIRQ(PORTA_IRQn);
-	
+	/*
 	NVIC_SetPriority(PORTD_IRQn, 128); // 0, 64, 128 or 192
 	NVIC_ClearPendingIRQ(PORTD_IRQn); 
-	NVIC_EnableIRQ(PORTD_IRQn);
+	NVIC_EnableIRQ(PORTD_IRQn);*/
 	
 }
 
@@ -30,21 +30,21 @@ int check_ultrasonic_low(){
 
 void PORTA_IRQHandler(void) {
 	NVIC_ClearPendingIRQ(PORTA_IRQn);
+	
 	if(PORTA->ISFR & MASK(ULTRASONIC_READING_SHIFT)) { // Ultrasonic sensor has sent a high signal, meaning something is in front of vehicle
 		Control_RGB_LEDs(1,0,0);
 		Set_Stop();
 	}
-	PORTA->ISFR = 0xffffffff;
-	
+	PORTA->ISFR = 0xffffffff;	
 }
 
 void PORTD_IRQHandler(void) {
 	NVIC_ClearPendingIRQ(PORTD_IRQn);
 	if(PORTD->ISFR & MASK(IR_STOP_SIGNAL_SHIFT)) {
-		Control_RGB_LEDs(1,0,1);
-		Set_Stop();
+		Control_RGB_LEDs(1,1,1);
 		irStopSignal = 1;
 	}
+	NVIC_DisableIRQ(PORTD_IRQn);
 	PORTD->ISFR = 0xffffffff;
 	
 }
